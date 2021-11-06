@@ -6,23 +6,23 @@ import { Table, Button } from "react-bootstrap";
 export default function list() {
   return (
     <Layout>
-      <h1 className="text-center">1:1문의 내역</h1>
+      <h1>1:1문의 내역</h1>
       <div className="d-flex">
-        <Table striped bordered hover style={{ width: "480px" }}>
+        <Table responsive="sm" style={{ width: "640px" }}>
           <thead>
             <tr>
-              <th>#</th>
-              <th>클래스명</th>
-              <th>클래스 일정</th>
+              <th></th>
+              <th>문의명</th>
+              <th>작성일</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>1</td>
-              <td>클래스명</td>
-              <td>클래스 일정</td>
+              <td>문의명</td>
+              <td>작성일</td>
               <td style={{ width: "130px" }}>
-                <Link href="/inquiry/create">
+                <Link href="/inquiry/edit">
                   <Button className="bg-light " size="sm">
                     {" "}
                     수정

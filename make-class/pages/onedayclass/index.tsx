@@ -1,6 +1,7 @@
 import Layout from "../../components/layout";
 import { Card, Button } from "react-bootstrap";
 import Link from "next/link";
+import React from "react";
 
 export default function Onedayclass() {
   return (

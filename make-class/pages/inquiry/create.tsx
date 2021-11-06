@@ -2,6 +2,7 @@ import Layout from "../../components/layout";
 import Link from "next/link";
 import { Form, Button, InputGroup, FormControl, Table } from "react-bootstrap";
 import style from "../../components/layout.module.css";
+import React from "react";
 
 export default function create() {
   return (

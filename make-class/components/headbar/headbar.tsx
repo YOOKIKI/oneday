@@ -22,15 +22,20 @@ const HeadBar = () => {
           <Link href="/login">
             <a className="text-light me-3">매니저</a>
           </Link>
+          <Link href="/login">
+            <a className="text-light me-3"></a>
+          </Link>
         </Nav.Item>
       </div>
       <div>
         <NavDropdown title="로그인" id="login">
-          <NavDropdown.Item eventKey="4.1">나의정보</NavDropdown.Item>
-          <NavDropdown.Item eventKey="4.2">나의 클래스</NavDropdown.Item>
-          <NavDropdown.Item eventKey="4.3">1:1문의</NavDropdown.Item>
+          <NavDropdown.Item href="/login">나의정보</NavDropdown.Item>
+          <NavDropdown.Item href="/login">나의 클래스</NavDropdown.Item>
+          <NavDropdown.Item href="/inquiry">1:1문의</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item eventKey="4.4">클래스 등록</NavDropdown.Item>
+          <NavDropdown.Item href="onedayclass/create">
+            클래스 등록
+          </NavDropdown.Item>
         </NavDropdown>
       </div>
     </div>

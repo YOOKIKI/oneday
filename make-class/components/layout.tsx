@@ -4,11 +4,7 @@ import Footer from "./footer";
 import Sidebar from "./sidebar/sidebar";
 import HeadBar from "./headbar/headbar";
 import styles from "./layout.module.css";
-import { Headline1 } from "@class101/ui";
-
-interface LayoutProps {
-  children: React.ReactNode;
-}
+import Link from "next/link";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,9 +13,9 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div>
-      <Head>
-        <Head>Myworkspace</Head>
-      </Head>
+      <Link href="/onedayclass">
+        <h1>Make Class</h1>
+      </Link>
       <header>
         <HeadBar />
         <Sidebar />

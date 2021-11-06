@@ -1,6 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 import Layout from "../../components/layout";
 import Link from "next/link";
+import React from "react";
 
 export default function create() {
   return (
