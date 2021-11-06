@@ -1,0 +1,19 @@
+.main {
+  height: calc(100vh - 64px);
+  margin-left: 250px;
+}
+
+.main > section {
+  padding: 32px;
+}
+
+.bord {
+  width: 18rem;
+  margin-top: "10px";
+  left: "20px";
+}
+
+.button {
+  flex-direction: column;
+  align-items: flex-end;
+}

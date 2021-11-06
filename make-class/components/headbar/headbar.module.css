@@ -1,0 +1,16 @@
+.headbar {
+  height: 46px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(105, 105, 103);
+}
+
+.headbar > section {
+  padding: 32px;
+}
+
+.headbarnav {
+  justify-content: space-between;
+}
