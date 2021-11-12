@@ -3,45 +3,42 @@ import React from "react";
 import NavBar from "../../components/nav";
 import Layout from "../../components/layout";
 import router from "next/router";
-import oneday, { OnedayItem } from "../../provider/modules/oneday ";
 import { useSelector } from "react-redux";
 import { RootState } from "../../provider";
+import { GetServerSideProps } from "next";
 
-// interface IndexProp {
-//   item: OnedayItem[];
-// }
+export interface OnedayItem {
+  id: number;
+  inquiryId: string;
+  onedayclassName: string;
+  price: string;
+  description?: string;
+  capacity: string;
+  photoUrl: string;
+  fileType: string;
+  fileName: string;
+  createdTime: number;
+  startDateData: string;
+  endDateData: string;
+}
 
-// const Item = [
-//   {
-//     id: 1,
-//     onedayclassName: "oneday강좌1",
-//     description: "oneday는..",
-//     photoUrl: require("../../public/clss.png").default.src,
-//   },
-//   {
-//     id: 2,
-//     onedayclassName: "oneday강좌2",
-//     description: "oneday는...2",
-//     photoUrl: require("../../public/clss.png").default.src,
-//   },
-// ];
+interface IndexProp {
+  items: OnedayItem[];
+}
 
-const Index = () => {
-  const oneday = useSelector((state: RootState) => state.oneday);
-  const router = useRouter();
-
+const OnedayIndex = ({ items }: IndexProp) => {
   return (
     <Layout>
       <NavBar />
       <section>
         <p>{/* <Link href="/oneday">more..</Link> */}</p>
         <div style={{ display: "flex" }}>
-          {oneday.data.map((item, index) => (
+          {items.map((item, index) => (
             <div
               key={`oneday-item-${index}`}
               className="card"
               style={{
-                width: "calc((100% - 3rem) / 4)",
+                width: "calc((100% - 4rem) / 4)",
                 marginLeft: index % 4 === 0 ? "0" : "1rem",
                 marginTop: index > 3 ? "1rem" : "0",
               }}
@@ -57,15 +54,14 @@ const Index = () => {
                   style={{
                     width: "220",
                     height: "150",
-                    // objectFit: "cover",
+                    objectFit: "cover",
                   }}
                   className="card-img-top"
                   alt={item.onedayclassName}
-                  // layout="fill"
+                  // layout="responsive"
                   // objectFit="cover"
-
-                  // width={220}
-                  // height={150}
+                  width={220}
+                  height={150}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{item.onedayclassName}</h5>
@@ -90,4 +86,39 @@ const Index = () => {
   );
 };
 
-export default Index;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const items = [
+    {
+      id: 2,
+      inquiryId: "2",
+      onedayclassName: "핸드메이드",
+      price: "",
+      description: "핸드 드로잉",
+      capacity: "",
+      photoUrl: "/clss.jpg",
+      fileType: "",
+      fileName: "",
+      createdTime: new Date().getTime(),
+      startDateData: "12월1일",
+      endDateData: "12월 3일",
+    },
+    {
+      id: 1,
+      inquiryId: "1",
+      onedayclassName: "플라워",
+      price: "",
+      description: "플라워가드닝",
+      capacity: "",
+      photoUrl: "/class.jpg",
+      fileType: "",
+      fileName: "",
+      createdTime: new Date().getTime(),
+      startDateData: "12월9일",
+      endDateData: "12월 9일",
+    },
+  ];
+
+  return { props: { items } };
+};
+
+export default OnedayIndex;

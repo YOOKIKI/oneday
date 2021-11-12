@@ -14,6 +14,7 @@ import { userInfo } from "os";
 
 const create = () => {
   const classIdInput = useRef<HTMLInputElement>(null);
+  const onedayclassNameInput = useRef<HTMLInputElement>(null);
   const titleInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const telInput = useRef<HTMLInputElement>(null);
@@ -39,6 +40,9 @@ const create = () => {
       email: emailInput.current ? emailInput.current.value : "",
       description: descriptionTxta.current ? descriptionTxta.current.value : "",
       createdTime: new Date().getTime(),
+      onedayclassName: onedayclassNameInput.current
+        ? onedayclassNameInput.current.value
+        : "",
     };
 
     console.log(item);

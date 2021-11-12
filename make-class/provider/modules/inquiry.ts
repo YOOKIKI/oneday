@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Inquiry from "../../pages/inquiry";
 
 export interface InquiryItem {
   id: number;
@@ -92,14 +93,13 @@ const inquirySlice = createSlice({
       const InquiryItem = state.data.find((item) => item.id === modifyItem.id);
 
       if (InquiryItem) {
+        InquiryItem.classId = modifyItem.classId;
+        InquiryItem.onedayclassName = modifyItem.onedayclassName;
         InquiryItem.title = modifyItem.title;
         InquiryItem.name = modifyItem.name;
         InquiryItem.tel = modifyItem.tel;
         InquiryItem.email = modifyItem.email;
         InquiryItem.description = modifyItem.description;
-        // InquiryItem.photoUrl = modifyItem.photoUrl;
-        // InquiryItem.fileName = modifyItem.fileName;
-        // InquiryItem.fileType = modifyItem.fileType;
       }
       // state.isModifyCompleted = true; 
     },

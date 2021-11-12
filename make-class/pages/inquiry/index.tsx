@@ -8,19 +8,6 @@ import { getTimeString } from "../../lib/string";
 import { useSelector } from "react-redux";
 import { RootState } from "../../provider";
 
-// interface IndexProp {
-//   item: InquiryItem[];
-// }
-
-// const Item = [
-//   {
-//     id: 1,
-//     title: "oneday",
-//     name: "유정",
-//     createdTime: new Date().getTime(),
-//   },
-// ];
-
 const Inquiry = () => {
   const oneday = useSelector((state: RootState) => state.oneday);
   const router = useRouter();
@@ -38,7 +25,7 @@ const Inquiry = () => {
             <th>클래스명</th>
             <th>강의일정</th>
             <th>신청일</th>
-            <th>작성일</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>

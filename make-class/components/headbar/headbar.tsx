@@ -14,11 +14,11 @@ const HeadBar = () => {
           </Link>
         </Navbar.Brand>
         <div className={style.headbar}>
-          <Nav.Item className="me-3">
+          {/* <Nav.Item className="me-3">
             <Link href="/inquiry">
               <a className="text-light me-3">1:1문의</a>
             </Link>
-          </Nav.Item>
+          </Nav.Item> */}
           <Nav.Item className="me-3">
             <Link href="/onedayclass/create">
               <a className="text-light me-3">클래스등록</a>
@@ -26,13 +26,15 @@ const HeadBar = () => {
           </Nav.Item>
           <Nav.Item>
             <Link href="/login">
-              <a className="text-light me-3">매니저</a>
+              <a className="text-light me-3">클래스관리</a>
             </Link>
           </Nav.Item>
           <Nav.Item>
             <NavDropdown title="로그인" id="login">
               <NavDropdown.Item href="/login">나의정보</NavDropdown.Item>
-              <NavDropdown.Item href="/login">나의 클래스</NavDropdown.Item>
+              <NavDropdown.Item href="/reservation">
+                나의 클래스
+              </NavDropdown.Item>
               <NavDropdown.Item href="/inquiry">1:1문의</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item href="onedayclass/create">

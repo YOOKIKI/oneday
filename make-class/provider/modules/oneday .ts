@@ -47,7 +47,7 @@ const initialState: OnedayState = {
       price: "",
       description: "onedayclass..",
       capacity: "",
-      photoUrl: require('../../public/clss.png').default.src,
+      photoUrl: "/clss.jpg",
       fileType: "",
       fileName: "",
       createdTime: new Date().getTime(),
@@ -61,7 +61,7 @@ const initialState: OnedayState = {
       price: "",
       description: "onedayclass..",
       capacity: "",
-      photoUrl: require('../../public/clss.png').default.src,
+      photoUrl: "/class.jpg",
       fileType: "",
       fileName: "",
       createdTime: new Date().getTime(),
@@ -109,9 +109,17 @@ const onedaySlice = createSlice({
       const OnedayItem = state.data.find((item) => item.id === modifyItem.id);
 
       if (OnedayItem) {
+        OnedayItem.inquiryId = modifyItem.inquiryId;
         OnedayItem.onedayclassName = modifyItem.onedayclassName;
+        OnedayItem.price = modifyItem.price;
+        OnedayItem.capacity = modifyItem.capacity;
         OnedayItem.description = modifyItem.description;
-        // OnedayItem.photoUrl = modifyItem.photoUrl;
+        OnedayItem.photoUrl = modifyItem.photoUrl;
+        OnedayItem.fileName = modifyItem.fileName;
+        OnedayItem.fileType = modifyItem.fileType;
+        OnedayItem.startDateData = modifyItem.startDateData;
+        OnedayItem.endDateData = modifyItem.endDateData;
+
       }
       state.isModifyCompleted = true; 
     },

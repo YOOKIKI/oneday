@@ -10,8 +10,8 @@ export interface ReservationItem {
   price: string;
   description?: string;  
   createdTime: number;
-  startDateData: number;
-  endDateData: number;
+  startDateData: string;
+  endDateData: string;
 }
 
 export interface ReservationPage {
@@ -39,28 +39,28 @@ interface ReservationState {
 const initialState: ReservationState = {
   data: [
     {
-      id: 1,
-      onedayclassName: "원데이 강좌1",
+      id: 2,
+      onedayclassName: "핸드메이드",
       name: "수강생",
-      tel:"예약번호",
+      tel:"010-222-2222",
       capacity: "2명",
       price: "30000원",
       description: "hi",
-      createdTime: 0,
-      startDateData: 0,
-      endDateData: 0,
+      createdTime: new Date().getTime(),
+      startDateData: "12월1일",
+      endDateData: "12월 3일"
     },
     {
-      id: 2,
-      onedayclassName: "원데이 강좌1",
+      id: 1,
+      onedayclassName: "플라워",
       name: "예약자",
-      tel:"예약전화번호",
+      tel:"010-111-1111",
       capacity: "1명",
       price: "15000원",
       description: "hello",
-      createdTime: 0,
-      startDateData: 0,
-      endDateData: 0,
+      createdTime: new Date().getTime(),
+      startDateData: "12월9일",
+      endDateData: "12월 9일"
     }
   ],
   isFetched: false,
@@ -104,8 +104,14 @@ const reservationSlice = createSlice({
 
       if (ReservationItem) {
         ReservationItem.onedayclassName = modifyItem.onedayclassName;
+        ReservationItem.name = modifyItem.name;
+        ReservationItem.tel = modifyItem.tel;
+        ReservationItem.capacity = modifyItem.capacity;
+        ReservationItem.price = modifyItem.price;
         ReservationItem.description = modifyItem.description;
-        // OnedayItem.photoUrl = modifyItem.photoUrl;
+        ReservationItem.startDateData = modifyItem.startDateData;
+        ReservationItem.endDateData = modifyItem.endDateData;
+        
       }
       state.isModifyCompleted = true; 
     },

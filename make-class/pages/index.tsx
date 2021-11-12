@@ -60,15 +60,15 @@ const Index = ({ items }: IndexProp) => {
                   style={{
                     width: "220",
                     height: "150",
-                    // objectFit: "cover",
+                    objectFit: "cover",
                   }}
                   className="card-img-top"
                   alt={item.onedayclassName}
                   // layout="fill"
                   // objectFit="cover"
 
-                  // width={220}
-                  // height={150}
+                  width={220}
+                  height={150}
                 />
                 <div className="card-body">
                   <h5 className="card-title">{item.onedayclassName}</h5>
@@ -86,16 +86,32 @@ const Index = ({ items }: IndexProp) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const items = [
     {
-      id: 1,
-      onedayclassName: "oneday",
-      description: "oneday",
+      id: 2,
+      inquiryId: "2",
+      onedayclassName: "핸드메이드",
+      price: "",
+      description: "onedayclass..",
+      capacity: "",
       photoUrl: "/clss.jpg",
+      fileType: "",
+      fileName: "",
+      createdTime: new Date().getTime(),
+      startDateData: "12월1일",
+      endDateData: "12월 3일",
     },
     {
-      id: 2,
-      onedayclassName: "oneday",
-      description: "oneday",
-      photoUrl: "/clss.jpg",
+      id: 1,
+      inquiryId: "1",
+      onedayclassName: "플라워",
+      price: "",
+      description: "onedayclass..",
+      capacity: "",
+      photoUrl: "/class.jpg",
+      fileType: "",
+      fileName: "",
+      createdTime: new Date().getTime(),
+      startDateData: "12월9일",
+      endDateData: "12월 9일",
     },
   ];
 

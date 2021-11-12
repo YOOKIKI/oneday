@@ -12,37 +12,6 @@ import {
   ReservationItem,
 } from "../../provider/modules/reservation";
 
-// export default function ReservationBar() {
-//   return (
-//     <nav className={styles.resbar}>
-//       <div>
-
-//       </div>
-//     </nav>
-//   );
-// }
-
-const Item = [
-  {
-    id: 1,
-    onedayclassName: "oneday강좌1",
-    price: "",
-    name: "",
-    tel: "",
-    capacity: "",
-    description: "oneday는..",
-  },
-  {
-    id: 2,
-    onedayclassName: "oneday강좌2",
-    price: "",
-    name: "",
-    tel: "",
-    capacity: "",
-    description: "oneday는..",
-  },
-];
-
 export default function ReservationBar() {
   const onedayclassNameInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
@@ -68,13 +37,14 @@ export default function ReservationBar() {
       tel: telInput.current ? telInput.current.value : "",
       capacity: capacityInput.current ? capacityInput.current.value : "",
       description: descriptionTxta.current ? descriptionTxta.current.value : "",
-      createdTime: new Date().getTime(),
       startDateData: startDateDataInput.current
         ? startDateDataInput.current.value
         : "",
       endDateData: endDateDataInput.current
         ? endDateDataInput.current.value
         : "",
+
+      createdTime: new Date().getTime(),
     };
 
     console.log(item);
@@ -158,3 +128,30 @@ export default function ReservationBar() {
     </div>
   );
 }
+
+const Item = [
+  {
+    id: 2,
+    onedayclassName: "핸드메이드",
+    name: "수강생",
+    tel: "010-222-2222",
+    capacity: "2명",
+    price: "30000원",
+    description: "hi",
+    createdTime: new Date().getTime(),
+    startDateData: "12월1일",
+    endDateData: "12월 3일",
+  },
+  {
+    id: 1,
+    onedayclassName: "플라워",
+    name: "예약자",
+    tel: "010-111-1111",
+    capacity: "1명",
+    price: "15000원",
+    description: "hello",
+    createdTime: new Date().getTime(),
+    startDateData: "12월9일",
+    endDateData: "12월 9일",
+  },
+];
