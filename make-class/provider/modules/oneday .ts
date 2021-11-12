@@ -3,7 +3,7 @@ import oneday from "../../api/oneday";
 
 export interface OnedayItem {
   id: number;
-  inquiryId: number;
+  inquiryId: string;
   onedayclassName: string;
   price: string;
   description?: string;
@@ -42,7 +42,7 @@ const initialState: OnedayState = {
   data: [
     {
       id: 2,
-      inquiryId: 2,
+      inquiryId: "2",
       onedayclassName: "핸드메이드",
       price: "",
       description: "onedayclass..",
@@ -56,7 +56,7 @@ const initialState: OnedayState = {
     },
     {
       id: 1,
-      inquiryId: 1,
+      inquiryId: "1",
       onedayclassName: "플라워",
       price: "",
       description: "onedayclass..",

@@ -7,28 +7,28 @@ import NavBar from "../components/nav";
 // import OnedayApi from "./api/oneday";
 import Image from "next/image";
 import router from "next/router";
-import { OnedayItem } from "../provider/modules/oneday ";
+import { GetServerSideProps } from "next";
 
-interface IndexProp {
-  item: OnedayItem[];
+export interface OnedayItem {
+  id: number;
+  inquiryId: string;
+  onedayclassName: string;
+  price: string;
+  description?: string;
+  capacity: string;
+  photoUrl: string;
+  fileType: string;
+  fileName: string;
+  createdTime: number;
+  startDateData: string;
+  endDateData: string;
 }
 
-const Item = [
-  {
-    id: 1,
-    onedayclassName: "oneday",
-    description: "oneday",
-    photoUrl: require("../public/clss.jpg").default.src,
-  },
-  {
-    id: 2,
-    onedayclassName: "oneday",
-    description: "oneday",
-    photoUrl: require("../public/clss.jpg").default.src,
-  },
-];
+interface IndexProp {
+  items: OnedayItem[];
+}
 
-const Index = ({ item }: IndexProp) => {
+const Index = ({ items }: IndexProp) => {
   return (
     <div>
       <Link href="/onedayclass">
@@ -39,7 +39,7 @@ const Index = ({ item }: IndexProp) => {
       <section>
         <p>{/* <Link href="/oneday">more..</Link> */}</p>
         <div style={{ display: "flex" }}>
-          {Item.map((item, index) => (
+          {items.map((item, index) => (
             <div
               key={`oneday-item-${index}`}
               className="card"
@@ -81,6 +81,25 @@ const Index = ({ item }: IndexProp) => {
       </section>
     </div>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const items = [
+    {
+      id: 1,
+      onedayclassName: "oneday",
+      description: "oneday",
+      photoUrl: "/clss.jpg",
+    },
+    {
+      id: 2,
+      onedayclassName: "oneday",
+      description: "oneday",
+      photoUrl: "/clss.jpg",
+    },
+  ];
+
+  return { props: { items } };
 };
 
 export default Index;

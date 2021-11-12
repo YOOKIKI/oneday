@@ -12,6 +12,8 @@ import {
 } from "../../../provider/modules/inquiry";
 
 const edit = () => {
+  const classIdInput = useRef<HTMLInputElement>(null);
+  const onedayclassNameInput = useRef<HTMLInputElement>(null);
   const titleInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const telInput = useRef<HTMLInputElement>(null);
@@ -32,6 +34,11 @@ const edit = () => {
   const handleAddClick = () => {
     const item: InquiryItem = {
       id: inquiryData.length ? inquiryData[0].id + 1 : 1,
+      // classId: inquiryData.length ? inquiryData[0].id + 1 : 1,
+      classId: classIdInput.current ? classIdInput.current.value : "",
+      onedayclassName: onedayclassNameInput.current
+        ? onedayclassNameInput.current.value
+        : "",
       title: titleInput.current ? titleInput.current.value : "",
       name: nameInput.current ? nameInput.current.value : "",
       tel: telInput.current ? telInput.current.value : "",

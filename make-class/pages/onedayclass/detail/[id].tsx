@@ -37,6 +37,10 @@ const OnedayDetail = () => {
           {onedayItem && (
             <table className="table">
               <tbody>
+                {/* <tr>
+                  <th></th>
+                  <td>{onedayItem.id}</td>
+                </tr> */}
                 <tr>
                   <th>클래스명</th>
                   <td>{onedayItem.onedayclassName}</td>

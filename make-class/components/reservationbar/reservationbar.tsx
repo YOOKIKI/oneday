@@ -50,6 +50,8 @@ export default function ReservationBar() {
   const capacityInput = useRef<HTMLInputElement>(null);
   const descriptionTxta = useRef<HTMLTextAreaElement>(null);
   const priceInput = useRef<HTMLInputElement>(null);
+  const startDateDataInput = useRef<HTMLInputElement>(null);
+  const endDateDataInput = useRef<HTMLInputElement>(null);
 
   const inquiryData = useSelector((state: RootState) => state.inquiry.data);
   const dispatch = useDispatch<AppDispatch>();
@@ -67,8 +69,12 @@ export default function ReservationBar() {
       capacity: capacityInput.current ? capacityInput.current.value : "",
       description: descriptionTxta.current ? descriptionTxta.current.value : "",
       createdTime: new Date().getTime(),
-      startDateData: new Date().getTime(),
-      endDateData: new Date().getTime(),
+      startDateData: startDateDataInput.current
+        ? startDateDataInput.current.value
+        : "",
+      endDateData: endDateDataInput.current
+        ? endDateDataInput.current.value
+        : "",
     };
 
     console.log(item);
@@ -84,7 +90,7 @@ export default function ReservationBar() {
           <thead>
             <tr></tr>
           </thead>
-          <tbody>
+          <tbody className="text-nowrap">
             <tr>
               <th scope="row">클래스명</th>
               {/* <td>{Item.onedayclassName}</td> */}

@@ -3,11 +3,17 @@ import { Button } from "react-bootstrap";
 import { AppDispatch, RootState } from "../../../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { addInquiry, InquiryItem } from "../../../provider/modules/inquiry";
+import inquiry, {
+  addInquiry,
+  InquiryItem,
+} from "../../../provider/modules/inquiry";
 import React, { useState } from "react";
 import Layout from "../../../components/layout";
+import Inquiry from "..";
+import { userInfo } from "os";
 
 const create = () => {
+  const classIdInput = useRef<HTMLInputElement>(null);
   const titleInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const telInput = useRef<HTMLInputElement>(null);
@@ -18,9 +24,15 @@ const create = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
+  // const inquiryItem = useSelector((state: RootState) =>
+  //   state.inquiry.data.find((item) => item.classId)
+  // );
+
   const handleAddClick = () => {
     const item: InquiryItem = {
       id: inquiryData.length ? inquiryData[0].id + 1 : 1,
+      // classId: inquiryData.length ? inquiryData[0].classId + 1 : 1,
+      classId: classIdInput.current ? classIdInput.current.value : "",
       title: titleInput.current ? titleInput.current.value : "",
       name: nameInput.current ? nameInput.current.value : "",
       tel: telInput.current ? telInput.current.value : "",
@@ -50,6 +62,10 @@ const create = () => {
               </tr>
             </thead>
             <tbody>
+              {/* <tr>
+                <th>클래스명</th>
+                <td>{inquiryItem?.classId}</td>
+              </tr> */}
               <tr>
                 <th scope="row">제목</th>
                 <td>

@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface InquiryItem {
   id: number;
-  classId: number;
+  classId: string;
+  onedayclassName: string;
   title: string;
   name: string;
   tel: string;
@@ -30,19 +31,21 @@ interface InquiryState {
 
 const initialState: InquiryState = {
   data: [
-    // {
-      // id: 2,
-      // classId: 2,
-      // title: "문의합니다",
-      // name: "수강생",
-      // tel: "010-1234-5678",
-      // email: "day@mail.com",
-      // description: "클래스 문의합니다",
-    //   // createdTime: new Date().getTime(),
-    // },
+    {
+      id: 2,
+      classId: "",
+      onedayclassName: "핸드메이드",
+      title: "문의합니다",
+      name: "수강생",
+      tel: "010-1234-5678",
+      email: "day@mail.com",
+      description: "클래스 문의합니다",
+      createdTime: new Date().getTime(),
+    },
     {
       id: 1,
-      classId: 1,
+      classId: "",
+      onedayclassName: "플라워",
       title: "문의",
       name: "수강생",
       tel: "010-8765-4321",

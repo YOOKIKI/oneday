@@ -1,7 +1,5 @@
 .resbar {
   height: 100%;
-  display: flex;
-  flex-direction: column;
   width: 200px;
   background-color: rgb(255, 255, 255);
   padding: 20px;

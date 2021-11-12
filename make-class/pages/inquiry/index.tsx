@@ -38,12 +38,14 @@ const Inquiry = () => {
             <th>클래스명</th>
             <th>강의일정</th>
             <th>신청일</th>
+            <th>작성일</th>
           </tr>
         </thead>
         <tbody>
           {oneday.data.map((item, index) => (
             <tr key={index}>
               <td>{item.id}</td>
+              {/* <td>{item.inquiryId}</td> */}
               <td>{item.onedayclassName}</td>
               <td>{item.startDateData}</td>
               <td>{getTimeString(item.createdTime)}</td>

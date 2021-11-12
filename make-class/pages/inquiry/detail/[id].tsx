@@ -58,7 +58,7 @@ const detail = () => {
   const handleDeleteClick = () => {
     dispatch(removeInquiry(+id));
 
-    router.push("/inquiry");
+    router.push("/inquiry/list");
   };
 
   return (
@@ -73,7 +73,15 @@ const detail = () => {
             <table className="table">
               <tbody>
                 <tr>
+                  <th></th>
+                  <td>{inquiryItem.id}</td>
+                </tr>
+                <tr>
                   <th>클래스명</th>
+                  <td>{inquiryItem.classId}</td>
+                </tr>
+                <tr>
+                  <th>문의명</th>
                   <td>{inquiryItem.title}</td>
                 </tr>
                 <tr>
