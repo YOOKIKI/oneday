@@ -1,29 +1,93 @@
-import Layout from "../../components/layout";
-import { Card, Button } from "react-bootstrap";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import NavBar from "../../components/nav";
+import Layout from "../../components/layout";
+import router from "next/router";
+import oneday, { OnedayItem } from "../../provider/modules/oneday ";
+import { useSelector } from "react-redux";
+import { RootState } from "../../provider";
 
-export default function Onedayclass() {
+// interface IndexProp {
+//   item: OnedayItem[];
+// }
+
+// const Item = [
+//   {
+//     id: 1,
+//     onedayclassName: "oneday강좌1",
+//     description: "oneday는..",
+//     photoUrl: require("../../public/clss.png").default.src,
+//   },
+//   {
+//     id: 2,
+//     onedayclassName: "oneday강좌2",
+//     description: "oneday는...2",
+//     photoUrl: require("../../public/clss.png").default.src,
+//   },
+// ];
+
+const Index = () => {
+  const oneday = useSelector((state: RootState) => state.oneday);
+  const router = useRouter();
+
   return (
-    <>
-      <Layout>
-        <article className="d-flex">
-          <section>모든 클래스</section>
-        </article>
-        <Card style={{ width: "18rem", marginTop: "10px", left: "20px" }}>
-          <Card.Img className="top" src="clss.png" />
-          <Card.Body>
-            <Card.Title>Class Name</Card.Title>
-            <Card.Text>강의 설명</Card.Text>
-            <Card.Text>강의 일자</Card.Text>
-            <div style={{ cursor: "pointer" }}>
-              <Link href="/onedayclass/detail">
-                <Button className="primary">자세히 보기</Button>
-              </Link>
+    <Layout>
+      <NavBar />
+      <section>
+        <p>{/* <Link href="/oneday">more..</Link> */}</p>
+        <div style={{ display: "flex" }}>
+          {oneday.data.map((item, index) => (
+            <div
+              key={`oneday-item-${index}`}
+              className="card"
+              style={{
+                width: "calc((100% - 3rem) / 4)",
+                marginLeft: index % 4 === 0 ? "0" : "1rem",
+                marginTop: index > 3 ? "1rem" : "0",
+              }}
+            >
+              <div
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  router.push(`/onedayclass/detail/${item.id}`);
+                }}
+              >
+                <img
+                  src={item.photoUrl}
+                  style={{
+                    width: "220",
+                    height: "150",
+                    // objectFit: "cover",
+                  }}
+                  className="card-img-top"
+                  alt={item.onedayclassName}
+                  // layout="fill"
+                  // objectFit="cover"
+
+                  // width={220}
+                  // height={150}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{item.onedayclassName}</h5>
+                  <h6 className="text-muted">{item.description}</h6>
+                </div>
+              </div>
             </div>
-          </Card.Body>
-        </Card>
-      </Layout>
-    </>
+          ))}
+        </div>
+
+        {/* <button
+          className="btn btn-primary"
+          onClick={() => {
+            router.push("/oneday/create");
+          }}
+        >
+          <i className="bi bi-plus" />
+          추가
+        </button> */}
+      </section>
+    </Layout>
   );
-}
+};
+
+export default Index;

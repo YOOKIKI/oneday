@@ -21,6 +21,7 @@ export default function Layout({ children }: LayoutProps) {
         <Sidebar />
       </header>
       <main className={styles.main}>{children}</main>
+
       <footer style={{ marginLeft: "250px" }}>
         <Footer />
       </footer>

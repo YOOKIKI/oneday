@@ -15,3 +15,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+pic {
+  align-content: space-around;
+}

@@ -10,7 +10,7 @@ export default function create() {
         <main>
           <h2 className="text-center">클래스 등록과정</h2>
           <Card>
-            <Card.Img className="top" src="/clss.png/" />
+            <Card.Img className="top" src="/classcreate.png/" />
             <Card.Body>
               <Card.Text>
                 클래스 등록 조건 , 클래스 등록하는 방법 순서 , 클래스 등록하기

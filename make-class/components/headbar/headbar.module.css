@@ -14,3 +14,18 @@
 .headbarnav {
   justify-content: space-between;
 }
+
+.headbar > h1 {
+  margin: 8px 0;
+  text-decoration: none;
+  background: white;
+  border-radius: 4px;
+  font-size: 14px;
+  padding: 12px 16px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: #333;
+  border: 1px solid #b3b3b3;
+  transition: all 0.125s ease;
+}
