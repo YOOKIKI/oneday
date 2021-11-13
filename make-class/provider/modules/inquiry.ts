@@ -103,19 +103,19 @@ const inquirySlice = createSlice({
       }
       // state.isModifyCompleted = true; 
     },
-    initialInquiryItem: (state, action: PayloadAction<InquiryItem>) => {
-      const inquiry = action.payload;
+    // initialInquiryItem: (state, action: PayloadAction<InquiryItem>) => {
+    //   const inquiry = action.payload;
  
-      state.data = [{ ...inquiry }];
-    },
+    //   state.data = [{ ...inquiry }];
+    // },
 
-    initialInquiry: (state, action: PayloadAction<InquiryItem[]>) => {
-      const inquirys = action.payload;
+    // initialInquiry: (state, action: PayloadAction<InquiryItem[]>) => {
+    //   const inquirys = action.payload;
 
-      state.data = inquirys;
+    //   state.data = inquirys;
   
-      state.isFetched = true;
-    },
+    //   state.isFetched = true;
+    // },
   },
 });
 

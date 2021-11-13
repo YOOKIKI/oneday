@@ -49,7 +49,7 @@ const List = () => {
         </thead>
         <tbody>
           {inquiry.data.map((item, index) => (
-            <tr key={index}>
+            <tr key={`inquiry-item-${index}`}>
               <td>{item.id}</td>
               <td>{item.title}</td>
               <td>{item.name}</td>

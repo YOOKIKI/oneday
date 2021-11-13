@@ -4,7 +4,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(105, 105, 103);
+  background-color: rgb(100, 100, 100);
 }
 
 .headbar > section {
@@ -15,7 +15,7 @@
   justify-content: space-between;
 }
 
-.headbar > h1 {
+.headbar > a {
   margin: 8px 0;
   text-decoration: none;
   background: white;

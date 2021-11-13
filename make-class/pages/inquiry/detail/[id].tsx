@@ -13,13 +13,6 @@ import inquiry, {
 import { getTimeString } from "../../../lib/string";
 
 const detail = () => {
-  const titleInput = useRef<HTMLInputElement>(null);
-  const nameInput = useRef<HTMLInputElement>(null);
-  const telInput = useRef<HTMLInputElement>(null);
-  const emailInput = useRef<HTMLInputElement>(null);
-  const descriptionTxta = useRef<HTMLTextAreaElement>(null);
-
-  const inquiryData = useSelector((state: RootState) => state.inquiry.data);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
@@ -52,7 +45,8 @@ const detail = () => {
   );
 
   useEffect(() => {
-    isRemoveCompleted && router.push(`/inquiry/edit/${id}`);
+    // isRemoveCompleted && router.push(`/inquiry/edit/${id}`);
+    isRemoveCompleted && router.push("/inquiry");
   }, [isRemoveCompleted, router]);
 
   const handleDeleteClick = () => {
@@ -78,7 +72,7 @@ const detail = () => {
                 </tr>
                 <tr>
                   <th>클래스명</th>
-                  <td>{inquiryItem.classId}</td>
+                  <td>{inquiryItem.onedayclassName}</td>
                 </tr>
                 <tr>
                   <th>문의명</th>
@@ -130,6 +124,8 @@ const detail = () => {
               <Button
                 className="btn btn-secondary me-1"
                 onClick={() => {
+                  // dispatch(removeInquiry(+id));
+                  // router.push("/inquiry/list");
                   handleDeleteClick();
                 }}
               >

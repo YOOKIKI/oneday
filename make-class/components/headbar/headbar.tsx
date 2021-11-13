@@ -19,6 +19,14 @@ const HeadBar = () => {
               <a className="text-light me-3">1:1문의</a>
             </Link>
           </Nav.Item> */}
+          <NavDropdown title="내역" id="login">
+            <NavDropdown.Item href="/reservation">
+              클래스 예약내역
+            </NavDropdown.Item>
+            <NavDropdown.Item href="/inquiry/list">
+              1:1 문의내역
+            </NavDropdown.Item>
+          </NavDropdown>
           <Nav.Item className="me-3">
             <Link href="/onedayclass/create">
               <a className="text-light me-3">클래스등록</a>

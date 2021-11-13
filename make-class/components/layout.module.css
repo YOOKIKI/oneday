@@ -1,6 +1,7 @@
 .main {
   height: calc(100vh - 64px);
-  margin-left: 250px;
+  margin-left: 200px;
+  /* margin: auto; */
 }
 
 .main > section {

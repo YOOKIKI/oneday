@@ -2,11 +2,10 @@ import axios from "axios";
 
 export interface OneDayPagingReponse {
   content: OneDayItemResponse[];
-  ast: boolean;
-  totalElements: number;
-  totalPages: number;
-  size: number;
-  number: number;
+  id: number;
+  onedayclassName: string;
+  description: string;
+  // photoUrl: string;
 }
 
 export interface OneDayItemResponse {

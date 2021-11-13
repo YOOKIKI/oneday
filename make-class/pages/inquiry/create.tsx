@@ -1,16 +1,18 @@
 import { useEffect, useRef } from "react";
-import { Button } from "react-bootstrap";
-import { AppDispatch, RootState } from "../../../provider";
+import {
+  Form,
+  Button,
+  InputGroup,
+  FormControl,
+  NavItem,
+} from "react-bootstrap";
+import { AppDispatch, RootState } from "../../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import inquiry, {
-  addInquiry,
-  InquiryItem,
-} from "../../../provider/modules/inquiry";
-import React, { useState } from "react";
-import Layout from "../../../components/layout";
-import Inquiry from "..";
-import { userInfo } from "os";
+import { addInquiry, InquiryItem } from "../../provider/modules/inquiry";
+// import React, { useState } from "react";
+import Layout from "../../components/layout";
+import onedayitem from "../../provider/modules/oneday ";
 
 const create = () => {
   const classIdInput = useRef<HTMLInputElement>(null);
@@ -25,12 +27,17 @@ const create = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  // const inquiryItem = useSelector((state: RootState) =>
-  //   state.inquiry.data.find((item) => item.classId)
-  // );
-
   const handleAddClick = () => {
     const item: InquiryItem = {
+      // id: inquiryData.length ? inquiryData[0].id + 1 : 1,
+      // title: titleInput.current ? titleInput.current.value : "",
+      // name: nameInput.current ? nameInput.current.value : "",
+      // tel: telInput.current ? telInput.current.value : "",
+      // email: emailInput.current ? emailInput.current.value : "",
+      // description: descriptionTxta.current ? descriptionTxta.current.value : "",
+      // createdTime: new Date().getTime(),
+      // classId: "",
+      // onedayclassName: ""
       id: inquiryData.length ? inquiryData[0].id + 1 : 1,
       // classId: inquiryData.length ? inquiryData[0].classId + 1 : 1,
       classId: classIdInput.current ? classIdInput.current.value : "",
@@ -47,8 +54,6 @@ const create = () => {
 
     console.log(item);
     dispatch(addInquiry(item));
-
-    router.push("/inquiry/list");
   };
 
   return (
@@ -66,12 +71,6 @@ const create = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>클래스명</th>
-                {/* <td>{inquiryItem?.classId}</td> */}
-                {/* <td>{onedayclassName}</td> */}
-                <td></td>
-              </tr>
               <tr>
                 <th scope="row">제목</th>
                 <td>
@@ -144,9 +143,10 @@ const create = () => {
             id="button-addon2"
             onClick={() => {
               handleAddClick();
+              // router.push(`/inquiry/create/${item.id}`);
             }}
           >
-            문의하기
+            수정하기
           </Button>
         </div>
       </div>

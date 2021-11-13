@@ -12,8 +12,8 @@ export default function Sidebar() {
       <Link href="/onedayclass/create">
         <a>클래스 등록</a>
       </Link>
-      <Link href="/inquiry/list">
-        <a>1:1문의 내역</a>
+      <Link href="/inquiry">
+        <a>1:1문의하기</a>
       </Link>
     </nav>
   );

@@ -1,60 +1,65 @@
 import Layout from "../../../components/layout";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, MutableRefObject } from "react";
 import { Form, Button, InputGroup, FormControl, Table } from "react-bootstrap";
 import React from "react";
 import { AppDispatch, RootState } from "../../../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { requestModifyInquiry } from "../../../middleware/modules/inquiry";
 import {
   addInquiry,
   InquiryItem,
   modifyInquiry,
 } from "../../../provider/modules/inquiry";
 
-const edit = () => {
-  const classIdInput = useRef<HTMLInputElement>(null);
-  const onedayclassNameInput = useRef<HTMLInputElement>(null);
-  const titleInput = useRef<HTMLInputElement>(null);
-  const nameInput = useRef<HTMLInputElement>(null);
-  const telInput = useRef<HTMLInputElement>(null);
-  const emailInput = useRef<HTMLInputElement>(null);
-  const descriptionTxta = useRef<HTMLTextAreaElement>(null);
-
-  const inquiryData = useSelector((state: RootState) => state.inquiry.data);
-  const dispatch = useDispatch<AppDispatch>();
+const InquiryEdit = () => {
   const router = useRouter();
+  const id = router.query.id as string;
+
+  const inquiryItem = useSelector((state: RootState) =>
+    state.inquiry.data.find((item) => item.id === +id)
+  );
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const isModifyCompleted = useSelector(
     (state: RootState) => state.inquiry.isModifyCompleted
   );
+
   useEffect(() => {
     isModifyCompleted && router.push("/inquiry");
   }, [isModifyCompleted, router]);
 
+  const classIdInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const onedayclassNameInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const titleInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const nameInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const telInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const emailInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const descriptionTxta = useRef() as MutableRefObject<HTMLTextAreaElement>;
+
   const handleAddClick = () => {
-    const item: InquiryItem = {
-      id: inquiryData.length ? inquiryData[0].id + 1 : 1,
-      // classId: inquiryData.length ? inquiryData[0].id + 1 : 1,
-      classId: classIdInput.current ? classIdInput.current.value : "",
-      onedayclassName: onedayclassNameInput.current
-        ? onedayclassNameInput.current.value
-        : "",
-      title: titleInput.current ? titleInput.current.value : "",
-      name: nameInput.current ? nameInput.current.value : "",
-      tel: telInput.current ? telInput.current.value : "",
-      email: emailInput.current ? emailInput.current.value : "",
-      description: descriptionTxta.current ? descriptionTxta.current.value : "",
-      createdTime: new Date().getTime(),
-    };
+    console.log("save");
+    if (inquiryItem) {
+      const item = { ...inquiryItem };
+      (item.classId = classIdInput.current ? classIdInput.current.value : ""),
+        (item.onedayclassName = onedayclassNameInput.current
+          ? onedayclassNameInput.current.value
+          : ""),
+        (item.title = titleInput.current ? titleInput.current.value : ""),
+        (item.name = nameInput.current ? nameInput.current.value : ""),
+        (item.tel = telInput.current ? telInput.current.value : ""),
+        (item.email = emailInput.current ? emailInput.current.value : ""),
+        (item.description = descriptionTxta.current
+          ? descriptionTxta.current.value
+          : ""),
+        router.push("/inquiry/list");
+      saveItem(item);
+    }
+  };
 
-    console.log(item);
-    dispatch(addInquiry(item));
-
-    const Item = (item: InquiryItem) => {
-      dispatch(modifyInquiry(item));
-    };
-
-    router.push("/inquiry/list");
+  const saveItem = (item: InquiryItem) => {
+    dispatch(modifyInquiry(item));
   };
 
   return (
@@ -71,10 +76,25 @@ const edit = () => {
         </thead>
         <tbody>
           <tr>
+            <th>클래스명</th>
+            <td>
+              <InputGroup className="d-flex">
+                <FormControl
+                  placeholder="클래스명"
+                  defaultValue={inquiryItem?.onedayclassName}
+                />
+              </InputGroup>
+            </td>
+          </tr>
+          <tr>
             <th>제목</th>
             <td>
               <InputGroup className="d-flex">
-                <FormControl placeholder="제목" />
+                <FormControl
+                  placeholder="제목"
+                  defaultValue={inquiryItem?.title}
+                  ref={titleInput}
+                />
               </InputGroup>
             </td>
           </tr>
@@ -82,7 +102,11 @@ const edit = () => {
             <th>이름</th>
             <td>
               <InputGroup className="mb-3">
-                <FormControl placeholder="이름" />
+                <FormControl
+                  placeholder="이름"
+                  defaultValue={inquiryItem?.name}
+                  ref={nameInput}
+                />
               </InputGroup>
             </td>
           </tr>
@@ -90,7 +114,11 @@ const edit = () => {
             <th>연락처</th>
             <td>
               <InputGroup className="mb-3">
-                <FormControl placeholder="010-123-4567" />
+                <FormControl
+                  placeholder="010-123-4567"
+                  defaultValue={inquiryItem?.tel}
+                  ref={telInput}
+                />
               </InputGroup>
             </td>
           </tr>
@@ -98,7 +126,11 @@ const edit = () => {
             <th>이메일</th>
             <td>
               <InputGroup className="mb-3">
-                <FormControl placeholder="010-123-4567" />
+                <FormControl
+                  placeholder="oneday@oneday.com"
+                  defaultValue={inquiryItem?.email}
+                  ref={emailInput}
+                />
               </InputGroup>
             </td>
           </tr>
@@ -109,6 +141,8 @@ const edit = () => {
                 <Form.Group
                   className="mb-3"
                   controlId="exampleForm.ControlTextarea1"
+                  defaultValue={inquiryItem?.email}
+                  ref={emailInput}
                 >
                   <Form.Control as="textarea" rows={10} />
                 </Form.Group>
@@ -132,4 +166,4 @@ const edit = () => {
   );
 };
 
-export default edit;
+export default InquiryEdit;

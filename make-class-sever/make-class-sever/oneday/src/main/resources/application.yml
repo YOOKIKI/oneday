@@ -1,0 +1,55 @@
+server:
+    port: 8080
+
+
+spring:
+    profiles:
+        active: default
+
+    application:
+        name: manager
+
+    datasource:
+        driver-class-name: org.postgresql.Driver  #postgresql
+
+        url: jdbc:postgresql://database-1.cie7xjz4xwmc.ap-northeast-2.rds.amazonaws.com:5432/postgres?currentSchema=oneday
+
+        username: postgres #postgresql
+
+        password: password123!
+    jpa:
+        show-sql: true
+        generate-ddl: true
+
+    cache:
+        type: redis
+    redis:
+        host: 127.0.0.1
+        port: 6379
+
+    rabbitmq:
+        addresses: amqps://b-d5859670-36b5-4d7b-9b84-c4d4a4468736.mq.ap-northeast-2.amazonaws.com:5671
+        username: rabbitmq
+        password: password123!
+
+#eureka:
+#    client:
+#        service-url:
+#            defaultZone: http://localhost:8761/eureka/
+#    instance:
+#        hostname: localhost
+#management:
+#    endpoints:
+#        web:
+#            exposure:
+#                include: "*"
+#---
+#spring:
+#  profiles: dev
+#
+#eureka:
+#  client:
+#    service-url:
+#      defaultZone: http://ec2-52-78-57-152.ap-northeast-2.compute.amazonaws.com:8761/eureka/
+#  instance:
+#    hostname: ec2-3-35-217-201.ap-northeast-2.compute.amazonaws.com
