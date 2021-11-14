@@ -58,7 +58,7 @@ const detail = () => {
   return (
     <Layout>
       <article>
-        <section style={{ width: "46vw" }} className="mx-auto">
+        <section style={{ width: "50vw" }} className="mx-3">
           <h2 className="text-center">문의내역 자세히 보기</h2>
           {!inquiryItem && (
             <div className="text-center my-5">데이터가 없습니다.</div>
