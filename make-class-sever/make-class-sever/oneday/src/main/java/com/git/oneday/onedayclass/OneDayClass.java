@@ -1,9 +1,5 @@
 package com.git.oneday.onedayclass;
 
-//import javax.persistence.Id;
-
-//import javax.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,6 +20,7 @@ public class OneDayClass {
     private String description;
     private String startTime;
     private String endTime;
+    private String category;
     private long createdTime;
-//    private Integer managerOneDayClassId;
+    private Integer managerOneDayClassId;
 }

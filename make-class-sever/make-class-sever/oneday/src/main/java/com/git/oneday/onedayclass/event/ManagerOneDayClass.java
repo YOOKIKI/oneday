@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DetailOneDayClass {
+public class ManagerOneDayClass {
 	private long oneDayClassId;
     private String title;
     private int capacity;
@@ -20,5 +20,7 @@ public class DetailOneDayClass {
     private String description;
     private String startTime;
     private String endTime;
+    private String category;
     private long createdTime;
+
 }
