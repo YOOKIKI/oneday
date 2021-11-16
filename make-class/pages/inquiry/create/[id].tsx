@@ -13,27 +13,29 @@ import Inquiry from "..";
 import { userInfo } from "os";
 
 const create = () => {
-  const classIdInput = useRef<HTMLInputElement>(null);
+  const oneDayClassIdInput = useRef<HTMLInputElement>(null);
   const onedayclassNameInput = useRef<HTMLInputElement>(null);
   const titleInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const telInput = useRef<HTMLInputElement>(null);
   const emailInput = useRef<HTMLInputElement>(null);
   const descriptionTxta = useRef<HTMLTextAreaElement>(null);
+  const answerInput = useRef<HTMLInputElement>(null);
 
   const inquiryData = useSelector((state: RootState) => state.inquiry.data);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   // const inquiryItem = useSelector((state: RootState) =>
-  //   state.inquiry.data.find((item) => item.classId)
+  //   state.inquiry.data.find((item) => item.oneDayClassId)
   // );
 
   const handleAddClick = () => {
     const item: InquiryItem = {
-      id: inquiryData.length ? inquiryData[0].id + 1 : 1,
-      // classId: inquiryData.length ? inquiryData[0].classId + 1 : 1,
-      classId: classIdInput.current ? classIdInput.current.value : "",
+      inquiryId: inquiryData.length ? inquiryData[0].inquiryId + 1 : 1,
+      oneDayClassId: oneDayClassIdInput.current
+        ? oneDayClassIdInput.current.value
+        : "",
       title: titleInput.current ? titleInput.current.value : "",
       name: nameInput.current ? nameInput.current.value : "",
       tel: telInput.current ? telInput.current.value : "",
@@ -43,6 +45,7 @@ const create = () => {
       onedayclassName: onedayclassNameInput.current
         ? onedayclassNameInput.current.value
         : "",
+      answer: answerInput.current ? answerInput.current.value : "",
     };
 
     console.log(item);
@@ -68,7 +71,7 @@ const create = () => {
             <tbody>
               <tr>
                 <th>클래스명</th>
-                {/* <td>{inquiryItem?.classId}</td> */}
+                {/* <td>{inquiryItem?.oneDayClassId}</td> */}
                 {/* <td>{onedayclassName}</td> */}
                 <td></td>
               </tr>

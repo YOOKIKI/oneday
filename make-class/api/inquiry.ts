@@ -25,6 +25,10 @@ export interface InquiryItemRequest {
 
 
 const inquiryApi = {
+
+
+
+
   fetch: () =>
     axios.get<InquiryItemResponse[]>(`${process.env.REACT_APP_API_BASE}/inquirys`),
   

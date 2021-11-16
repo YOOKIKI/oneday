@@ -2,18 +2,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import oneday from "../../api/oneday";
 
 export interface OnedayItem {
-  id: number;
-  inquiryId: string;
+  oneDayClassId: number;
+  managerOneDayClassId: string;
   onedayclassName: string;
   price: string;
+  title: string;
   description?: string;
+  managerName: string;
   capacity: string;
   photoUrl: string;
   fileType: string;
   fileName: string;
   createdTime: number;
-  startDateData: string;
-  endDateData: string;
+  startTime: string;
+  endTime: string;
+  category: string;
 }
 
 export interface OnedayPage {
@@ -41,32 +44,38 @@ interface OnedayState {
 const initialState: OnedayState = {
   data: [
     {
-      id: 2,
-      inquiryId: "2",
+      oneDayClassId: 2,
+      managerOneDayClassId: "2",
       onedayclassName: "핸드메이드",
       price: "",
+      title: "",
+      managerName: "",
+      category: "",
       description: "onedayclass..",
       capacity: "",
       photoUrl: "/clss.jpg",
       fileType: "",
       fileName: "",
       createdTime: new Date().getTime(),
-      startDateData: "12월1일",
-      endDateData: "12월 3일"
+      startTime: "12월1일",
+      endTime: "12월 3일"
     },
     {
-      id: 1,
-      inquiryId: "1",
+      oneDayClassId: 1,
+      managerOneDayClassId: "1",
       onedayclassName: "플라워",
       price: "",
+      title: "",
+      managerName: "",
+      category: "",
       description: "onedayclass..",
       capacity: "",
       photoUrl: "/class.jpg",
       fileType: "",
       fileName: "",
       createdTime: new Date().getTime(),
-      startDateData: "12월9일",
-      endDateData: "12월 9일"
+      startTime: "12월9일",
+      endTime: "12월 9일"
     },
   ],
   isFetched: false,
@@ -97,7 +106,7 @@ const onedaySlice = createSlice({
       const id = action.payload;
       
       state.data.splice(
-        state.data.findIndex((item) => item.id === id),
+        state.data.findIndex((item) => item.oneDayClassId === id),
         1
       );
       state.isRemoveCompleted = true; 
@@ -106,19 +115,23 @@ const onedaySlice = createSlice({
     
       const modifyItem = action.payload;
     
-      const OnedayItem = state.data.find((item) => item.id === modifyItem.id);
+      const OnedayItem = state.data.find((item) => item.oneDayClassId === modifyItem.oneDayClassId);
 
       if (OnedayItem) {
-        OnedayItem.inquiryId = modifyItem.inquiryId;
+        OnedayItem.managerName = modifyItem.managerName;
+        OnedayItem.managerOneDayClassId = modifyItem.managerOneDayClassId;
         OnedayItem.onedayclassName = modifyItem.onedayclassName;
         OnedayItem.price = modifyItem.price;
+        OnedayItem.title = modifyItem.title;
+        OnedayItem.managerName = modifyItem.managerName;
+        OnedayItem.category = modifyItem.category;
         OnedayItem.capacity = modifyItem.capacity;
         OnedayItem.description = modifyItem.description;
         OnedayItem.photoUrl = modifyItem.photoUrl;
         OnedayItem.fileName = modifyItem.fileName;
         OnedayItem.fileType = modifyItem.fileType;
-        OnedayItem.startDateData = modifyItem.startDateData;
-        OnedayItem.endDateData = modifyItem.endDateData;
+        OnedayItem.startTime = modifyItem.startTime;
+        OnedayItem.endTime = modifyItem.endTime;
 
       }
       state.isModifyCompleted = true; 

@@ -2,14 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Inquiry from "../../pages/inquiry";
 
 export interface InquiryItem {
-  id: number;
-  classId: string;
+  inquiryId: number;
+  oneDayClassId: string;
   onedayclassName: string;
   title: string;
   name: string;
   tel: string;
   email: string;
   description?: string;
+  answer: string;
   createdTime: number;
 }
 
@@ -33,25 +34,27 @@ interface InquiryState {
 const initialState: InquiryState = {
   data: [
     {
-      id: 2,
-      classId: "",
+      inquiryId: 2,
+      oneDayClassId: "",
       onedayclassName: "핸드메이드",
       title: "문의합니다",
       name: "수강생",
       tel: "010-1234-5678",
       email: "day@mail.com",
       description: "클래스 문의합니다",
+      answer:"답변",
       createdTime: new Date().getTime(),
     },
     {
-      id: 1,
-      classId: "",
+      inquiryId: 1,
+      oneDayClassId: "",
       onedayclassName: "플라워",
       title: "문의",
       name: "수강생",
       tel: "010-8765-4321",
       email: "oneday@mail.com",
       description: "수강일 문의드립니다",
+      answer:"답변",
       createdTime: new Date().getTime(),
     }
   ],
@@ -81,7 +84,7 @@ const inquirySlice = createSlice({
       const id = action.payload;
 
       state.data.splice(
-        state.data.findIndex((item) => item.id === id),
+        state.data.findIndex((item) => item.inquiryId === id),
         1
       );
       // state.isRemoveCompleted = true; 
@@ -90,16 +93,17 @@ const inquirySlice = createSlice({
     
       const modifyItem = action.payload;
     
-      const InquiryItem = state.data.find((item) => item.id === modifyItem.id);
+      const InquiryItem = state.data.find((item) => item.inquiryId === modifyItem.inquiryId);
 
       if (InquiryItem) {
-        InquiryItem.classId = modifyItem.classId;
+        InquiryItem.oneDayClassId = modifyItem.oneDayClassId;
         InquiryItem.onedayclassName = modifyItem.onedayclassName;
         InquiryItem.title = modifyItem.title;
         InquiryItem.name = modifyItem.name;
         InquiryItem.tel = modifyItem.tel;
         InquiryItem.email = modifyItem.email;
         InquiryItem.description = modifyItem.description;
+        InquiryItem.answer = modifyItem.answer;
       }
       // state.isModifyCompleted = true; 
     },

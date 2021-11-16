@@ -1,8 +1,8 @@
 .main {
-  /* height: calc(100vh - 64px); */
   height: 900px;
-  margin-left: 200px;
-  /* margin: auto; */
+  margin-left: 250px;
+  margin-top: 20px;
+  margin-inline-end: auto;
   overflow: auto;
 }
 

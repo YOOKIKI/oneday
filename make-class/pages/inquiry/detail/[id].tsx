@@ -20,7 +20,7 @@ const detail = () => {
   console.log(id);
 
   const inquiryItem = useSelector((state: RootState) =>
-    state.inquiry.data.find((item) => item.id === +id)
+    state.inquiry.data.find((item) => item.inquiryId === +id)
   );
 
   // const handleAddClick = () => {
@@ -68,7 +68,7 @@ const detail = () => {
               <tbody>
                 <tr>
                   <th></th>
-                  <td>{inquiryItem.id}</td>
+                  <td>{inquiryItem.inquiryId}</td>
                 </tr>
                 <tr>
                   <th>클래스명</th>

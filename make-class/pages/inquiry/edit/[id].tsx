@@ -17,7 +17,7 @@ const InquiryEdit = () => {
   const id = router.query.id as string;
 
   const inquiryItem = useSelector((state: RootState) =>
-    state.inquiry.data.find((item) => item.id === +id)
+    state.inquiry.data.find((item) => item.inquiryId === +id)
   );
 
   const dispatch = useDispatch<AppDispatch>();
@@ -30,7 +30,7 @@ const InquiryEdit = () => {
     isModifyCompleted && router.push("/inquiry");
   }, [isModifyCompleted, router]);
 
-  const classIdInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const oneDayClassIdInput = useRef() as MutableRefObject<HTMLInputElement>;
   const onedayclassNameInput = useRef() as MutableRefObject<HTMLInputElement>;
   const titleInput = useRef() as MutableRefObject<HTMLInputElement>;
   const nameInput = useRef() as MutableRefObject<HTMLInputElement>;
@@ -42,7 +42,9 @@ const InquiryEdit = () => {
     console.log("save");
     if (inquiryItem) {
       const item = { ...inquiryItem };
-      (item.classId = classIdInput.current ? classIdInput.current.value : ""),
+      (item.oneDayClassId = oneDayClassIdInput.current
+        ? oneDayClassIdInput.current.value
+        : ""),
         (item.onedayclassName = onedayclassNameInput.current
           ? onedayclassNameInput.current.value
           : ""),

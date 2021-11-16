@@ -23,6 +23,10 @@ export interface OneDayItemRequest {
 }
 
 const OneDayApi = {
+
+
+
+
   get: (id: number) =>
     axios.get<OneDayItemResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/onedays/${id}`

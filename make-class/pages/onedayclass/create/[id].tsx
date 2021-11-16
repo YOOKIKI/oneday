@@ -15,8 +15,12 @@ const create = () => {
   const descriptionTxta = useRef<HTMLTextAreaElement>(null);
   const capacityInput = useRef<HTMLInputElement>(null);
   const fileInput = useRef<HTMLInputElement>(null);
-  const startDateDataInput = useRef<HTMLInputElement>(null);
-  const endDateDataInput = useRef<HTMLInputElement>(null);
+  const startTimeInput = useRef<HTMLInputElement>(null);
+  const endTimeInput = useRef<HTMLInputElement>(null);
+  const managerOneDayClassIdInput = useRef<HTMLInputElement>(null);
+  const titleInput = useRef<HTMLInputElement>(null);
+  const managerNameInput = useRef<HTMLInputElement>(null);
+  const categoryInput = useRef<HTMLInputElement>(null);
 
   const onedayData = useSelector((state: RootState) => state.oneday.data);
   const isAddCompleted = useSelector(
@@ -42,7 +46,9 @@ const create = () => {
       const reader = new FileReader();
       reader.onload = () => {
         const item: OnedayItem = {
-          id: onedayData.length ? onedayData[0].id + 1 : 1,
+          oneDayClassId: onedayData.length
+            ? onedayData[0].oneDayClassId + 1
+            : 1,
           onedayclassName: onedayclassNameInput.current
             ? onedayclassNameInput.current.value
             : "",
@@ -55,12 +61,16 @@ const create = () => {
           fileType: imageFile.type,
           fileName: imageFile.name,
           createdTime: new Date().getTime(),
-          startDateData: startDateDataInput.current
-            ? startDateDataInput.current.value
+          startTime: startTimeInput.current ? startTimeInput.current.value : "",
+          endTime: endTimeInput.current ? endTimeInput.current.value : "",
+          managerOneDayClassId: managerOneDayClassIdInput.current
+            ? managerOneDayClassIdInput.current.value
             : "",
-          endDateData: endDateDataInput.current
-            ? endDateDataInput.current.value
+          title: titleInput.current ? titleInput.current.value : "",
+          managerName: managerNameInput.current
+            ? managerNameInput.current.value
             : "",
+          category: categoryInput.current ? categoryInput.current.value : "",
         };
 
         console.log(item);
