@@ -1,33 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "../../components/layout";
 import { Table, Button } from "react-bootstrap";
 import { InquiryItem } from "../../provider/modules/inquiry";
 import router, { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { RootState } from "../../provider";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../provider";
 import { getTimeString } from "../../lib/string";
-
-// const Item = [
-//   {
-//     id: 1,
-//     title: "문의합니다",
-//     name: "수강생",
-//     onedayclassName: "",
-//     createdTime: new Date().getTime(),
-//   },
-//   {
-//     id: 2,
-//     title: "문의",
-//     name: "수강생",
-//     onedayclassName: "",
-//     createdTime: new Date().getTime(),
-//   },
-// ];
+import { requestFetchPagingOnedays } from "../../middleware/modules/oneday";
 
 const List = () => {
   const inquiry = useSelector((state: RootState) => state.inquiry);
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
+  useEffect(() => {
+    if (!inquiry.isFetched) {
+      const inquiryPageSize = localStorage.getItem("inquiry_page_size");
+
+      dispatch(
+        requestFetchPagingOnedays({
+          page: 0,
+          size: inquiryPageSize ? +inquiryPageSize : inquiry.pageSize,
+        })
+      );
+    }
+  }, [dispatch, inquiry.isFetched, inquiry.pageSize]);
   // const isModifyCompleted = useSelector(
   // (state: RootState) => state.inquiry.isModifyCompleted
 
@@ -40,7 +37,6 @@ const List = () => {
       <Table responsive="sm" style={{ width: "640px" }}>
         <thead>
           <tr>
-            <th></th>
             <th>문의명</th>
             <th>수강생명</th>
             <th>연락처</th>
@@ -48,27 +44,33 @@ const List = () => {
           </tr>
         </thead>
         <tbody>
-          {inquiry.data.map((item, index) => (
-            <tr key={`inquiry-item-${index}`}>
-              <td>{item.id}</td>
-              <td>{item.title}</td>
-              <td>{item.name}</td>
-              <td>{item.tel}</td>
-              <td>{getTimeString(item.createdTime)}</td>
-              <td style={{ width: "130px" }}>
-                {/* <Link href="/inquiry/edit"> */}
+          {(!inquiry.isFetched || inquiry.data.length === 0) && (
+            <div className="text-center my-5">문의하신 1:1이 없네요</div>
+          )}
+          <div style={{ display: "flex" }}>
+            {inquiry.isFetched &&
+              inquiry.data.length > 0 &&
+              inquiry.data.map((item, index) => (
+                <tr key={`inquiry-item-${index}`}>
+                  <td>{item.inquiryId}</td>
+                  <td>{item.title}</td>
+                  <td>{item.name}</td>
+                  <td>{item.tel}</td>
+                  <td>{getTimeString(item.createdTime)}</td>
+                  <td style={{ width: "130px" }}>
+                    {/* <Link href="/inquiry/edit"> */}
 
-                <Button
-                  className="bg-light "
-                  size="sm"
-                  onClick={() => {
-                    router.push(`/inquiry/detail/${item.id}`);
-                  }}
-                >
-                  {" "}
-                  자세히
-                </Button>
-                {/* 
+                    <Button
+                      className="bg-light "
+                      size="sm"
+                      onClick={() => {
+                        router.push(`/inquiry/detail/${item.inquiryId}`);
+                      }}
+                    >
+                      {" "}
+                      자세히
+                    </Button>
+                    {/* 
                 <Link href="/inquiry">
                   <Button
                     className="bg-light ms-2"
@@ -81,9 +83,10 @@ const List = () => {
                     삭제
                   </Button>
                 </Link> */}
-              </td>
-            </tr>
-          ))}
+                  </td>
+                </tr>
+              ))}
+          </div>
         </tbody>
       </Table>
     </Layout>

@@ -28,8 +28,6 @@ import { AxiosResponse } from "axios";
 import { endProgress, startProgress } from "../../provider/modules/progress";
 import { addAlert } from "../../provider/modules/alert";
 import { RootState } from "../../provider";
-import { dataUrlToFile } from "../../lib/string";
-import fileApi from "../../api/file";
 
 
 export interface PageRequest {
@@ -88,28 +86,19 @@ function* addDataPaging(action: PayloadAction<InquiryItem>) {
 
     const inquiryItemPayload = action.payload;
 
-    const file: File = yield call(
-      dataUrlToFile,
-      inquiryItemPayload.photoUrl,
-      inquiryItemPayload.fileName,
-      inquiryItemPayload.fileType
-    );
+    yield put(startProgress());
 
-    const formFile = new FormData();
-    formFile.set("file", file);
-
-    const fileUrl: AxiosResponse<string> = yield call(fileApi.upload, formFile);
-    
     const inquiryItemRequest: InquiryItemRequest = {
-      // id: inquiryItemPayload.id,
-      classId: inquiryItemPayload.classId,
-      onedayclassName: inquiryItemPayload.onedayclassName,
+      inquiryId: 0,
+      oneDayClassId: inquiryItemPayload.oneDayClassId,
+      onedayclassName: inquiryItemPayload.oneDayClassId,
       title: inquiryItemPayload.title,
       name: inquiryItemPayload.name,
       tel: inquiryItemPayload.tel,
       email: inquiryItemPayload.email,
       description: inquiryItemPayload.description,
-      // createdTime: inquiryItemPayload.createdTime,
+      answer: inquiryItemPayload.answer,
+      createdTime: inquiryItemPayload.createdTime,
     };
 
     const result: AxiosResponse<InquiryItemResponse> = yield call(
@@ -126,23 +115,24 @@ function* addDataPaging(action: PayloadAction<InquiryItem>) {
     );
 
     if (inquiryData.length > 0 && inquiryData.length == inquiryPageSize) {
-      const deleteId = inquiryData[inquiryData.length - 1].id;
+      const deleteId = inquiryData[inquiryData.length - 1].inquiryId;
       yield put(removeInquiry(deleteId));
       yield put(addTotalpages);
     }
     const inquiryItem: InquiryItem = {
-      id: result.data.id,
-      classId: result.data.classId,
+      inquiryId: result.data.inquiryId,
+      oneDayClassId: result.data.oneDayClassId,
       onedayclassName: result.data.onedayclassName,
       title: result.data.title,
       name: result.data.name,
       tel: result.data.tel,
       email: result.data.email,
       description: result.data.description,
+      answer: result.data.answer,
       createdTime: result.data.createdTime,
     };
 
-     yield put(addInquiry(inquiryItem));
+    yield put(addInquiry(inquiryItem));
 
     
     yield put(initialCompleted());
@@ -172,34 +162,20 @@ function* addDataNext(action: PayloadAction<InquiryItem>) {
     // spinner 보여주기
     yield put(startProgress());
 
-    /* --- (추가로직) 2021-11-01 s3 업로드 처리 --- */
-    // 1. dataUrl -> file 변환
-    const file: File = yield call(
-      dataUrlToFile,
-      inquiryItemPayload.photoUrl,
-      inquiryItemPayload.fileName,
-      inquiryItemPayload.fileType
-    );
 
-    // 2. form data 객체 생성
-    const formFile = new FormData();
-    formFile.set("file", file);
-
-    // 3. multipart/form-data로 업로드
-    const fileUrl: AxiosResponse<string> = yield call(fileApi.upload, formFile);
-    /*-------------------------------------------------------- */
-
+    
     // rest api로 보낼 요청객체
     const inquiryItemRequest: InquiryItemRequest = {
-      // id: inquiryItemPayload.id,
-      classId: inquiryItemPayload.classId,
+      oneDayClassId: inquiryItemPayload.oneDayClassId,
       onedayclassName: inquiryItemPayload.onedayclassName,
       title: inquiryItemPayload.title,
       name: inquiryItemPayload.name,
       tel: inquiryItemPayload.tel,
       email: inquiryItemPayload.email,
       description: inquiryItemPayload.description,
-      // createdTime: inquiryItemPayload.createdTime,
+      answer: inquiryItemPayload.answer,
+      createdTime: inquiryItemPayload.createdTime,
+      inquiryId: 0
     };
 
     // ------ 1. rest api에 post로 데이터 보냄
@@ -223,15 +199,16 @@ function* addDataNext(action: PayloadAction<InquiryItem>) {
     // ------ 2. redux state를 변경함
     // 백엔드에서 처리한 데이터 객체로 state를 변경할 payload 객체를 생성
     const inquiryItem: InquiryItem = {
-      id: result.data.id,
-      classId: result.data.classId,
+      oneDayClassId: result.data.oneDayClassId,
       onedayclassName: result.data.onedayclassName,
       title: result.data.title,
       name: result.data.name,
       tel: result.data.tel,
       email: result.data.email,
       description: result.data.description,
+      answer: result.data.answer,
       createdTime: result.data.createdTime,
+      inquiryId: 0
     };
 
     // dispatcher(액션)과 동일함
@@ -275,15 +252,15 @@ function* fetchData() {
   const inquiry = result.data.map(
     (item) =>
       ({
-        id: item.id,
-        classId: item.classId,
-        onedayclassName :item.onedayclassName,
-        title: item.title,
-        name: item.name,
-        tel: item.tel,
-        email:item.email,
-        description: item.description,
-        createdTime: item.createdTime,
+      oneDayClassId: item.oneDayClassId,
+      onedayclassName :item.onedayclassName,
+      title: item.title,
+      name: item.name,
+      tel: item.tel,
+      email:item.email,
+      description: item.description,
+      answer: item.answer,
+      createdTime: item.createdTime,
       } as InquiryItem)
   );
 
@@ -317,15 +294,15 @@ function* fetchPagingData(action: PayloadAction<PageRequest>) {
       data: result.data.content.map(
         (item) =>
           ({
-            id: item.id,
-            classId: item.classId,
-            onedayclassName :item.onedayclassName,
-            title: item.title,
-            name: item.name,
-            tel: item.tel,
-            email:item.email,
-            description: item.description,
-            createdTime: item.createdTime,
+          oneDayClassId: item.oneDayClassId,
+          onedayclassName :item.onedayclassName,
+          title: item.title,
+          name: item.name,
+          tel: item.tel,
+          email:item.email,
+          description: item.description,
+          answer: item.answer,
+          createdTime: item.createdTime,
           } as InquiryItem)
       ),
       totalElements: result.data.totalElements,
@@ -372,15 +349,15 @@ function* fetchNextData(action: PayloadAction<PageRequest>) {
       data: result.data.content.map(
         (item) =>
           ({
-            id: item.id,
-      classId: item.classId,
-      onedayclassName :item.onedayclassName,
-      title: item.title,
-      name: item.name,
-      tel: item.tel,
-      email:item.email,
-      description: item.description,
-      createdTime: item.createdTime,
+          oneDayClassId: item.oneDayClassId,
+          onedayclassName :item.onedayclassName,
+          title: item.title,
+          name: item.name,
+          tel: item.tel,
+          email:item.email,
+          description: item.description,
+          answer: item.answer,
+          createdTime: item.createdTime,
           } as InquiryItem)
       ),
       totalElements: result.data.totalElements,
@@ -425,19 +402,6 @@ function* removeDataPaging(action: PayloadAction<number>) {
 
   yield put(startProgress());
 
-  /* --- (추가로직) 2021-11-01 S3 파일 삭제 로직 추가 --- */
-  // redux state에서 id로
-  // object key 가져오기 예) https://배포Id.cloudfront.net/objectKey
-  const inquiryItem: InquiryItem = yield select((state: RootState) =>
-    state.inquiry.data.find((item) => item.id === id)
-  );
-  const urlArr = inquiryItem.photoUrl.split("/");
-  const objectKey = urlArr[urlArr.length - 1];
-
-  // file api 호출해서 s3에 파일 삭제
-  yield call(fileApi.remove, objectKey);
-  /* ------------------------------------------------- */
-
   // rest api 연동
   const result: AxiosResponse<boolean> = yield call(api.remove, id);
 
@@ -475,19 +439,6 @@ function* removeDataNext(action: PayloadAction<number>) {
   const id = action.payload;
 
 
-  /* --- (추가로직) 2021-11-01 S3 파일 삭제 로직 추가 --- */
-  // redux state에서 id로
-  // object key 가져오기 예) https://배포Id.cloudfront.net/objectKey
-  const inquiryItem: InquiryItem = yield select((state: RootState) =>
-    state.inquiry.data.find((item) => item.id === id)
-  );
-  const urlArr = inquiryItem.photoUrl.split("/");
-  const objectKey = urlArr[urlArr.length - 1];
-
-  // file api 호출해서 s3에 파일 삭제
-  yield call(fileApi.remove, objectKey);
-  /* ------------------------------------------------- */
-
   // rest api 연동
   const result: AxiosResponse<boolean> = yield call(api.remove, id);
 
@@ -517,80 +468,43 @@ function* modifyData(action: PayloadAction<InquiryItem>) {
   // action의 payload로 넘어온 객체
   const inquiryItemPayload = action.payload;
 
-  
-
-  // 파일이 바뀌었으면 base64파일
-  let fileUrl = action.payload.photoUrl;
-  if (action.payload.photoUrl.startsWith("data")) {
-    /*--- (추가로직) 2021-11-01 S3 파일 삭제 로직 추가 --- */
-    // redux state에서 id로
-    // object key 가져오기 예) https://배포Id.cloudfront.net/objectKey
-    const inquiryItemFile: InquiryItem = yield select((state: RootState) =>
-      state.inquiry.data.find((item) => item.id === inquiryItemPayload.id)
-    );
-    const urlArr = inquiryItemFile.photoUrl.split("/");
-    const objectKey = urlArr[urlArr.length - 1];
-
-    // file api 호출해서 s3에 파일 삭제
-    yield call(fileApi.remove, objectKey);
-    /* --- ------------------------------------------------ */
-
-    /* --- (추가로직) 2021-11-01 s3 업로드 처리 --- */
-    // 1. dataUrl -> file 변환
-    const file: File = yield call(
-      dataUrlToFile,
-      inquiryItemPayload.photoUrl,
-      inquiryItemPayload.fileName,
-      inquiryItemPayload.fileType
-    );
-
-    // 2. form data 객체 생성
-    const formFile = new FormData();
-    formFile.set("file", file);
-
-    // 3. multipart/form-data로 업로드
-    const fileRes: AxiosResponse<string> = yield call(fileApi.upload, formFile);
-    fileUrl = fileRes.data;
-    /*-------------------------------------------------------- */
-  }
-
   // rest api로 보낼 요청객체
   const inquiryItemRequest: InquiryItemRequest = {
-    
-    // id: inquiryItemPayload.id,
-      classId: inquiryItemPayload.classId,
+      inquiryId: 0,
+      oneDayClassId: inquiryItemPayload.oneDayClassId,
       onedayclassName: inquiryItemPayload.onedayclassName,
       title: inquiryItemPayload.title,
       name: inquiryItemPayload.name,
       tel: inquiryItemPayload.tel,
       email: inquiryItemPayload.email,
       description: inquiryItemPayload.description,
-      // createdTime: inquiryItemPayload.createdTime,
+      answer: inquiryItemPayload.answer,
+      createdTime: inquiryItemPayload.createdTime,
   };
 
   const result: AxiosResponse<InquiryItemResponse> = yield call(
     api.modify,
-    inquiryItemPayload.id,
+    inquiryItemPayload.inquiryId,
     inquiryItemRequest
   );
 
 
   // 백엔드에서 처리한 데이터 객체로 state를 변경할 payload 객체를 생성
   const inquiryItem: InquiryItem = {
-    id: result.data.id,
-    classId: result.data.classId,
+    oneDayClassId: result.data.oneDayClassId,
     onedayclassName: result.data.onedayclassName,
-      title: result.data.title,
-      name: result.data.name,
-      tel: result.data.tel,
-      email: result.data.email,
-      description: result.data.description,
-      createdTime: result.data.createdTime,
-    
+    title: result.data.title,
+    name: result.data.name,
+    tel: result.data.tel,
+    email: result.data.email,
+    description: result.data.description,
+    answer: result.data.answer,
+    createdTime: result.data.createdTime,
+    inquiryId: 0
   };
 
   // state 변경
-  yield put(modifyInquiry(InquiryItem));
+  yield put(modifyInquiry(inquiryItem));
 
   // completed 속성 삭제
   yield put(initialCompleted());
@@ -603,7 +517,7 @@ export default function* inquirySaga() {
 
   yield takeEvery(requestFetchInquiryItem, fetchDataItem);
   yield takeLatest(requestFetchInquirys, fetchData);
-  yield takeLatest(requestFetchPagingInquiry, fetchPagingData);
+  yield takeLatest(requestFetchPagingInquirys, fetchPagingData);
   yield takeLatest(requestFetchNextInquirys, fetchNextData);
 
   // 삭제처리

@@ -1,49 +1,69 @@
 import axios from "axios";
+import { createAxiosInstance } from "./_request";
+
+export interface InquiryPagingReponse {
+ content: InquiryItemResponse[];
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+}
 
 export interface InquiryItemResponse {
-  id: number;
-  classId: string;
+  inquiryId: number;
+  oneDayClassId: string;
   onedayclassName: string;
   title: string;
   name: string;
   tel: string;
   email: string;
   description?: string;
+  answer: string;
   createdTime: number;
 }
 
 export interface InquiryItemRequest {
-  classId: string;
+  inquiryId: number;
+  oneDayClassId: string;
   onedayclassName: string;
   title: string;
   name: string;
   tel: string;
   email: string;
   description?: string;
+  answer: string;
+  createdTime: number;
 }
 
 
 
 const inquiryApi = {
-
-
-
-
+  get: (inquiryId: number) =>
+    createAxiosInstance().get<InquiryItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${inquiryId}`),
   fetch: () =>
-    axios.get<InquiryItemResponse[]>(`${process.env.REACT_APP_API_BASE}/inquirys`),
+    createAxiosInstance().get<InquiryItemResponse[]>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys`),
+  
+  fetchPaging: (page: number, size: number) =>
+    createAxiosInstance().get<InquiryPagingReponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/paging?page=${page}&size=${size}`
+    ),
   
   add:(inquiryItem: InquiryItemRequest) =>
-    axios.post<InquiryItemResponse>(
+    createAxiosInstance().post<InquiryItemResponse>(
       `${process.env.REACT_APP_API_BASE}/inquirys`,
       inquiryItem
     ),
 
-  remove: (id:number) => 
-    axios.delete<boolean>(`${process.env.REACT_APP_API_BASE}/inquirys/${id}`),
+  remove: (inquiryId:number) => 
+    createAxiosInstance().delete<boolean>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${inquiryId}`),
 
-  modify: (id: number, inquiryItem: InquiryItemRequest) =>
-    axios.put<InquiryItemResponse>(
-      `${process.env.REACT_APP_API_BASE}/inquirys/${id}`,
+  modify: (inquiryId: number, inquiryItem: InquiryItemRequest) =>
+    createAxiosInstance().put<InquiryItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${inquiryId}`,
       inquiryItem
     ),
 

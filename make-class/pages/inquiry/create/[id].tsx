@@ -9,8 +9,8 @@ import inquiry, {
 } from "../../../provider/modules/inquiry";
 import React, { useState } from "react";
 import Layout from "../../../components/layout";
-import Inquiry from "..";
-import { userInfo } from "os";
+import Progress from "../../../components/progress";
+import AlertStack from "../../../components/alert/alertStack";
 
 const create = () => {
   const oneDayClassIdInput = useRef<HTMLInputElement>(null);
@@ -26,9 +26,14 @@ const create = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  // const inquiryItem = useSelector((state: RootState) =>
-  //   state.inquiry.data.find((item) => item.oneDayClassId)
-  // );
+  const isAddCompleted = useSelector(
+    (state: RootState) => state.inquiry.isAddCompleted
+  );
+
+  useEffect(() => {
+    console.log("--isAddCompleted 변경: " + isAddCompleted);
+    isAddCompleted && router.push("/inquirys");
+  }, [isAddCompleted, router, dispatch]);
 
   const handleAddClick = () => {
     const item: InquiryItem = {
@@ -56,6 +61,7 @@ const create = () => {
 
   return (
     <Layout>
+      <Progress />
       <div style={{ width: "600px" }} className="mx-auto">
         {/* <div className="flex-center"> */}
         <h3>1:1상담 문의</h3>

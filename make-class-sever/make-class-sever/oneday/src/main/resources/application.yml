@@ -18,7 +18,7 @@ spring:
     host: 127.0.0.1
     port: 6379
   rabbitmq:
-    addresses: amqps://b-d5859670-36b5-4d7b-9b84-c4d4a4468736.mq.ap-northeast-2.amazonaws.com:5671
+    addresses: amqps://b-37fd59b7-a684-4102-bf89-bf791b61932c.mq.ap-northeast-2.amazonaws.com:5671
     username: rabbitmq
     password: password123!
 

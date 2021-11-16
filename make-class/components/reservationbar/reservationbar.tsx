@@ -28,7 +28,7 @@ export default function ReservationBar() {
 
   const handleAddClick = () => {
     const item: ReservationItem = {
-      id: inquiryData.length ? inquiryData[0].id + 1 : 1,
+      id: inquiryData.length ? inquiryData[0].inquiryId + 1 : 1,
       onedayclassName: onedayclassNameInput.current
         ? onedayclassNameInput.current.value
         : "",

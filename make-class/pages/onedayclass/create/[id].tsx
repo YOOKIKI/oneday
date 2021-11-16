@@ -6,7 +6,7 @@ import {
   requestAddOnedayNext,
   requestAddOnedayPaging,
 } from "../../../middleware/modules/oneday";
-import { OnedayItem } from "../../../provider/modules/oneday ";
+import { OneDayItem } from "../../../provider/modules/oneday ";
 import Layout from "../../../components/layout";
 
 const create = () => {
@@ -45,7 +45,7 @@ const create = () => {
       const imageFile = fileInput.current.files[0];
       const reader = new FileReader();
       reader.onload = () => {
-        const item: OnedayItem = {
+        const item: OneDayItem = {
           oneDayClassId: onedayData.length
             ? onedayData[0].oneDayClassId + 1
             : 1,

@@ -39,13 +39,12 @@ const HeadBar = () => {
           </Nav.Item>
           <Nav.Item>
             <NavDropdown title="로그인" id="login">
-              <NavDropdown.Item href="/login">나의정보</NavDropdown.Item>
               <NavDropdown.Item href="/reservation">
                 나의 클래스
               </NavDropdown.Item>
               <NavDropdown.Item href="/inquiry">1:1문의</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="onedayclass/create">
+              <NavDropdown.Item href="/onedayclass/create">
                 클래스 등록
               </NavDropdown.Item>
             </NavDropdown>

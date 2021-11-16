@@ -1,5 +1,8 @@
 package com.git.oneday.onedayclass;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class OneDayClass {
+	@Id
 	private long oneDayClassId;
     private String title;
     private int capacity;
@@ -22,5 +27,4 @@ public class OneDayClass {
     private String endTime;
     private String category;
     private long createdTime;
-    private Integer managerOneDayClassId;
 }

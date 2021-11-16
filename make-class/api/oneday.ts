@@ -1,56 +1,77 @@
 import axios from "axios";
+import { createAxiosInstance } from "./_request";
 
 export interface OneDayPagingReponse {
   content: OneDayItemResponse[];
-  id: number;
-  onedayclassName: string;
-  description: string;
-  // photoUrl: string;
+   last: boolean;
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
 }
 
 export interface OneDayItemResponse {
-  id: number;
+ oneDayClassId: number;
+  managerOneDayClassId: string;
   onedayclassName: string;
-  description: string;
-  // photoUrl: string;
+  price: string;
+  title: string;
+  description?: string;
+  managerName: string;
+  capacity: string;
+  photoUrl: string;
+  fileType: string;
+  fileName: string;
+  createdTime: number;
+  startTime: string;
+  endTime: string;
+  category: string;
 }
 
 export interface OneDayItemRequest {
-  id: number;
+  oneDayClassId: number;
+  managerOneDayClassId: string;
   onedayclassName: string;
-  description: string;
-  // photoUrl: string;
+  price: string;
+  title: string;
+  description?: string;
+  managerName: string;
+  capacity: string;
+  photoUrl: string;
+  fileType: string;
+  fileName: string;
+  createdTime: number;
+  startTime: string;
+  endTime: string;
+  category: string;
 }
 
 const OneDayApi = {
 
-
-
-
-  get: (id: number) =>
-    axios.get<OneDayItemResponse>(
-      `${process.env.NEXT_PUBLIC_API_BASE}/onedays/${id}`
+  get: (oneDayClassId: number) =>
+     createAxiosInstance().get<OneDayItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/onedays/${oneDayClassId}`
     ),
   fetch: () =>
-    axios.get<OneDayItemResponse[]>(
+    createAxiosInstance().get<OneDayItemResponse[]>(
       `${process.env.NEXT_PUBLIC_API_BASE}/onedays`
     ),
 
   fetchPaging: (page: number, size: number) =>
-    axios.get<OneDayPagingReponse>(
+    createAxiosInstance().get<OneDayItemResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/onedays/paging?page=${page}&size=${size}`
     ),
   add: (onedayItem: OneDayItemResponse) =>
-    axios.post<OneDayItemResponse>(
+    createAxiosInstance().post<OneDayItemResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/onedays`,
       onedayItem
     ),
-   remove: (id: number) =>
-    axios.delete<boolean>(`${process.env.NEXT_PUBLIC_API_BASE}/onedays/${id}`),
+   remove: (oneDayClassId: number) =>
+     createAxiosInstance().delete<boolean>(`${process.env.NEXT_PUBLIC_API_BASE}/onedays/${oneDayClassId}`),
 
-   modify: (id: number, onedayItem: OneDayItemResponse) =>
-    axios.put<OneDayItemResponse>(
-      `${process.env.NEXT_PUBLIC_API_BASE}/onedays/${id}`,
+   modify: (oneDayClassId: number, onedayItem: OneDayItemResponse) =>
+     createAxiosInstance().put<OneDayItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/onedays/${oneDayClassId}`,
       onedayItem
     ),
 };

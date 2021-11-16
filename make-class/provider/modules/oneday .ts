@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import oneday from "../../api/oneday";
 
-export interface OnedayItem {
+export interface OneDayItem {
   oneDayClassId: number;
   managerOneDayClassId: string;
   onedayclassName: string;
@@ -20,7 +20,7 @@ export interface OnedayItem {
 }
 
 export interface OnedayPage {
-  data: OnedayItem[];
+  data: OneDayItem[];
   totalElements: number;
   totalPages: number;
   page: number;
@@ -29,7 +29,7 @@ export interface OnedayPage {
 }
 
 interface OnedayState {
-  data: OnedayItem[];
+  data: OneDayItem[];
   isFetched: boolean;
   isAddCompleted?: boolean; // 리덕스 할 때 끄세영
   isRemoveCompleted?: boolean; 
@@ -43,45 +43,45 @@ interface OnedayState {
 
 const initialState: OnedayState = {
   data: [
-    {
-      oneDayClassId: 2,
-      managerOneDayClassId: "2",
-      onedayclassName: "핸드메이드",
-      price: "",
-      title: "",
-      managerName: "",
-      category: "",
-      description: "onedayclass..",
-      capacity: "",
-      photoUrl: "/clss.jpg",
-      fileType: "",
-      fileName: "",
-      createdTime: new Date().getTime(),
-      startTime: "12월1일",
-      endTime: "12월 3일"
-    },
-    {
-      oneDayClassId: 1,
-      managerOneDayClassId: "1",
-      onedayclassName: "플라워",
-      price: "",
-      title: "",
-      managerName: "",
-      category: "",
-      description: "onedayclass..",
-      capacity: "",
-      photoUrl: "/class.jpg",
-      fileType: "",
-      fileName: "",
-      createdTime: new Date().getTime(),
-      startTime: "12월9일",
-      endTime: "12월 9일"
-    },
+    // {
+    //   oneDayClassId: 2,
+    //   managerOneDayClassId: "2",
+    //   onedayclassName: "핸드메이드",
+    //   price: "",
+    //   title: "",
+    //   managerName: "",
+    //   category: "",
+    //   description: "onedayclass..",
+    //   capacity: "",
+    //   photoUrl: "/clss.jpg",
+    //   fileType: "",
+    //   fileName: "",
+    //   createdTime: new Date().getTime(),
+    //   startTime: "12월1일",
+    //   endTime: "12월 3일"
+    // },
+    // {
+    //   oneDayClassId: 1,
+    //   managerOneDayClassId: "1",
+    //   onedayclassName: "플라워",
+    //   price: "",
+    //   title: "",
+    //   managerName: "",
+    //   category: "",
+    //   description: "onedayclass..",
+    //   capacity: "",
+    //   photoUrl: "/class.jpg",
+    //   fileType: "",
+    //   fileName: "",
+    //   createdTime: new Date().getTime(),
+    //   startTime: "12월9일",
+    //   endTime: "12월 9일"
+    // },
   ],
   isFetched: false,
   page: 0,
   // pageSize: onedayPageSize ? +onedayPageSize : 8,
-  pageSize: 2,
+  pageSize: 8,
   totalPages: 0,
 };
 
@@ -90,7 +90,7 @@ const onedaySlice = createSlice({
   name: "oneday",
   initialState,  
   reducers: {
-    addOneday: (state, action: PayloadAction<OnedayItem>) => {
+    addOneday: (state, action: PayloadAction<OneDayItem>) => {
       const oneday = action.payload;
       console.log("--in reducer function--");
       console.log(oneday);
@@ -111,7 +111,7 @@ const onedaySlice = createSlice({
       );
       state.isRemoveCompleted = true; 
     },
-    modifyOneday: (state, action: PayloadAction<OnedayItem>) => {
+    modifyOneday: (state, action: PayloadAction<OneDayItem>) => {
     
       const modifyItem = action.payload;
     
@@ -132,17 +132,15 @@ const onedaySlice = createSlice({
         OnedayItem.fileType = modifyItem.fileType;
         OnedayItem.startTime = modifyItem.startTime;
         OnedayItem.endTime = modifyItem.endTime;
-
       }
       state.isModifyCompleted = true; 
     },
-    initialOnedayItem: (state, action: PayloadAction<OnedayItem>) => {
+    initialOnedayItem: (state, action: PayloadAction<OneDayItem>) => {
       const oneday = action.payload;
- 
       state.data = [{ ...oneday }];
     },
 
-    initialOneday: (state, action: PayloadAction<OnedayItem[]>) => {
+    initialOneday: (state, action: PayloadAction<OneDayItem[]>) => {
       const onedays = action.payload;
 
       state.data = onedays;
@@ -156,7 +154,6 @@ const onedaySlice = createSlice({
     initialPagedOneday: (state, action: PayloadAction<OnedayPage>) => {
 
       state.data = action.payload.data;
-
       state.totalElements = action.payload.totalElements;
       state.totalPages = action.payload.totalPages;
       state.page = action.payload.page;
@@ -168,7 +165,6 @@ const onedaySlice = createSlice({
     initialNextOneday: (state, action: PayloadAction<OnedayPage>) => {
 
       state.data = state.data.concat(action.payload.data);
-
       state.totalElements = action.payload.totalElements;
       state.totalPages = action.payload.totalPages;
       state.page = action.payload.page;

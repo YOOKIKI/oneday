@@ -13,7 +13,7 @@ import onedayReducer, {
   OnedayPage,
   removeOneday
 } from "../../provider/modules/oneday ";
-import {OnedayItem} from "../../provider/modules/oneday "
+import {OneDayItem} from "../../provider/modules/oneday "
 import { 
   call,
   put,
@@ -22,12 +22,14 @@ import {
   takeLatest,
 } from "@redux-saga/core/effects";
 import api, {
-  OnedayItemRequest,
-  OnedayItemResponse,
-  OnedayPagingReponse,
+  OneDayItemRequest,
+  OneDayItemResponse,
+  OneDayPagingReponse,
 } from "../../api/oneday"
 import { dataUrlToFile } from "../../lib/string";
 import fileApi from "../../api/file";
+import { addAlert } from "../../provider/modules/alert";
+import { endProgress, startProgress } from "../../provider/modules/progress";
 // import { call,
 //   put,
 //   select,
@@ -41,15 +43,15 @@ export interface PageRequest {
   size: number;
 }
 
-export const requestAddoneday = createAction<OnedayItem>(
+export const requestAddoneday = createAction<OneDayItem>(
   `${onedayReducer.name}/requestAddOneday`
 );
 
-export const requestAddOnedayPaging = createAction<OnedayItem>(
+export const requestAddOnedayPaging = createAction<OneDayItem>(
   `${onedayReducer.name}/requestAddOnedayPaging`
 );
 
-export const requestAddOnedayNext = createAction<OnedayItem>(
+export const requestAddOnedayNext = createAction<OneDayItem>(
   `${onedayReducer.name}/requestAddOnedayNext`
 );
 
@@ -65,8 +67,8 @@ export const requestFetchNextOnedays = createAction<PageRequest>(
   `${onedayReducer.name}/requestFetchNextOnedays`
 );
 
-export const requestFetchOnedayItem = createAction<number>(
-  `${onedayReducer.name}/requestFetchOnedayItem`
+export const requestFetchOneDayItem = createAction<number>(
+  `${onedayReducer.name}/requestFetchOneDayItem`
 );
 
 export const requestRemoveOneday = createAction<number>(
@@ -81,189 +83,9 @@ export const requestRemoveOnedayNext = createAction<number>(
   `${onedayReducer.name}/requestRemoveOnedayNext`
 );
 
-export const requestModifyOneday = createAction<OnedayItem>(
+export const requestModifyOneday = createAction<OneDayItem>(
   `${onedayReducer.name}/requestModifyOneday`
 );
-function* addDataPaging(action: PayloadAction<OnedayItem>) {
-  yield console.log("--addDataPaging--");
-  yield console.log(action);
-
-  try {
-
-    const onedayItemPayload = action.payload;
-
-    const file: File = yield call(
-      dataUrlToFile,
-      onedayItemPayload.photoUrl,
-      onedayItemPayload.fileName,
-      onedayItemPayload.fileType
-    );
-
-    const formFile = new FormData();
-    formFile.set("file", file);
-
-    const fileUrl: AxiosResponse<string> = yield call(fileApi.upload, formFile);
-    
-    const onedayItemRequest: OnedayItemRequest = {
-      onedayclassName: onedayItemPayload.onedayclassName,
-      // title: "", // 임시로 에러 유발(400)
-      description: onedayItemPayload.description,
-      // photoUrl: onedayItemPayload.photoUrl,
-      photoUrl: fileUrl.data
-    };
-
-    const result: AxiosResponse<OnedayItemResponse> = yield call(
-      api.add,
-      onedayItemRequest
-    );
-
-    const onedayData: OnedayItem[] = yield select(
-      (state: RootState) => state.oneday.data
-    );
-
-    const onedayPageSize: number = yield select(
-      (state: RootState) => state.oneday.pageSize
-    );
-
-    if (onedayData.length > 0 && onedayData.length == onedayPageSize) {
-      const deleteId = onedayData[onedayData.length - 1].id;
-      yield put(removeOneday(deleteId));
-      yield put(addTotalpages);
-    }
-    const onedayItem: OnedayItem = {
-      id: result.data.id,
-      onedayclassName: result.data.onedayclassName,
-      price: result.data.price,
-      description: result.data.description,
-      capacity: result.data.capacity,
-      photoUrl: result.data.photoUrl,
-      fileType: result.data.fileType,
-      fileName: result.data.fileName,
-      createdTime: result.data.createdTime,
-      startDateData: result.data.startDateData,
-      endDateData: result.data.endDateData
-    };
-
-     yield put(addOneday(onedayItem));
-
-    
-    yield put(initialCompleted());
-
-    
-    yield put(
-      addAlert({ id: nanoid(), variant: "success", message: "저장되었습니다." })
-    );
-
-  } catch (e: any) {
-    yield put(endProgress());
-    yield put(
-      addAlert({ id: nanoid(), variant: "danger", message: e.message })
-    );
-  }
-}
-
-
-function* addDataNext(action: PayloadAction<OnedayItem>) {
-  yield console.log("--addDataNext--");
-  yield console.log(action);
-
-  try {
-    // action의 payload로 넘어온 객체
-    const onedayItemPayload = action.payload;
-
-    // spinner 보여주기
-    yield put(startProgress());
-
-    /* --- (추가로직) 2021-11-01 s3 업로드 처리 --- */
-    // 1. dataUrl -> file 변환
-    const file: File = yield call(
-      dataUrlToFile,
-      onedayItemPayload.photoUrl,
-      onedayItemPayload.fileName,
-      onedayItemPayload.fileType
-    );
-
-    // 2. form data 객체 생성
-    const formFile = new FormData();
-    formFile.set("file", file);
-
-    // 3. multipart/form-data로 업로드
-    const fileUrl: AxiosResponse<string> = yield call(fileApi.upload, formFile);
-    /*-------------------------------------------------------- */
-
-    // rest api로 보낼 요청객체
-    const onedayItemRequest: OnedayItemRequest = {
-      onedayclassName: onedayItemPayload.onedayclassName,
-      // title: "", // 임시로 에러 유발(400)
-      capacity: onedayItemPayload.capacity,
-      // price: onedayItemPayload.price,
-      description: onedayItemPayload.description,
-      // photoUrl: photoItemPayload.photoUrl,
-      photoUrl: fileUrl.data,
-      fileType: onedayItemPayload.fileType,
-      fileName: onedayItemPayload.fileName,
-      createdTime: onedayItemPayload.createdTime,
-      startDateData: onedayItemPayload.startDateData,
-      endDateData: onedayItemPayload.endDateData
-    };
-
-    // ------ 1. rest api에 post로 데이터 보냄
-    // call(함수, 매개변수1, 매개변수2...) -> 함수를 호출함
-
-    // 함수가 Promise를 반환하면, (비동기함수)
-    // Saga 미들웨어에서 현재 yield에 대기상태로 있음
-    // Promise가 resolve(처리완료)되면 다음 yield로 처리가 진행됨
-    // reject(거부/에러)되면 예외를 던짐(throw) -> try ... catch문으로 받을 수 있음.
-
-    // await api.add(photoItemRequest) 이 구문과 일치함
-    // 결과값을 형식을 지졍해야함
-    const result: AxiosResponse<OnedayItemResponse> = yield call(
-      api.add,
-      onedayItemRequest
-    );
-
-    // spinner 사라지게 하기
-    yield put(endProgress());
-
-    // ------ 2. redux state를 변경함
-    // 백엔드에서 처리한 데이터 객체로 state를 변경할 payload 객체를 생성
-    const onedayItem: OnedayItem = {
-      id: result.data.id,
-      onedayclassName: result.data.onedayclassName,
-      price: result.data.price,
-      description: result.data.description,
-      capacity: result.data.capacity,
-      photoUrl: result.data.photoUrl,
-      fileType: result.data.fileType,
-      fileName: result.data.fileName,
-      createdTime: result.data.createdTime,
-      startDateData: result.data.startDateData,
-      endDateData: result.data.endDateData
-    };
-
-    // dispatcher(액션)과 동일함
-    // useDispatch로 dispatcher 만든 것은 컴포넌트에서만 가능
-    // put이펙트를 사용함
-    yield put(addOneday(onedayItem));
-
-    // completed 속성 삭제
-    yield put(initialCompleted());
-
-    // alert박스를 추가해줌
-    yield put(
-      addAlert({ id: nanoid(), variant: "success", message: "저장되었습니다." })
-    );
-  } catch (e: any) {
-    // 에러발생
-    // spinner 사라지게 하기
-    yield put(endProgress());
-    // alert박스를 추가해줌
-    yield put(
-      addAlert({ id: nanoid(), variant: "danger", message: e.message })
-    );
-  }
-}
-
 // Redux 사이드 이펙트
 // 1. api 연동
 // 2. 파일처리
@@ -274,26 +96,29 @@ function* fetchData() {
   yield console.log("--fetchData--");
 
 
-  const result: AxiosResponse<OnedayItemResponse[]> = yield call(api.fetch);
+  const result: AxiosResponse<OneDayItemResponse[]> = yield call(api.fetch);
 
   yield put(endProgress());
 
-  // OnedayItemReponse[] => OnedayItem[]
+  // OneDayItemReponse[] => OneDayItem[]
   const oneday = result.data.map(
     (item) =>
       ({
-        id: item.id,
-        title: item.title,
-        price: item.price,
+      oneDayClassId: item.oneDayClassId,
+      onedayclassName: item.onedayclassName,
+      price: item.price,
+      title: item.title,
       description: item.description,
-        capacity: item.capacity,
-        photoUrl: item.photoUrl,
-        fileType: item.fileType,
-        fileName: item.fileName,
+      managerName: item.managerName,
+      capacity: item.capacity,
+      photoUrl: item.photoUrl,
+      fileType: item.fileType,
+      fileName: item.fileName,
       createdTime: item.createdTime,
-      startDateData: item.startDateData,
-        endDateData: item.endDateData
-      } as OnedayItem)
+      startTime: item.startTime,
+      endTime: item.endTime,
+      category: item.category
+      } as OneDayItem)
   );
 
   // state 초기화 reducer 실행
@@ -310,11 +135,11 @@ function* fetchPagingData(action: PayloadAction<PageRequest>) {
   localStorage.setItem("oneday_page_size", size.toString());
 
   // spinner 보여주기
-  yield put(startProgress());
+  // yield put(startProgress());
 
   try {
     // 백엔드에서 데이터 받아오기
-    const result: AxiosResponse<OnedayPagingReponse> = yield call(
+    const result: AxiosResponse<OneDayPagingReponse> = yield call(
       api.fetchPaging,
       page,
       size
@@ -326,15 +151,21 @@ function* fetchPagingData(action: PayloadAction<PageRequest>) {
       data: result.data.content.map(
         (item) =>
           ({
-            id: item.id,
-            title: item.title,
+          oneDayClassId: item.oneDayClassId,
+          onedayclassName: item.onedayclassName,
+          price: item.price,
+          title: item.title,
           description: item.description,
-            capacity: item.capacity,
-            photoUrl: item.photoUrl,
-            fileType: item.fileType,
-            fileName: item.fileName,
-            createdTime: item.createdTime,
-          } as OnedayItem)
+          managerName: item.managerName,
+          capacity: item.capacity,
+          photoUrl: item.photoUrl,
+          fileType: item.fileType,
+          fileName: item.fileName,
+          createdTime: item.createdTime,
+          startTime: item.startTime,
+          endTime: item.endTime,
+          category: item.category
+          } as OneDayItem)
       ),
       totalElements: result.data.totalElements,
       totalPages: result.data.totalPages,
@@ -348,7 +179,7 @@ function* fetchPagingData(action: PayloadAction<PageRequest>) {
   } catch (e: any) {
     // 에러발생
     // spinner 사라지게 하기
-    // yield put(endProgress());
+    yield put(endProgress());
     // alert박스를 추가해줌
     yield put(
       addAlert({ id: nanoid(), variant: "danger", message: e.message })
@@ -368,7 +199,7 @@ function* fetchNextData(action: PayloadAction<PageRequest>) {
 
   try {
     // 백엔드에서 데이터 받아오기
-    const result: AxiosResponse<OnedayPagingReponse> = yield call(
+    const result: AxiosResponse<OneDayPagingReponse> = yield call(
       api.fetchPaging,
       page,
       size
@@ -380,17 +211,21 @@ function* fetchNextData(action: PayloadAction<PageRequest>) {
       data: result.data.content.map(
         (item) =>
           ({
-            id: item.id,
-            onedayclassName: item.onedayclassName,
-            description: item.description,
-            capacity: item.capacity,
-            photoUrl: item.photoUrl,
-            fileType: item.fileType,
-            fileName: item.fileName,
-            createdTime: item.createdTime,
-            startDateData: item.startDateData,
-            endDateData: item.endDateData,
-          } as OnedayItem)
+          oneDayClassId: item.oneDayClassId,
+          onedayclassName: item.onedayclassName,
+          price: item.price,
+          title: item.title,
+          description: item.description,
+          managerName: item.managerName,
+          capacity: item.capacity,
+          photoUrl: item.photoUrl,
+          fileType: item.fileType,
+          fileName: item.fileName,
+          createdTime: item.createdTime,
+          startTime: item.startTime,
+          endTime: item.endTime,
+          category: item.category
+          } as OneDayItem)
       ),
       totalElements: result.data.totalElements,
       totalPages: result.data.totalPages,
@@ -416,7 +251,7 @@ function* fetchDataItem(action: PayloadAction<number>) {
   const id = action.payload;
 
   // 백엔드에서 데이터 받아오기
-  const result: AxiosResponse<OnedayItemResponse> = yield call(api.get, id);
+  const result: AxiosResponse<OneDayItemResponse> = yield call(api.get, id);
 
   const oneday = result.data;
   if (oneday) {
@@ -432,15 +267,15 @@ function* removeDataPaging(action: PayloadAction<number>) {
   // id값
   const id = action.payload;
 
-  yield put(startProgress());
+  // yield put(startProgress());
 
   /* --- (추가로직) 2021-11-01 S3 파일 삭제 로직 추가 --- */
   // redux state에서 id로
   // object key 가져오기 예) https://배포Id.cloudfront.net/objectKey
-  const onedayItem: OnedayItem = yield select((state: RootState) =>
-    state.oneday.data.find((item) => item.id === id)
+  const oneDayItem: OneDayItem = yield select((state: RootState) =>
+    state.oneday.data.find((item) => item.oneDayClassId === id)
   );
-  const urlArr = onedayItem.photoUrl.split("/");
+  const urlArr = oneDayItem.photoUrl.split("/");
   const objectKey = urlArr[urlArr.length - 1];
 
   // file api 호출해서 s3에 파일 삭제
@@ -487,10 +322,10 @@ function* removeDataNext(action: PayloadAction<number>) {
   /* --- (추가로직) 2021-11-01 S3 파일 삭제 로직 추가 --- */
   // redux state에서 id로
   // object key 가져오기 예) https://배포Id.cloudfront.net/objectKey
-  const onedayItem: OnedayItem = yield select((state: RootState) =>
-    state.oneday.data.find((item) => item.id === id)
+  const oneDayItem: OneDayItem = yield select((state: RootState) =>
+    state.oneday.data.find((item) => item.oneDayClassId === id)
   );
-  const urlArr = onedayItem.photoUrl.split("/");
+  const urlArr = oneDayItem.photoUrl.split("/");
   const objectKey = urlArr[urlArr.length - 1];
 
   // file api 호출해서 s3에 파일 삭제
@@ -520,11 +355,11 @@ function* removeDataNext(action: PayloadAction<number>) {
 }
 
 // 수정처리
-function* modifyData(action: PayloadAction<OnedayItem>) {
+function* modifyData(action: PayloadAction<OneDayItem>) {
   yield console.log("--modifyData--");
 
   // action의 payload로 넘어온 객체
-  const onedayItemPayload = action.payload;
+  const oneDayItemPayload = action.payload;
 
   
 
@@ -534,10 +369,10 @@ function* modifyData(action: PayloadAction<OnedayItem>) {
     /*--- (추가로직) 2021-11-01 S3 파일 삭제 로직 추가 --- */
     // redux state에서 id로
     // object key 가져오기 예) https://배포Id.cloudfront.net/objectKey
-    const onedayItemFile: OnedayItem = yield select((state: RootState) =>
-      state.oneday.data.find((item) => item.id === onedayItemPayload.id)
+    const oneDayItemFile: OneDayItem = yield select((state: RootState) =>
+      state.oneday.data.find((item) => item.oneDayClassId === oneDayItemPayload.oneDayClassId)
     );
-    const urlArr = onedayItemFile.photoUrl.split("/");
+    const urlArr = oneDayItemFile.photoUrl.split("/");
     const objectKey = urlArr[urlArr.length - 1];
 
     // file api 호출해서 s3에 파일 삭제
@@ -548,9 +383,9 @@ function* modifyData(action: PayloadAction<OnedayItem>) {
     // 1. dataUrl -> file 변환
     const file: File = yield call(
       dataUrlToFile,
-      onedayItemPayload.photoUrl,
-      onedayItemPayload.fileName,
-      onedayItemPayload.fileType
+      oneDayItemPayload.photoUrl,
+      oneDayItemPayload.fileName,
+      oneDayItemPayload.fileType
     );
 
     // 2. form data 객체 생성
@@ -558,57 +393,68 @@ function* modifyData(action: PayloadAction<OnedayItem>) {
     formFile.set("file", file);
 
     // 3. multipart/form-data로 업로드
-    const fileRes: AxiosResponse<string> = yield call(fileApi.upload, formFile);
-    fileUrl = fileRes.data;
+    // const fileRes: AxiosResponse<string> = yield call(fileApi.upload, formFile);
+    // fileUrl = fileRes.data;
     /*-------------------------------------------------------- */
   }
 
   // rest api로 보낼 요청객체
-  const onedayItemRequest: OnedayItemRequest = {
-    onedayclassName: onedayItemPayload.onedayclassName,
-    description: onedayItemPayload.description,
-    // photoUrl: onedayItemPayload.photoUrl,
-    photoUrl: fileUrl,
-    fileType: onedayItemPayload.fileType,
-    fileName: onedayItemPayload.fileName,
+  const oneDayItemRequest: OneDayItemRequest = {
+    onedayclassName: oneDayItemPayload.onedayclassName,
+      // title: "", // 임시로 에러 유발(400)
+      description: oneDayItemPayload.description,
+      photoUrl: fileUrl,
+      oneDayClassId: 0,
+      managerOneDayClassId:oneDayItemPayload.managerOneDayClassId,
+      price: oneDayItemPayload.price,
+      title: oneDayItemPayload.title,
+      managerName: oneDayItemPayload.managerName,
+      capacity: oneDayItemPayload.capacity,
+      fileType: oneDayItemPayload.fileType,
+      fileName: oneDayItemPayload.fileName,
+      createdTime: 0,
+      startTime: oneDayItemPayload.startTime,
+      endTime: oneDayItemPayload.endTime,
+      category: oneDayItemPayload.category,
   };
 
-  const result: AxiosResponse<OnedayItemResponse> = yield call(
+  const result: AxiosResponse<OneDayItemResponse> = yield call(
     api.modify,
-    onedayItemPayload.id,
-    onedayItemRequest
+    oneDayItemPayload.oneDayClassId,
+    oneDayItemRequest
   );
 
 
   // 백엔드에서 처리한 데이터 객체로 state를 변경할 payload 객체를 생성
-  const onedayItem: OnedayItem = {
-    id: result.data.id,
+  const oneDayItem: OneDayItem = {
+    oneDayClassId: result.data.oneDayClassId,
     onedayclassName: result.data.onedayclassName,
+    price: result.data.price,
+    title: result.data.title,
     description: result.data.description,
+    managerName: result.data.managerName,
+    capacity: result.data.capacity,
     photoUrl: result.data.photoUrl,
     fileType: result.data.fileType,
     fileName: result.data.fileName,
     createdTime: result.data.createdTime,
-    startDateData: result.data.startDateData,
-    endDateData: result.data.endDateData
-    
+    startTime: result.data.startTime,
+    endTime: result.data.endTime,
+    category: result.data.category,
+    managerOneDayClassId: result.data.managerOneDayClassId
   };
 
   // state 변경
-  yield put(modifyOneday(onedayItem));
+  yield put(modifyOneday(oneDayItem));
 
   // completed 속성 삭제
   yield put(initialCompleted());
 }
 
 export default function* onedaySaga() {
-  yield takeEvery(requestAddOneday, addDataNext);
-  yield takeEvery(requestAddOnedayPaging, addDataPaging);
-  yield takeEvery(requestAddOnedayNext, addDataNext);
-
-  yield takeEvery(requestFetchOnedayItem, fetchDataItem);
+  yield takeEvery(requestFetchOneDayItem, fetchDataItem);
   yield takeLatest(requestFetchOnedays, fetchData);
-  yield takeLatest(requestFetchPagingOneday, fetchPagingData);
+  yield takeLatest(requestFetchPagingOnedays, fetchPagingData);
   yield takeLatest(requestFetchNextOnedays, fetchNextData);
 
   // 삭제처리
