@@ -3,5 +3,5 @@ import onedaySaga from "./modules/oneday"
 
 export default function* rootSaga() {
   yield fork(onedaySaga);
-  yield fork(inquirySaga);
+  // yield fork(inquirySaga);
 }

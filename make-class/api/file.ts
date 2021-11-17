@@ -6,7 +6,7 @@ const fileApi = {
   //     headers: { "content-type": "multipart/form-data" },
   //   }),
   remove: (objectKey: string) =>
-    axios.delete(`${process.env.NEXT_PUBLIC_FILE_BASE}/files/${objectKey}`),
+    axios.delete(`${process.env.NEXT_PUBLIC_API_BASE}/files/${objectKey}`),
 };
 
 export default fileApi;

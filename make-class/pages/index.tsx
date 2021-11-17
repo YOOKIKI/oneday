@@ -3,45 +3,14 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import HeadBar from "../components/headbar/headbar";
 import NavBar from "../components/nav";
-import Image from "next/image";
+// import Image from "next/image";
 import router from "next/router";
 import { GetServerSideProps } from "next";
-import {
-  requestFetchNextOnedays,
-  requestFetchPagingOnedays,
-} from "../middleware/modules/oneday";
+// import { requestFetchNextOnedays } from "../middleware/modules/oneday";
 import { AppDispatch, RootState } from "../provider";
 import { useDispatch, useSelector } from "react-redux";
-
-// export interface OnedayItem {
-//   id: number;
-//   inquiryId: string;
-//   onedayclassName: string;
-//   price: string;
-//   description?: string;
-//   capacity: string;
-//   photoUrl: string;
-//   fileType: string;
-//   fileName: string;
-//   createdTime: number;
-//   startDateData: string;
-//   endDateData: string;
-// }
-
-// export interface OneDayPagingReponse {
-//   content: OnedayItem[];
-//    last: boolean;
-//   totalElements: number;
-//   totalPages: number;
-//   size: number;
-//   number: number;
-// }
-
-// interface IndexProp {
-//   items: OneDayPagingReponse;
-// }
-
-// const Index = ({ items }: IndexProp) => {
+import { requestFetchPagingOneday } from "../middleware/modules/oneday";
+// import { requestFetchNextOnedays } from "../middleware/modules/oneday";
 
 const Index = () => {
   const oneday = useSelector((state: RootState) => state.oneday);
@@ -52,7 +21,7 @@ const Index = () => {
       const onedayPageSize = localStorage.getItem("oneday_page_size");
 
       dispatch(
-        requestFetchPagingOnedays({
+        requestFetchPagingOneday({
           page: 0,
           size: onedayPageSize ? +onedayPageSize : oneday.pageSize,
         })
@@ -68,12 +37,9 @@ const Index = () => {
       <HeadBar />
       <NavBar />
       <section>
-        {(!oneday.isFetched || oneday.data.length === 0) && (
-          <div className="text-center my-5">데이터가 없습니다.</div>
-        )}
+        {!oneday && <div className="text-center my-5">데이터가 없습니다.</div>}
         <div style={{ display: "flex" }}>
           {oneday.isFetched &&
-            oneday.data.length > 0 &&
             oneday.data.map((item, index) => (
               <div
                 key={`oneday-item-${index}`}
@@ -90,17 +56,17 @@ const Index = () => {
                     router.push(`/onedayclass/detail/${item.oneDayClassId}`);
                   }}
                 >
-                  <Image
+                  <img
                     src={item.photoUrl}
                     className="card-img-top"
-                    alt={item.onedayclassName}
-                    layout="responsive"
-                    objectFit="cover"
+                    alt={item.title}
+                    // layout="responsive"
+                    // objectFit="cover"
                     width={220}
                     height={150}
                   />
                   <div className="card-body">
-                    <h5 className="card-title">{item.onedayclassName}</h5>
+                    <h5 className="card-title">{item.oneDayClassId}</h5>
                     <h6 className="text-muted">{item.description}</h6>
                   </div>
                 </div>
@@ -111,39 +77,5 @@ const Index = () => {
     </div>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-// const items = [
-//   {
-//     id: 2,
-//     inquiryId: "2",
-//     onedayclassName: "핸드메이드",
-//     price: "",
-//     description: "onedayclass..",
-//     capacity: "",
-//     photoUrl: "/clss.jpg",
-//     fileType: "",
-//     fileName: "",
-//     createdTime: new Date().getTime(),
-//     startDateData: "12월1일",
-//     endDateData: "12월 3일",
-//   },
-//   {
-//     id: 1,
-//     inquiryId: "1",
-//     onedayclassName: "플라워",
-//     price: "",
-//     description: "onedayclass..",
-//     capacity: "",
-//     photoUrl: "/class.jpg",
-//     fileType: "",
-//     fileName: "",
-//     createdTime: new Date().getTime(),
-//     startDateData: "12월9일",
-//     endDateData: "12월 9일",
-//   },
-// ];
-
-// return { props: { items } };
 
 export default Index;

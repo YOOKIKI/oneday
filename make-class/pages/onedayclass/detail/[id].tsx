@@ -64,7 +64,7 @@ const OnedayDetail = () => {
                   </tr>
                   <tr>
                     <th>클래스명</th>
-                    <td>{onedayItem.onedayclassName}</td>
+                    <td>{onedayItem.title}</td>
                   </tr>
                   <tr>
                     <th>price</th>

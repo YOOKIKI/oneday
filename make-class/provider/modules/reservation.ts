@@ -3,15 +3,14 @@ import reservation from "../../api/oneday";
 
 export interface ReservationItem {
   id: number;
-  onedayclassName: string;
   name: string;
   tel: string;
-  capacity: string;
-  price: string;
-  description?: string;  
-  createdTime: number;
-  startDateData: string;
-  endDateData: string;
+  reservationDate: string;
+  totalAmount: number;
+  detailCnt: number;
+  firstReservationName: string;
+  status: boolean; // 상태
+  createdTime: number; // 생성시간
 }
 
 export interface ReservationPage {
@@ -37,36 +36,11 @@ interface ReservationState {
 }
 
 const initialState: ReservationState = {
-  data: [
-    {
-      id: 2,
-      onedayclassName: "핸드메이드",
-      name: "수강생",
-      tel:"010-222-2222",
-      capacity: "2명",
-      price: "30000원",
-      description: "hi",
-      createdTime: new Date().getTime(),
-      startDateData: "12월1일",
-      endDateData: "12월 3일"
-    },
-    {
-      id: 1,
-      onedayclassName: "플라워",
-      name: "예약자",
-      tel:"010-111-1111",
-      capacity: "1명",
-      price: "15000원",
-      description: "hello",
-      createdTime: new Date().getTime(),
-      startDateData: "12월9일",
-      endDateData: "12월 9일"
-    }
-  ],
+  data: [],
   isFetched: false,
   page: 0,
   // pageSize: onedayPageSize ? +onedayPageSize : 8,
-  pageSize: 2,
+  pageSize: 8,
   totalPages: 0,
 };
 
@@ -103,14 +77,16 @@ const reservationSlice = createSlice({
       const ReservationItem = state.data.find((item) => item.id === modifyItem.id);
 
       if (ReservationItem) {
+        ReservationItem.id = modifyItem.id;
+        ReservationItem.reservationId = modifyItem.reservationId;
         ReservationItem.onedayclassName = modifyItem.onedayclassName;
         ReservationItem.name = modifyItem.name;
         ReservationItem.tel = modifyItem.tel;
         ReservationItem.capacity = modifyItem.capacity;
         ReservationItem.price = modifyItem.price;
-        ReservationItem.description = modifyItem.description;
-        ReservationItem.startDateData = modifyItem.startDateData;
-        ReservationItem.endDateData = modifyItem.endDateData;
+        ReservationItem.reservationDate = modifyItem.reservationDate;
+        ReservationItem.price = modifyItem.price;
+        ReservationItem.totalAmount = modifyItem.totalAmount;
         
       }
       state.isModifyCompleted = true; 

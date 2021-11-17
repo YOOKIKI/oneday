@@ -130,6 +130,7 @@ function* addDataPaging(action: PayloadAction<InquiryItem>) {
       description: result.data.description,
       answer: result.data.answer,
       createdTime: result.data.createdTime,
+      id: 0
     };
 
     yield put(addInquiry(inquiryItem));
@@ -208,7 +209,8 @@ function* addDataNext(action: PayloadAction<InquiryItem>) {
       description: result.data.description,
       answer: result.data.answer,
       createdTime: result.data.createdTime,
-      inquiryId: 0
+      inquiryId: 0,
+      id: 0
     };
 
     // dispatcher(액션)과 동일함
@@ -500,7 +502,8 @@ function* modifyData(action: PayloadAction<InquiryItem>) {
     description: result.data.description,
     answer: result.data.answer,
     createdTime: result.data.createdTime,
-    inquiryId: 0
+    inquiryId: 0,
+    id: 0
   };
 
   // state 변경

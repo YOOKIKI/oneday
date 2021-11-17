@@ -26,5 +26,6 @@ public class OneDayClass {
     private String startTime;
     private String endTime;
     private String category;
+    private long price;
     private long createdTime;
 }

@@ -11,47 +11,27 @@ import {
   addReservation,
   ReservationItem,
 } from "../../provider/modules/reservation";
+import { requestFetchNextOnedays } from "../../middleware/modules/oneday";
 
-export default function ReservationBar() {
-  const onedayclassNameInput = useRef<HTMLInputElement>(null);
-  const nameInput = useRef<HTMLInputElement>(null);
-  const telInput = useRef<HTMLInputElement>(null);
-  const capacityInput = useRef<HTMLInputElement>(null);
-  const descriptionTxta = useRef<HTMLTextAreaElement>(null);
-  const priceInput = useRef<HTMLInputElement>(null);
-  const startDateDataInput = useRef<HTMLInputElement>(null);
-  const endDateDataInput = useRef<HTMLInputElement>(null);
-
-  const inquiryData = useSelector((state: RootState) => state.inquiry.data);
+export default function reservation() {
+  const reservation = useSelector((state: RootState) => state.reservation);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  const handleAddClick = () => {
-    const item: ReservationItem = {
-      id: inquiryData.length ? inquiryData[0].inquiryId + 1 : 1,
-      onedayclassName: onedayclassNameInput.current
-        ? onedayclassNameInput.current.value
-        : "",
-      price: priceInput.current ? priceInput.current.value : "",
-      name: nameInput.current ? nameInput.current.value : "",
-      tel: telInput.current ? telInput.current.value : "",
-      capacity: capacityInput.current ? capacityInput.current.value : "",
-      description: descriptionTxta.current ? descriptionTxta.current.value : "",
-      startDateData: startDateDataInput.current
-        ? startDateDataInput.current.value
-        : "",
-      endDateData: endDateDataInput.current
-        ? endDateDataInput.current.value
-        : "",
+  useEffect(() => {
+    if (!reservation.isFetched) {
+      const reservationPageSize = localStorage.getItem("reservation_page_size");
 
-      createdTime: new Date().getTime(),
-    };
-
-    console.log(item);
-    dispatch(addReservation(item));
-
-    router.push("/inquiry");
-  };
+      dispatch(
+        requestFetchPagingOnedays({
+          page: 0,
+          size: reservationPageSize
+            ? +reservationPageSize
+            : reservation.pageSize,
+        })
+      );
+    }
+  }, [dispatch, reservation.isFetched, reservation.pageSize]);
 
   return (
     <div>

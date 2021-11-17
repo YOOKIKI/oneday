@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Inquiry from "../../pages/inquiry";
 
 export interface InquiryItem {
+  id: number;
   inquiryId: number;
   oneDayClassId: string;
   onedayclassName: string;
