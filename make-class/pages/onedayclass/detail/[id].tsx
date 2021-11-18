@@ -8,25 +8,6 @@ import { GetServerSideProps } from "next";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../provider";
 
-// export interface OnedayItem {
-//   id: number;
-//   inquiryId: string;
-//   onedayclassName: string;
-//   price: string;
-//   description?: string;
-//   capacity: string;
-//   photoUrl: string;
-//   fileType: string;
-//   fileName: string;
-//   createdTime: number;
-//   startDateData: string;
-//   endDateData: string;
-// }
-
-// interface IndexProp {
-//   items: OnedayItem[];
-// }
-
 const OnedayDetail = () => {
   const router = useRouter();
 
@@ -109,40 +90,5 @@ const OnedayDetail = () => {
     </Layout>
   );
 };
-
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//   const items = [
-//     {
-//       id: 2,
-//       inquiryId: "2",
-//       onedayclassName: "핸드메이드",
-//       price: "",
-//       description: "onedayclass..",
-//       capacity: "",
-//       photoUrl: "/clss.jpg",
-//       fileType: "",
-//       fileName: "",
-//       createdTime: new Date().getTime(),
-//       startTime: "12월1일",
-//       endTime: "12월 3일",
-//     },
-//     {
-//       id: 1,
-//       inquiryId: "1",
-//       onedayclassName: "플라워",
-//       price: "",
-//       description: "onedayclass..",
-//       capacity: "",
-//       photoUrl: "/class.jpg",
-//       fileType: "",
-//       fileName: "",
-//       createdTime: new Date().getTime(),
-//       startDateData: "12월9일",
-//       endDateData: "12월 9일",
-//     },
-//   ];
-
-//   return { props: { items } };
-// };
 
 export default OnedayDetail;

@@ -1,26 +1,27 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import reservation from "../../api/oneday";
+import reservation from "../../api/reservation";
 
 export interface ReservationItem {
   id: number;
+  oneDayClassID: number;
   name: string;
   tel: string;
-  reservationDate: string;
+  reservationData: string;
   totalAmount: number;
-  detailCnt: number;
-  firstReservationName: string;
-  status: boolean; // 상태
-  createdTime: number; // 생성시간
+  capacity: number;
+  className: string;
+  status: boolean;
+  createdTime: number;
 }
 
-export interface ReservationPage {
-  data: ReservationItem[];
-  totalElements: number;
-  totalPages: number;
-  page: number;
-  pageSize: number;
-  isLast: boolean;
-}
+// export interface ReservationPage {
+//   data: ReservationItem[];
+//   totalElements: number;
+//   // totalPages: number;
+//   // page: number;
+//   // pageSize: number;
+//   isLast: boolean;
+// }
 
 interface ReservationState {
   data: ReservationItem[];
@@ -29,19 +30,19 @@ interface ReservationState {
   isRemoveCompleted?: boolean; 
   isModifyCompleted?: boolean; 
   totalElements?: number;
-  totalPages: number;
-  page: number;
-  pageSize: number;
+  // totalPages: number;
+  // page: number;
+  // pageSize: number;
   isLast?: boolean;
 }
 
 const initialState: ReservationState = {
   data: [],
   isFetched: false,
-  page: 0,
-  // pageSize: onedayPageSize ? +onedayPageSize : 8,
-  pageSize: 8,
-  totalPages: 0,
+  // page: 0,
+  // // pageSize: onedayPageSize ? +onedayPageSize : 8,
+  // pageSize: 8,
+  // totalPages: 0,
 };
 
 
@@ -61,15 +62,6 @@ const reservationSlice = createSlice({
       delete state.isRemoveCompleted;
       delete state.isModifyCompleted;
     },
-    removeReservation: (state, action: PayloadAction<number>) => {
-      const id = action.payload;
-      
-      state.data.splice(
-        state.data.findIndex((item) => item.id === id),
-        1
-      );
-      state.isRemoveCompleted = true; 
-    },
     modifyReservation: (state, action: PayloadAction<ReservationItem>) => {
     
       const modifyItem = action.payload;
@@ -78,18 +70,16 @@ const reservationSlice = createSlice({
 
       if (ReservationItem) {
         ReservationItem.id = modifyItem.id;
-        ReservationItem.reservationId = modifyItem.reservationId;
-        ReservationItem.onedayclassName = modifyItem.onedayclassName;
         ReservationItem.name = modifyItem.name;
         ReservationItem.tel = modifyItem.tel;
         ReservationItem.capacity = modifyItem.capacity;
-        ReservationItem.price = modifyItem.price;
-        ReservationItem.reservationDate = modifyItem.reservationDate;
-        ReservationItem.price = modifyItem.price;
+        ReservationItem.reservationData = modifyItem.reservationData;
         ReservationItem.totalAmount = modifyItem.totalAmount;
-        
+        ReservationItem.className = modifyItem.className;
+        ReservationItem.status = modifyItem.status;
+        ReservationItem.createdTime = modifyItem.createdTime;
       }
-      state.isModifyCompleted = true; 
+      state.isModifyCompleted = true;
     },
     initialReservationItem: (state, action: PayloadAction<ReservationItem>) => {
       const reservation = action.payload;
@@ -104,47 +94,23 @@ const reservationSlice = createSlice({
   
       state.isFetched = true;
     },
-    addTotalpages: (state) => {
-      state.totalPages++;
-    },
-
-    initialPagedReservation: (state, action: PayloadAction<ReservationPage>) => {
-
-      state.data = action.payload.data;
-
-      state.totalElements = action.payload.totalElements;
-      state.totalPages = action.payload.totalPages;
-      state.page = action.payload.page;
-      state.pageSize = action.payload.pageSize;
-      state.isLast = action.payload.isLast;
- 
-      state.isFetched = true;
-    },
-    initialNextReservation: (state, action: PayloadAction<ReservationPage>) => {
-
-      state.data = state.data.concat(action.payload.data);
-
-      state.totalElements = action.payload.totalElements;
-      state.totalPages = action.payload.totalPages;
-      state.page = action.payload.page;
-      state.pageSize = action.payload.pageSize;
-      state.isLast = action.payload.isLast;
-      state.isFetched = true;
-    },
-  },
+    //   initialNextReservation: (state, action: PayloadAction<ReservationPage>) => {
+    //     // 백엔드에서 받아온 데이터를 기존데이터 뒤로 합침
+    //     // 컨텐트
+    //     state.data = state.data.concat(action.payload.data);
+    //     // 데이터를 받아옴으로 값을 남김
+    //     state.isFetched = true;
+    // },
+  }
 });
 
 
 export const {
   addReservation,
-  removeReservation,
   modifyReservation,
   initialReservationItem,
   initialReservation,
-  initialCompleted,
-  addTotalpages,
-  initialPagedReservation,
-  initialNextReservation,
+  initialCompleted
 } = reservationSlice.actions;
 
 

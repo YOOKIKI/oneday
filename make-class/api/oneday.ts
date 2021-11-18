@@ -2,14 +2,6 @@ import axios from "axios";
 import { OneDayItem } from "../provider/modules/oneday ";
 import { createAxiosInstance } from "./_request";
 
-// export interface OneDayPagingReponse {
-//   content: OneDayItemResponse[];
-//   last: boolean;
-//   totalElements: number;
-//   totalPages: number;
-//   size: number;
-//   number: number;
-// }
 
 export interface OneDayItemResponse {
   oneDayClassId: number;
@@ -48,8 +40,6 @@ export interface OneDayItemResponse {
 // }
 
 const onedayApi = {
-  // fetchAll:() => axios.get<OneDayItem[]>(`http://localhost:8080/onedayclass`),
-
   get: (oneDayClassId: number) =>
      createAxiosInstance().get<OneDayItemResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/${oneDayClassId}`
