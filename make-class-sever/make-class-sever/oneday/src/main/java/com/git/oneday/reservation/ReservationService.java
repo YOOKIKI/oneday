@@ -25,7 +25,6 @@ public class ReservationService {
 
 
     public void sendReservation(Reservation reservation) {
-    
     	rabbit.convertAndSend("user.reservation.send", reservation);
     }
 

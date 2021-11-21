@@ -84,6 +84,7 @@ public class InquiryController {
 			res.setStatus(HttpServletResponse.SC_NOT_FOUND);
 			return null;
 		}
+		
 		if (TextProcesser.isEmptyText(inquiry.getDescription())) {
 			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return null;

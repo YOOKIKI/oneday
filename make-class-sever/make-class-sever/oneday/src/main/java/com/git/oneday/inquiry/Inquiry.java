@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Inquiry {
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long inquiryId;
