@@ -1,4 +1,5 @@
-package com.git.oneday.inquiry;
+package com.git.oneday.test;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,18 +7,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class InquiryRequest {
-	private long inquiryId;
+@NoArgsConstructor
+@Builder
+public class InquiryAnswerTest {
+	private long answerId;
+	
+	private long customerId;
 	private long oneDayClassId;
 	private String oneDayClassName;
-	private String title;
-	private String name;
-	private String tel;
-	private String email;
 	private String description;
-	private String answer;
 	private long createdTime;
 }

@@ -12,25 +12,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-public class Inquiry {
-
+public class InquiryAnswer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long inquiryId;
+	private long answerId;
 	
+	private long customerId;
 	private long oneDayClassId;
 	private String oneDayClassName;
-	private long customerId;
-	private String title;
-	private String name;
-	private String tel;
-	private String email;
-	@Column(columnDefinition = "VARCHAR(1000)")
 	private String description;
-	private String answer;
 	private long createdTime;
 }

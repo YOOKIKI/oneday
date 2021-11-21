@@ -44,20 +44,21 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
     // action의 payload로 넘어온 객체
     const reservationItemPayload = action.payload;
 
+    console.log("예약 보낼때 " + reservationItemPayload);
+
     // spinner 보여주기
     yield put(startProgress());
     
     // rest api로 보낼 요청객체
     const reservationItemRequest: ReservationRequest = {
-      id: reservationItemPayload.id,
-      oneDayClassID: reservationItemPayload.oneDayClassID,
+      oneDayClassId: reservationItemPayload.oneDayClassID,
       name: reservationItemPayload.name,
       tel: reservationItemPayload.tel,
-      totalAmount: reservationItemPayload.totalAmount,
-      reservationData: reservationItemPayload.reservationData,
+      price: reservationItemPayload.price,
+      reservationTime: reservationItemPayload.reservationTime,
       capacity: reservationItemPayload.capacity,
-      className: reservationItemPayload.className,
-      status: reservationItemPayload.status,
+      person: reservationItemPayload.person,
+      title: reservationItemPayload.title,
       createdTime: reservationItemPayload.createdTime,
     };
 
@@ -86,12 +87,14 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
       oneDayClassID: result.data.oneDayClassID,
       name: result.data.name,
       tel: result.data.tel,
-      reservationData: result.data.reservationData,
-      totalAmount: result.data.totalAmount,
+      reservationDay: result.data.reservationDay,
+      reservationTime: result.data.reservationTime,
+      price: result.data.price,
       capacity: result.data.capacity,
       status: result.data.status,
       createdTime: result.data.createdTime,
-      className: result.data.className
+      title: result.data.title,
+      person:result.data.person
     };
 
     // dispatcher(액션)과 동일함
@@ -119,6 +122,4 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
 
 export default function* reservationSaga() {
   yield takeEvery(requestAddReservation, addDataNext);
-  yield takeEvery(requestAddReservationNext, addDataNext);
-
 }

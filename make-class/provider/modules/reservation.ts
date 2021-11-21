@@ -2,16 +2,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import reservation from "../../api/reservation";
 
 export interface ReservationItem {
-  id: number;
+  id?: number;
   oneDayClassID: number;
   name: string;
   tel: string;
-  reservationData: string;
-  totalAmount: number;
+  reservationDay?: string;
+  reservationTime: string;
+  price: number;
+  person: number;
   capacity: number;
-  className: string;
-  status: boolean;
+  title: string;
+  status?: boolean;
   createdTime: number;
+}
+
+export interface ReservationItemResponse {
+  data: ReservationItem[];
 }
 
 // export interface ReservationPage {
@@ -70,12 +76,14 @@ const reservationSlice = createSlice({
 
       if (ReservationItem) {
         ReservationItem.id = modifyItem.id;
+        ReservationItem.title = modifyItem.title;
         ReservationItem.name = modifyItem.name;
         ReservationItem.tel = modifyItem.tel;
         ReservationItem.capacity = modifyItem.capacity;
-        ReservationItem.reservationData = modifyItem.reservationData;
-        ReservationItem.totalAmount = modifyItem.totalAmount;
-        ReservationItem.className = modifyItem.className;
+        ReservationItem.reservationDay = modifyItem.reservationDay;
+        ReservationItem.reservationTime = modifyItem.reservationTime;
+        ReservationItem.price = modifyItem.price;
+        ReservationItem.person = modifyItem.person;
         ReservationItem.status = modifyItem.status;
         ReservationItem.createdTime = modifyItem.createdTime;
       }

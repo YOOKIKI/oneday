@@ -1,10 +1,11 @@
 .resbar {
   height: 100%;
   width: 200px;
+  display: flex;
   background-color: rgb(255, 255, 255);
   padding: 20px;
-  position: absolute;
-  justify-content: flex-end;
+  position: fixed;
+  /* justify-content: flex-end; */
   /* margin-left: 700px; */
 }
 

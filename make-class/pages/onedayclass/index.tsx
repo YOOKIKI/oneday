@@ -1,21 +1,17 @@
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 import NavBar from "../../components/nav";
 import Layout from "../../components/layout";
 import router, { useRouter } from "next/router";
-import { AppDispatch, RootState } from "../../provider";
-import { useDispatch, useSelector } from "react-redux";
-// import { requestFetchNextOnedays } from "../../middleware/modules/oneday";
-import onedays from "../reservation";
 import { OneDayItem } from "../../provider/modules/oneday ";
-import OnedayDetail from "./detail/[id]";
 import axios from "axios";
-import { GetServerSideProps } from "next";
 
 export interface OnedayProp {
   item: OneDayItem[];
 }
 const Index = ({ item }: OnedayProp) => {
+  const router = useRouter();
+
   return (
     <>
       <Layout>
@@ -27,7 +23,7 @@ const Index = ({ item }: OnedayProp) => {
                 key={index}
                 className="card"
                 style={{
-                  width: "calc((100% - 4rem) / 4)",
+                  width: "250px",
                   marginLeft: index % 4 === 0 ? "0" : "1rem",
                   marginTop: index > 3 ? "1rem" : "0",
                 }}
@@ -81,23 +77,10 @@ const Index = ({ item }: OnedayProp) => {
 };
 
 export async function getServerSideProps() {
-  // SSR일 때 매개변수를 받는 방법
-  // /public-photos/id
-  // const id = context.params?.id;
-
-  // Fetch data from external API
   const res = await axios.get<OneDayItem[]>(
     `http://localhost:8080/onedayclass`
   );
   const item = res.data;
-  // const photo = {
-  //   albumId: 1,
-  //   id: 1,
-  //   title: "accusamus beatae ad facilis cum similique qui sunt",
-  //   url: "https://via.placeholder.com/600/92c952",
-  //   thumbnailUrl: "https://via.placeholder.com/150/92c952",
-  // };
-  // Pass data to the page via props
   return { props: { item } };
 }
 

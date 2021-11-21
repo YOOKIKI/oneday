@@ -1,9 +1,9 @@
 .main {
-  height: 900px;
+  /* height: 900px; */
   margin-left: 250px;
   margin-top: 20px;
-  margin-inline-end: auto;
-  overflow: auto;
+  /* margin-inline-end: auto; */
+  /* overflow: auto; */
 }
 
 .main > section {

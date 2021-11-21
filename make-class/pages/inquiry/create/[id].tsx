@@ -3,18 +3,18 @@ import { Button } from "react-bootstrap";
 import { AppDispatch, RootState } from "../../../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import inquiry, {
-  addInquiry,
-  InquiryItem,
-} from "../../../provider/modules/inquiry";
-import React, { useState } from "react";
+import { InquiryItem } from "../../../provider/modules/inquiry";
+import React from "react";
 import Layout from "../../../components/layout";
 import Progress from "../../../components/progress";
-import AlertStack from "../../../components/alert/alertStack";
+import { requestAddInquiry } from "../../../middleware/modules/inquiry";
+import { requestFetchNextOneday } from "../../../middleware/modules/oneday";
 
-const create = () => {
-  const oneDayClassIdInput = useRef<HTMLInputElement>(null);
-  const onedayclassNameInput = useRef<HTMLInputElement>(null);
+export interface InquiryProp {
+  item: InquiryItem[];
+}
+
+const inquiryCreate = () => {
   const titleInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const telInput = useRef<HTMLInputElement>(null);
@@ -22,51 +22,57 @@ const create = () => {
   const descriptionTxta = useRef<HTMLTextAreaElement>(null);
   const answerInput = useRef<HTMLInputElement>(null);
 
-  const inquiryData = useSelector((state: RootState) => state.inquiry.data);
-  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const id = router.query.id as string;
+  console.log(id);
+
+  const inquiryData = useSelector((state: RootState) => state.inquiry.data);
+  const inquiryItem = useSelector((state: RootState) =>
+    state.inquiry.data.find((item) => item.oneDayClassId === +id)
+  );
+  const dispatch = useDispatch<AppDispatch>();
 
   const isAddCompleted = useSelector(
     (state: RootState) => state.inquiry.isAddCompleted
   );
 
+  const onedayClass = useSelector((state: RootState) =>
+    state.oneday.data.find((item) => item.oneDayClassId === +id)
+  );
+
+  const customerId = useSelector(
+    (state: RootState) => state.customer.customerId
+  );
+
   useEffect(() => {
-    console.log("--isAddCompleted 변경: " + isAddCompleted);
-    isAddCompleted && router.push("/inquirys");
-  }, [isAddCompleted, router, dispatch]);
+    dispatch(requestFetchNextOneday());
+  }, []);
 
   const handleAddClick = () => {
     const item: InquiryItem = {
-      inquiryId: inquiryData.length ? inquiryData[0].inquiryId + 1 : 1,
-      oneDayClassId: oneDayClassIdInput.current
-        ? oneDayClassIdInput.current.value
-        : "",
+      customerId: customerId,
       title: titleInput.current ? titleInput.current.value : "",
       name: nameInput.current ? nameInput.current.value : "",
       tel: telInput.current ? telInput.current.value : "",
       email: emailInput.current ? emailInput.current.value : "",
       description: descriptionTxta.current ? descriptionTxta.current.value : "",
       createdTime: new Date().getTime(),
-      onedayclassName: onedayclassNameInput.current
-        ? onedayclassNameInput.current.value
-        : "",
-      answer: answerInput.current ? answerInput.current.value : "",
+      oneDayClassId: onedayClass && onedayClass ? onedayClass.oneDayClassId : 0,
+      oneDayClassName: onedayClass && onedayClass ? onedayClass.title : "",
     };
 
-    console.log(item);
-    dispatch(addInquiry(item));
+    console.log("인쿼리 화면" + item);
+    dispatch(requestAddInquiry(item));
 
-    router.push("/inquiry/list");
+    //router.push("/inquiry/list");
   };
 
   return (
     <Layout>
       <Progress />
       <div style={{ width: "600px" }} className="mx-auto">
-        {/* <div className="flex-center"> */}
         <h3>1:1상담 문의</h3>
         <a>문의하실 내용을 아래 입력해주세요.</a>
-        {/* </div> */}
         <form>
           <table className="table">
             <thead>
@@ -75,12 +81,13 @@ const create = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th>클래스명</th>
-                {/* <td>{inquiryItem?.oneDayClassId}</td> */}
-                {/* <td>{onedayclassName}</td> */}
-                <td></td>
-              </tr>
+              {inquiryItem && (
+                <tr>
+                  <th>클래스명</th>
+                  <td>{inquiryItem.oneDayClassName}</td>
+                  <td></td>
+                </tr>
+              )}
               <tr>
                 <th scope="row">제목</th>
                 <td>
@@ -138,6 +145,7 @@ const create = () => {
             </tbody>
           </table>
         </form>
+
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Button
             className="outline-secondary"
@@ -163,4 +171,4 @@ const create = () => {
   );
 };
 
-export default create;
+export default inquiryCreate;

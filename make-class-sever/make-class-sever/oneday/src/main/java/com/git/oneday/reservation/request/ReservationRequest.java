@@ -14,26 +14,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ReservationRequest {
-	private long id;
     private long oneDayClassId;
     private String name;
     private String tel;
-    private String reservationDate;
-    private long totalAmount;
+    private String reservationTime;
+    private long price;
+    private int person;
     private long capacity;
-    private String className;
+    private String title;
     private boolean status;   // 상태
     private long createdTime;   // 생성시간
-//	private List<ReservationDetail> details;
-	
-//	@Data
-//	@NoArgsConstructor
-//	public static class ReservationDetail {
-//			
-//		private int oneDayClassId;
-//		private String onedayClassName;
-//		private int price;
-//		private int capacity;
-//	}
-	
+    
 }

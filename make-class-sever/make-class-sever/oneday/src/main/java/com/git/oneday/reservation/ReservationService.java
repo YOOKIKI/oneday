@@ -16,19 +16,14 @@ import com.git.oneday.reservation.request.ReservationRequest;
 @Service
 public class ReservationService {
 
-    private ReservationRepository reservationRepo;
-//    private ReservationDetailRepository detailRepo;
-
     private RabbitTemplate rabbit;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepo, RabbitTemplate rabbit){
-        this.reservationRepo = reservationRepo;
-//        this.detailRepo = detailRepo;
+    public ReservationService(RabbitTemplate rabbit){
         this.rabbit = rabbit;
     }
 
-    
+
     public void sendReservation(Reservation reservation) {
     
     	rabbit.convertAndSend("user.reservation.send", reservation);

@@ -4,74 +4,51 @@ import React from "react";
 import styles from "./ReservationBar.module.css";
 import { useEffect, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
-import { AppDispatch, RootState } from "../../provider";
-import { useDispatch, useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import {
-  addReservation,
-  ReservationItem,
-} from "../../provider/modules/reservation";
-import { requestFetchNextOnedays } from "../../middleware/modules/oneday";
+import { OneDayItem } from "../../provider/modules/oneday ";
 
-export default function reservation() {
-  const reservation = useSelector((state: RootState) => state.reservation);
-  const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
+export interface OnedayProp {
+  item: OneDayItem[];
+}
 
-  useEffect(() => {
-    if (!reservation.isFetched) {
-      const reservationPageSize = localStorage.getItem("reservation_page_size");
-
-      dispatch(
-        requestFetchPagingOnedays({
-          page: 0,
-          size: reservationPageSize
-            ? +reservationPageSize
-            : reservation.pageSize,
-        })
-      );
-    }
-  }, [dispatch, reservation.isFetched, reservation.pageSize]);
+const reservationbar = ({ item }: OnedayProp) => {
+  const nameInput = useRef<HTMLInputElement>(null);
+  const descriptionTxta = useRef<HTMLTextAreaElement>(null);
+  const telInput = useRef<HTMLInputElement>(null);
 
   return (
     <div>
       <nav className={styles.resbar}>
         <form>
-          <thead>
-            <tr></tr>
-          </thead>
-          <tbody className="text-nowrap">
-            <tr>
+          <div className="text-nowrap">
+            {/* <tr>
               <th scope="row">클래스명</th>
-              {/* <td>{Item.onedayclassName}</td> */}
-            </tr>
-            <tr>
-              <th></th>
-            </tr>
-            <tr>
-              <th scope="row">이름</th>
-              <td>
+              <td>{item.title}</td>
+            </tr> */}
+
+            <div>
+              <h5>이름</h5>
+              <div>
                 <input
                   className="form-control"
                   type="text"
                   placeholder="이름"
                   ref={nameInput}
                 />
-              </td>
-            </tr>
-            <tr>
-              <th scope="row">연락처</th>
-              <td>
+              </div>
+            </div>
+            <div>
+              <h3>연락처</h3>
+              <div>
                 <input
                   className="form-control"
                   type="text"
                   placeholder="010-123-4567"
                   ref={telInput}
                 />
-              </td>
-            </tr>
-            <tr>
-              <th>인원 수</th>
+              </div>
+            </div>
+            <div>
+              <h3>인원 수</h3>
               <Form.Select aria-label="Default select example">
                 <option>인원 수</option>
                 <option value="1">1</option>
@@ -80,58 +57,32 @@ export default function reservation() {
                 <option value="4">4</option>
                 <option value="5">5</option>
               </Form.Select>
-            </tr>
+            </div>
 
-            <tr>
-              <th scope="row">참고사항</th>
-              <td>
+            <div>
+              <h3>참고사항</h3>
+              <h4>
                 <textarea
                   className="form-control"
                   ref={descriptionTxta}
                 ></textarea>
-              </td>
-            </tr>
-          </tbody>
+              </h4>
+              <Button
+                className="outline-secondary text-nowrap"
+                id="button-addon2"
+                onClick={() => {
+                  // ();
+                }}
+              >
+                예약하기
+              </Button>
+            </div>
+          </div>
         </form>
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <Button
-            className="outline-secondary"
-            id="button-addon2"
-            onClick={() => {
-              handleAddClick();
-            }}
-          >
-            예약하기
-          </Button>
-        </div>
+        <div></div>
       </nav>
     </div>
   );
-}
+};
 
-const Item = [
-  {
-    id: 2,
-    onedayclassName: "핸드메이드",
-    name: "수강생",
-    tel: "010-222-2222",
-    capacity: "2명",
-    price: "30000원",
-    description: "hi",
-    createdTime: new Date().getTime(),
-    startDateData: "12월1일",
-    endDateData: "12월 3일",
-  },
-  {
-    id: 1,
-    onedayclassName: "플라워",
-    name: "예약자",
-    tel: "010-111-1111",
-    capacity: "1명",
-    price: "15000원",
-    description: "hello",
-    createdTime: new Date().getTime(),
-    startDateData: "12월9일",
-    endDateData: "12월 9일",
-  },
-];
+export default reservationbar;

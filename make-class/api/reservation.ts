@@ -5,24 +5,28 @@ export interface ReservationResponse {
   oneDayClassID: number;
   name: string;
   tel: string;
-  reservationData: string;
-  totalAmount: number;
+  reservationDay: string;
+  reservationTime: string;
+  price: number;
+  person: number;
   capacity: number;
-  className: string;
+  title: string;
   status: boolean;
   createdTime: number;
 }
 
 export interface ReservationRequest {
-  id: number;
-  oneDayClassID: number;
+  id?: number;
+  oneDayClassId: number;
   name: string;
   tel: string;
-  reservationData: string;
-  totalAmount: number;
+  reservationDate?: string;
+  reservationTime: string;
+  price: number;
+  person: number;
   capacity: number;
-  className: string;
-  status: boolean;
+  title: string;
+  status?: boolean;
   createdTime: number;
 }
 
@@ -41,10 +45,12 @@ const reservationApi = {
     createAxiosInstance().post<ReservationResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/reservations`,reservationItem
     ),
+  
   remove: (id: number) =>
     createAxiosInstance().delete<boolean>(
       `${process.env.NEXT_PUBLIC_API_BASE}/reservations/${id}`
     ),
+  
   modify: (id: number, reservationItem: ReservationRequest) =>
     createAxiosInstance().put<ReservationResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/reservations/${id}`,

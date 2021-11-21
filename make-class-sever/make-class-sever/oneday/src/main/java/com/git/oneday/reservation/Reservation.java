@@ -25,13 +25,15 @@ public class Reservation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-    private long oneDayClassId;
-    private String name;
-    private String tel;
-    private String reservationDate;
-    private long totalAmount;
-    private long capacity;
-    private String className;
-    private boolean status;   // 상태
-    private long createdTime;   // 생성시간
+	
+	 private long oneDayClassId;
+	    private String name;
+	    private String tel;
+	    private String reservationTime;
+	    private long price;
+	    private int person;
+	    private long capacity;
+	    private String title;
+	    private boolean status;   // 상태
+	    private long createdTime;    // 생성시간
 }

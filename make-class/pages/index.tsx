@@ -10,25 +10,15 @@ import { GetServerSideProps } from "next";
 import { AppDispatch, RootState } from "../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { requestFetchPagingOneday } from "../middleware/modules/oneday";
+import { OneDayItem } from "../provider/modules/oneday ";
+import axios from "axios";
 // import { requestFetchNextOnedays } from "../middleware/modules/oneday";
 
-const Index = () => {
-  const oneday = useSelector((state: RootState) => state.oneday);
-  const dispatch = useDispatch<AppDispatch>();
+export interface OnedayProp {
+  item: OneDayItem[];
+}
 
-  useEffect(() => {
-    if (!oneday.isFetched) {
-      const onedayPageSize = localStorage.getItem("oneday_page_size");
-
-      dispatch(
-        requestFetchPagingOneday({
-          page: 0,
-          size: onedayPageSize ? +onedayPageSize : oneday.pageSize,
-        })
-      );
-    }
-  }, [dispatch, oneday.isFetched, oneday.pageSize]);
-
+const mainIndex = ({ item }: OnedayProp) => {
   return (
     <div style={{ marginLeft: "5rem", marginRight: "5rem" }}>
       <Link href="/onedayclass">
@@ -37,45 +27,52 @@ const Index = () => {
       <HeadBar />
       <NavBar />
       <section>
-        {!oneday && <div className="text-center my-5">데이터가 없습니다.</div>}
         <div style={{ display: "flex" }}>
-          {oneday.isFetched &&
-            oneday.data.map((item, index) => (
+          {item.map((item, index) => (
+            <div
+              key={`oneday-item-${index}`}
+              className="card"
+              style={{
+                width: "250px",
+                marginLeft: index % 4 === 0 ? "0" : "1rem",
+                marginTop: index > 3 ? "1rem" : "0",
+              }}
+            >
               <div
-                key={`oneday-item-${index}`}
-                className="card"
-                style={{
-                  width: "calc((100% - 4rem) / 4)",
-                  marginLeft: index % 4 === 0 ? "0" : "1rem",
-                  marginTop: index > 3 ? "1rem" : "0",
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  router.push(`/onedayclass/detail/${item.oneDayClassId}`);
                 }}
               >
-                <div
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    router.push(`/onedayclass/detail/${item.oneDayClassId}`);
-                  }}
-                >
-                  <img
-                    src={item.photoUrl}
-                    className="card-img-top"
-                    alt={item.title}
-                    // layout="responsive"
-                    // objectFit="cover"
-                    width={220}
-                    height={150}
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">{item.oneDayClassId}</h5>
-                    <h6 className="text-muted">{item.description}</h6>
-                  </div>
+                <img
+                  src={item.photoUrl}
+                  className="card-img-top"
+                  alt={item.title}
+                  // layout="responsive"
+                  // objectFit="cover"
+                  width={220}
+                  height={150}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">{item.title}</h5>
+                  <h6 className="text-muted">{item.description}</h6>
                 </div>
               </div>
-            ))}
+            </div>
+          ))}
         </div>
       </section>
     </div>
   );
 };
 
-export default Index;
+export async function getServerSideProps() {
+  const res = await axios.get<OneDayItem[]>(
+    `http://localhost:8080/onedayclass`
+  );
+  const item = res.data;
+
+  return { props: { item } };
+}
+
+export default mainIndex;

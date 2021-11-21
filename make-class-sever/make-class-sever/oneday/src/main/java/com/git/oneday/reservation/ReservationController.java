@@ -30,16 +30,16 @@ public class ReservationController {
 	public Reservation requestReservation(@RequestBody ReservationRequest reqReservation, HttpServletResponse res) {
 		Reservation reservationItem = Reservation
 				.builder()
-				.className(reqReservation.getClassName())
-				.reservationDate(reqReservation.getReservationDate())
+				.title(reqReservation.getTitle())
 				.tel(reqReservation.getTel())
 				.name(reqReservation.getName())
-				.id(reqReservation.getId())
 				.capacity(reqReservation.getCapacity())
+				.reservationTime(reqReservation.getReservationTime())
 				.createdTime(reqReservation.getCreatedTime())
 				.oneDayClassId(reqReservation.getOneDayClassId())
 				.status(reqReservation.isStatus())
-				.totalAmount(reqReservation.getTotalAmount())
+				.person(reqReservation.getPerson())
+				.price(reqReservation.getPrice())
 				.build();
 		
 		Reservation reservationSaved = repo.save(reservationItem);

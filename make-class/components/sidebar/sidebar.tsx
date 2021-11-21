@@ -7,7 +7,7 @@ export default function Sidebar() {
   return (
     <nav className={styles.nav}>
       <Link href="/onedayclass">
-        <a>클래스 상세</a>
+        <a>클래스 목록</a>
       </Link>
       <Link href="/onedayclass/create">
         <a>클래스 등록</a>

@@ -17,7 +17,7 @@ export const requestFetchPagingOneday = createAction<PageRequest>(
   `${onedayReducer.name}/requestFetchPagingOneday`
 );
 
-export const requestFetchNextOneday = createAction<PageRequest>(
+export const requestFetchNextOneday = createAction(
   `${onedayReducer.name}/requestFetchNextOneday`
 );
 
@@ -53,8 +53,9 @@ function* fetchData() {
     ),
   };
   yield put(initialNextOneday(OneDayItem))
- }
+}
+ 
   export default function* onedaySaga() {
-yield takeLatest(requestFetchNextOneday, fetchData)
+    yield takeLatest(requestFetchNextOneday, fetchData)
   }
   

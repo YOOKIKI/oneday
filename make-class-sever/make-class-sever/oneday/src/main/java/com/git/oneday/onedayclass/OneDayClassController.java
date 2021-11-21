@@ -1,6 +1,7 @@
 package com.git.oneday.onedayclass;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,7 +24,7 @@ public class OneDayClassController {
 	}
 	
 	@GetMapping(value = "/onedayclass")
-	public List<OneDayClass> getOneDayClass() {
+	public List<OneDayClass> getOneDayClasses() {
 		return repo.findAll(Sort.by("oneDayClassId").descending());
 	}
 
@@ -32,6 +33,11 @@ public class OneDayClassController {
         System.out.println("신호 왔음");
         return repo.findAll(PageRequest.of(page, size, Sort.by("oneDayClassId").descending()));
     }
+	
+	@GetMapping(value="/onedayclass/{id}")
+	public Optional<OneDayClass> getOneDayClass(@PathVariable Long id) {
+		return repo.findById(id);
+	}
 	
 	@GetMapping(value="/onedayclass/paging/{category}")
 	public OneDayClassPageResponse getOneDayClasssByCategory(

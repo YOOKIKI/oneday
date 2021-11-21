@@ -6,6 +6,7 @@ import progressReducer from "./modules/progress";
 import alertReducer from "./modules/alert";
 import createSagaMiddleware from "@redux-saga/core";
 import rootSaga from "../middleware";
+import customerReducer from "../provider/modules/customer";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -15,6 +16,7 @@ export const store = configureStore({
     inquiry: inquiryReduer,
     progress: progressReducer,
     alert: alertReducer,
+    customer: customerReducer,
   },
   middleware: [sagaMiddleware],
   devTools: true,

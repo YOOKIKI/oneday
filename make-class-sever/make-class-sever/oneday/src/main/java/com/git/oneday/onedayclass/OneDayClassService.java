@@ -31,6 +31,7 @@ public class OneDayClassService {
 				.photoUrl(managerOneDayClass.getPhotoUrl())
 				.fileName(managerOneDayClass.getFileName())
 				.fileType(managerOneDayClass.getFileType())
+				.price(managerOneDayClass.getPrice())
 				.managerName(managerOneDayClass.getManagerName())
 				.oneDayClassId(managerOneDayClass.getOneDayClassId())
 				.description(managerOneDayClass.getDescription())

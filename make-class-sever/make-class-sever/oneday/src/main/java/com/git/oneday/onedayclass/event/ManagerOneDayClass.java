@@ -10,12 +10,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ManagerOneDayClass {
+	
 	private long oneDayClassId;
     private String title;
     private int capacity;
     private String photoUrl;
     private String fileType;
     private String fileName;
+    private long price;
     private String managerName;
     private String description;
     private String startTime;

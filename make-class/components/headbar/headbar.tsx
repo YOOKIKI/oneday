@@ -20,7 +20,7 @@ const HeadBar = () => {
             </Link>
           </Nav.Item> */}
           <NavDropdown title="내역" id="login">
-            <NavDropdown.Item href="/reservation">
+            <NavDropdown.Item href="/reservations">
               클래스 예약내역
             </NavDropdown.Item>
             <NavDropdown.Item href="/inquiry/list">

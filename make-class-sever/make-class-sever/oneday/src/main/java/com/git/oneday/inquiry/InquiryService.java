@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class InquiryService {
 	
-	InquiryRepository repo;
+	private InquiryRepository repo;
+	private InquiryAnswerRepository inquiryAnswerRepo;
 	
 	private RabbitTemplate rabbit;
 	
-	private InquiryService(RabbitTemplate rabbit) {
+	private InquiryService(RabbitTemplate rabbit,  InquiryAnswerRepository inquiryAnswerRepo ) {
 		this.rabbit = rabbit;
+		this.inquiryAnswerRepo = inquiryAnswerRepo;
 	}
 
 	public void sendInquiry(Inquiry inquiry) {
@@ -21,10 +23,11 @@ public class InquiryService {
 		rabbit.convertAndSend("inquiry.question", inquiry);
 	}
 	
-//	@CacheEvict(value="inquiry", allEntries = true)
 	@RabbitListener(queues = "inquiry.answer")
-	public void receiveInquiry(Inquiry inquiry) {
-		System.out.println(inquiry);
+	public void receiveInquiry(InquiryAnswer answer) {
+		System.out.println("´äº¯¿È");
+		
+		inquiryAnswerRepo.save(answer);
 	}
 	
 	public Inquiry saveInquiry(Inquiry inquiry) {

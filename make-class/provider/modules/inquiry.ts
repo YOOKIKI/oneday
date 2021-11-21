@@ -3,17 +3,29 @@ import Inquiry from "../../pages/inquiry";
 
 export interface InquiryItem {
   // id: number;
-  inquiryId: number;
-  oneDayClassId: string;
-  onedayclassName: string;
+  inquiryId?: number;
+  customerId: number;
+  title: string;
+  name: string;
+  tel: string;
+  email: string;
+  description: string;
+  answer?: string;
+  createdTime: number;
+  oneDayClassId: number;
+  oneDayClassName: string;
+}
+
+export interface InquiryRequest {
+  inquiryId?: number;
   title: string;
   name: string;
   tel: string;
   email: string;
   description?: string;
-  answer: string;
-  createdTime: number;
-}
+  answer?: string;
+  createdTime: number;  
+} 
 
 export interface InquiryPage {
   data: InquiryItem[]
@@ -54,16 +66,17 @@ const inquirySlice = createSlice({
   reducers: {
     addInquiry: (state, action: PayloadAction<InquiryItem>) => {
       const inquiry = action.payload;
-      console.log("--in reducer function--");
-      console.log(inquiry);
+
       state.data.unshift(inquiry);
       state.isAddCompleted = true;
     },
+
     initialCompleted: (state) => {
       delete state.isAddCompleted;
       delete state.isRemoveCompleted;
       delete state.isModifyCompleted;
     },
+    
     removeInquiry: (state, action: PayloadAction<number>) => {
       const id = action.payload;
 
@@ -80,8 +93,7 @@ const inquirySlice = createSlice({
       const InquiryItem = state.data.find((item) => item.inquiryId === modifyItem.inquiryId);
 
       if (InquiryItem) {
-        InquiryItem.oneDayClassId = modifyItem.oneDayClassId;
-        InquiryItem.onedayclassName = modifyItem.onedayclassName;
+        InquiryItem.oneDayClassName = modifyItem.oneDayClassName;
         InquiryItem.title = modifyItem.title;
         InquiryItem.name = modifyItem.name;
         InquiryItem.tel = modifyItem.tel;

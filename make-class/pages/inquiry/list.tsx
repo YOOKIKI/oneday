@@ -1,32 +1,23 @@
 import React, { useEffect } from "react";
 import Layout from "../../components/layout";
 import { Table, Button } from "react-bootstrap";
-import { InquiryItem } from "../../provider/modules/inquiry";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../provider";
 import { getTimeString } from "../../lib/string";
-import { requestFetchPagingOnedays } from "../../middleware/modules/oneday";
+import { requestFetchInquirys } from "../../middleware/modules/inquiry";
 
 const List = () => {
   const inquiry = useSelector((state: RootState) => state.inquiry);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
+  const customer = useSelector((state: RootState) => state.customer);
 
   useEffect(() => {
-    if (!inquiry.isFetched) {
-      const inquiryPageSize = localStorage.getItem("inquiry_page_size");
-
-      dispatch(
-        requestFetchPagingOnedays({
-          page: 0,
-          size: inquiryPageSize ? +inquiryPageSize : inquiry.pageSize,
-        })
-      );
+    if (customer.customerId > 0) {
+      dispatch(requestFetchInquirys(customer.customerId));
     }
-  }, [dispatch, inquiry.isFetched, inquiry.pageSize]);
-  // const isModifyCompleted = useSelector(
-  // (state: RootState) => state.inquiry.isModifyCompleted
+  }, []);
 
   return (
     <Layout>
@@ -37,56 +28,40 @@ const List = () => {
       <Table responsive="sm" style={{ width: "640px" }}>
         <thead>
           <tr>
-            <th>문의명</th>
-            <th>수강생명</th>
+            <th>#</th>
+            <th>제목</th>
+            <th>작성자</th>
             <th>연락처</th>
-            <th>작성일</th>
+            <th>작성일시</th>
+            <th>문의클래스</th>
+            <th>자세히보기</th>
           </tr>
         </thead>
         <tbody>
-          {(!inquiry.isFetched || inquiry.data.length === 0) && (
-            <div className="text-center my-5">문의하신 1:1이 없네요</div>
-          )}
-          <div style={{ display: "flex" }}>
-            {inquiry.isFetched &&
-              inquiry.data.length > 0 &&
-              inquiry.data.map((item, index) => (
-                <tr key={`inquiry-item-${index}`}>
-                  <td>{item.inquiryId}</td>
-                  <td>{item.title}</td>
-                  <td>{item.name}</td>
-                  <td>{item.tel}</td>
-                  <td>{getTimeString(item.createdTime)}</td>
-                  <td style={{ width: "130px" }}>
-                    {/* <Link href="/inquiry/edit"> */}
-
-                    <Button
-                      className="bg-light "
-                      size="sm"
-                      onClick={() => {
-                        router.push(`/inquiry/detail/${item.inquiryId}`);
-                      }}
-                    >
-                      {" "}
-                      자세히
-                    </Button>
-                    {/* 
-                <Link href="/inquiry">
+          {inquiry.isFetched &&
+            inquiry.data.map((item, index) => (
+              <tr key={`inquiry-item-${index}`}>
+                <td>{item.inquiryId}</td>
+                <td>{item.title}</td>
+                <td>{item.name}</td>
+                <td>{item.tel}</td>
+                <td>{getTimeString(item.createdTime)}</td>
+                <td>{item.oneDayClassName}</td>
+                <td style={{ width: "130px" }}>
+                  {/* <Link href="/inquiry/edit"> */}
                   <Button
-                    className="bg-light ms-2"
+                    className="bg-light "
                     size="sm"
                     onClick={() => {
-                      handDeleteClick();
+                      router.push(`/inquiry/detail/${item.inquiryId}`);
                     }}
                   >
                     {" "}
-                    삭제
+                    자세히
                   </Button>
-                </Link> */}
-                  </td>
-                </tr>
-              ))}
-          </div>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </Table>
     </Layout>

@@ -6,8 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
 import { removeInquiry } from "../../../provider/modules/inquiry";
 import { getTimeString } from "../../../lib/string";
-import { requestFetchInquiryItem } from "../../../middleware/modules/inquiry";
-import { requestFetchPagingOnedays } from "../../../middleware/modules/oneday";
+import { requestFetchNextOneday } from "../../../middleware/modules/oneday";
 
 const detail = () => {
   const inquiry = useSelector((state: RootState) => state.inquiry);
@@ -21,12 +20,6 @@ const detail = () => {
     state.inquiry.data.find((item) => item.inquiryId === +inquiryId)
   );
 
-  if (inquiryId) {
-    if (!inquiryItem) {
-      dispatch(requestFetchInquiryItem(+inquiryId));
-    }
-  }
-
   const isRemoveCompleted = useSelector(
     (state: RootState) => state.inquiry.isRemoveCompleted
   );
@@ -39,13 +32,6 @@ const detail = () => {
   useEffect(() => {
     if (!inquiry.isFetched) {
       const onedayPageSize = localStorage.getItem("inquiry_page_size");
-
-      dispatch(
-        requestFetchPagingOnedays({
-          page: 0,
-          size: onedayPageSize ? +onedayPageSize : inquiry.pageSize,
-        })
-      );
     }
   }, [dispatch, inquiry.isFetched, inquiry.pageSize]);
 
@@ -72,7 +58,7 @@ const detail = () => {
                 </tr>
                 <tr>
                   <th>클래스명</th>
-                  <td>{inquiryItem.onedayclassName}</td>
+                  <td>{inquiryItem.oneDayClassName}</td>
                 </tr>
                 <tr>
                   <th>문의명</th>

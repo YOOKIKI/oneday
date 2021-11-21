@@ -1,5 +1,5 @@
 import axios from "axios";
-import { OneDayItem } from "../provider/modules/oneday ";
+import oneday, { OneDayItem } from "../provider/modules/oneday ";
 import { createAxiosInstance } from "./_request";
 
 
@@ -21,23 +21,23 @@ export interface OneDayItemResponse {
   createdTime: number;
 }
 
-// export interface OneDayItemRequest {
-//   oneDayClassId: number;
-//   managerOneDayClassId: string;
-//   onedayclassName: string;
-//   price: number;
-//   title: string;
-//   description?: string;
-//   managerName: string;
-//   capacity: string;
-//   photoUrl: string;
-//   fileType: string;
-//   fileName: string;
-//   createdTime: number;
-//   startTime: string;
-//   endTime: string;
-//   category: string;
-// }
+export interface OneDayItemRequest {
+  oneDayClassId: number;
+  title: string;
+  capacity: number;
+  photoUrl: string;
+  fileType: string;
+  fileName: string;
+  managerName: string;
+  category: string;
+  description?: string;
+  startDay: string;
+  endDay: string;
+  startTime: string;
+  endTime: string;
+  price: number;
+  createdTime: number;
+}
 
 const onedayApi = {
   get: (oneDayClassId: number) =>
@@ -53,6 +53,12 @@ const onedayApi = {
   //   createAxiosInstance().get<OneDayPagingReponse>(
   //     `${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/paging?page=${page}&size=${size}`
   //   ),
+  
+  modify : (oneDayClassId: number, oneDayItem: OneDayItemRequest) =>
+    createAxiosInstance().put<OneDayItemResponse>
+      (`${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/${oneDayClassId}`,
+      oneDayItem),
+
 };
 
 export default onedayApi;

@@ -34,12 +34,9 @@ public class InquiryController {
 		this.inquiryService = inquiryService;
 	}
 	
-//    @Autowired
-//    private InquiryRepository inquiryRepository;
-	
-	@GetMapping(value = "/inquiry")
-	public List<Inquiry> getInquirys() throws InterruptedException {
-		return repo.findAll(Sort.by("inquiryId").descending());
+	@GetMapping(value = "/inquirys/{cutomerId}")
+	public List<Inquiry> getInquirys(@PathVariable long cutomerId) {
+		return repo.findAllByCustomerId(Sort.by("inquiryId").descending(), cutomerId);
 	}
 	
     @GetMapping(value = "/inquiry/paging")
@@ -47,7 +44,7 @@ public class InquiryController {
 		return repo.findAll(PageRequest.of(page, size, Sort.by("inquiryId").descending()));
 	}
 	
-	@PostMapping(value = "/inquiry")
+	@PostMapping(value = "/inquirys")
 	public Inquiry addInquiry(@RequestBody Inquiry inquiry, HttpServletResponse res) {
 		System.out.println(inquiry);
 		
@@ -55,19 +52,8 @@ public class InquiryController {
 			res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return null;
 		}
-		Inquiry inquiryItem = Inquiry.builder()
-				.inquiryId(inquiry.getInquiryId())
-				.description(inquiry.getDescription())
-				.email(inquiry.getEmail())
-				.tel(inquiry.getTel())
-				.name(inquiry.getName())
-				.title(inquiry.getTitle())
-				.oneDayClassId(inquiry.getOneDayClassId())
-				.oneDayClassName(inquiry.getOneDayClassName())
-				.answer(inquiry.getAnswer())
-				.createdTime(new Date().getTime()).build();
 
-		Inquiry inquirySaved = repo.save(inquiryItem);
+		Inquiry inquirySaved = repo.save(inquiry);
 		
 		res.setStatus(HttpServletResponse.SC_CREATED);
 		
