@@ -1,62 +1,103 @@
 import Layout from "../../components/layout";
 import React, { useEffect } from "react";
-import styles from "./ReservationBar.module.css";
-import { Table, Button, Form, Navbar } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../../provider";
-import { ReservationItem } from "../../provider/modules/reservation";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../provider";
+import { getTimeString } from "../../lib/string";
+import {
+  requestFetchNextReservations,
+  requestFetchReservations,
+} from "../../middleware/modules/reservation";
 
-export interface reservationProp {
-  item: ReservationItem[];
-}
-
-const reservations = ({ item }: reservationProp) => {
+const reservationList = () => {
+  const reservation = useSelector((state: RootState) => state.reservation);
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+
+  // useEffect(() => {
+  //   if (!reservation.isFetched) {
+  //     const reservationPageSize = localStorage.getItem("reservation_page_size");
+
+  //   }
+  // },
+  // dispatch, reservation.isFetched, reservation.pageSize]);
+
+  useEffect(() => {
+    if (!reservation.isFetched) {
+      const reservationPageSize = localStorage.getItem("reservation_page_size");
+
+      dispatch(
+        requestFetchNextReservations({
+          page: 0,
+          size: reservationPageSize
+            ? +reservationPageSize
+            : reservation.pageSize,
+        })
+      );
+    }
+  }, [dispatch, reservation.isFetched, reservation.pageSize]);
 
   return (
-    <>
-      <Layout>
-        <Navbar />
-        <section>
-          <div style={{ display: "flex" }}>
-            {item.map((item, index) => (
-              <div
-                key={index}
-                className="card"
-                style={{
-                  width: "250px",
-                  marginLeft: index % 4 === 0 ? "0" : "1rem",
-                  marginTop: index > 3 ? "1rem" : "0",
-                }}
-              >
-                <div
-                  style={{ cursor: "pointer" }}
+    <Layout>
+      <section>
+        <h1>클래스 예약내역</h1>
+        {!reservation && (
+          <div className="text-center my-5">예약내역이 없습니다</div>
+        )}
+        <h4>예약한 클래스 내역입니다</h4>
+        <h6>
+          클래스명을 클릭하시면 해당 원데이클래스의 상세정보 페이지로 이동합니다
+        </h6>
+      </section>
+      <Table responsive="sm" style={{ width: "640px" }}>
+        <thead>
+          <tr>
+            <th>클래스명</th>
+            <th>강의일정</th>
+            <th>강의 시간</th>
+            <th>수강생</th>
+            <th>인원수</th>
+            <th>가격</th>
+            <th>연락처</th>
+            {/* <th>클래스 보기</th> */}
+          </tr>
+        </thead>
+        <tbody>
+          {reservation.isFetched &&
+            reservation.data.map((item, index) => (
+              <tr key={`reservation-item-${index}`}>
+                <td
                   onClick={() => {
-                    router.push(`/onedayclass/detail/${item.oneDayClassID}`);
+                    router.push(`/onedayclass/detail/${item.oneDayClassId}`);
                   }}
                 >
-                  <div className="card-body">
-                    <p className="card-title">{item.reservationDay}</p>
-                    <p>{item.title}</p>
-                  </div>
-                </div>
-              </div>
+                  {item.title}
+                </td>
+                <td>{item.reservationDay}</td>
+                <td>{item.reservationTime}</td>
+                <td>{item.name}</td>
+                <td>{item.person}</td>
+                <td>{item.price}</td>
+                <td>{item.tel}</td>
+                {/* <td style={{ width: "130px" }}>
+                  <Button
+                    className="bg-light "
+                    size="sm"
+                    onClick={() => {
+                      router.push(`/onedayclass/detail/${item.oneDayClassId}`);
+                    }}
+                  >
+                    {" "}
+                    자세히
+                  </Button>
+                </td> */}
+              </tr>
             ))}
-          </div>
-        </section>
-      </Layout>
-    </>
+        </tbody>
+      </Table>
+    </Layout>
   );
 };
 
-export async function getServerSideProps() {
-  const res = await axios.get<ReservationItem[]>(
-    `http://localhost:8080/reservations`
-  );
-  const item = res.data;
-  return { prop: { item } };
-}
-
-export default reservations;
+export default reservationList;

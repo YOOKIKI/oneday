@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 public class InquiryService {
 	
 	private InquiryRepository repo;
-	private InquiryAnswerRepository inquiryAnswerRepo;
+	private InquiryRepository inquiryRepo;
 	
 	private RabbitTemplate rabbit;
 	
-	private InquiryService(RabbitTemplate rabbit,  InquiryAnswerRepository inquiryAnswerRepo ) {
+	private InquiryService(RabbitTemplate rabbit,  InquiryRepository inquiryRepo ) {
 		this.rabbit = rabbit;
-		this.inquiryAnswerRepo = inquiryAnswerRepo;
+		this.inquiryRepo = inquiryRepo;
 	}
 
 	public void sendInquiry(Inquiry inquiry) {
@@ -24,10 +24,10 @@ public class InquiryService {
 	}
 	
 	@RabbitListener(queues = "inquiry.answer")
-	public void receiveInquiry(InquiryAnswer answer) {
+	public void receiveInquiry(Inquiry inquiry) {
 		System.out.println("´äº¯¿È");
 		
-		inquiryAnswerRepo.save(answer);
+		inquiryRepo.save(inquiry);
 	}
 	
 	public Inquiry saveInquiry(Inquiry inquiry) {

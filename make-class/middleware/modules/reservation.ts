@@ -1,19 +1,33 @@
 import ReservationReducer, {
   addReservation,
-  initialCompleted  
+  initialCompleted,  
+  initialNextReservation,  
+  initialReservation,  
+  loadReservation,
+  ReservationPage,
+  ReservationResponse
 } from "../../provider/modules/reservation";
 import { createAction, nanoid, PayloadAction } from "@reduxjs/toolkit";
-import { ReservationItem } from "../../provider/modules/reservation";
+import reservation, { ReservationItem } from "../../provider/modules/reservation";
 import {
   call,
   put,
   takeEvery
 } from "@redux-saga/core/effects";
-import api, { ReservationRequest, ReservationResponse } from "../../api/reservation";
+import api, { ReservationItemResponse, ReservationPagingReponse, ReservationRequest } from "../../api/reservation";
 import { AxiosResponse } from "axios";
 import { endProgress, startProgress } from "../../provider/modules/progress";
 import { addAlert } from "../../provider/modules/alert";
+import { takeLatest } from "redux-saga/effects";
 
+// export interface OneDayClassIdRequest {
+//   oneDayClassId: number; page: number;
+//   size: number;}
+
+export interface PageRequest {
+  page: number;
+  size: number;
+}
 
 export const requestAddReservation = createAction<ReservationItem>(
   `${ReservationReducer.name}/requestAddReservation`
@@ -28,8 +42,12 @@ export const requestFetchReservations = createAction(
   `${ReservationReducer.name}/requestFetchReservations`
 );
 
-export const requestFetchReservationItem = createAction<number>(
-  `${ReservationReducer.name}/requestFetchReservationItem`
+// export const requestFetchReservationItem = createAction<OneDayClassIdRequest>(
+//   `${ReservationReducer.name}/requestFetchReservationItem`
+// );
+
+export const requestFetchNextReservations = createAction<PageRequest>(
+  `${ReservationReducer.name}/requestFetchNextReservations`
 );
 
 export const requestModifyReservation = createAction<ReservationItem>(
@@ -51,28 +69,19 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
     
     // rest api로 보낼 요청객체
     const reservationItemRequest: ReservationRequest = {
-      oneDayClassId: reservationItemPayload.oneDayClassID,
+      oneDayClassId: reservationItemPayload.oneDayClassId,
       name: reservationItemPayload.name,
       tel: reservationItemPayload.tel,
       price: reservationItemPayload.price,
       reservationTime: reservationItemPayload.reservationTime,
+      reservationDay: reservationItemPayload.reservationDay,
       capacity: reservationItemPayload.capacity,
       person: reservationItemPayload.person,
       title: reservationItemPayload.title,
       createdTime: reservationItemPayload.createdTime,
     };
 
-    // ------ 1. rest api에 post로 데이터 보냄
-    // call(함수, 매개변수1, 매개변수2...) -> 함수를 호출함
-
-    // 함수가 Promise를 반환하면, (비동기함수)
-    // Saga 미들웨어에서 현재 yield에 대기상태로 있음
-    // Promise가 resolve(처리완료)되면 다음 yield로 처리가 진행됨
-    // reject(거부/에러)되면 예외를 던짐(throw) -> try ... catch문으로 받을 수 있음.
-
-    // await api.add(photoItemRequest) 이 구문과 일치함
-    // 결과값을 형식을 지졍해야함
-    const result: AxiosResponse<ReservationResponse> = yield call(
+    const result: AxiosResponse<ReservationItemResponse> = yield call(
       api.add,
       reservationItemRequest
     );
@@ -80,11 +89,9 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
     // spinner 사라지게 하기
     yield put(endProgress());
 
-    // ------ 2. redux state를 변경함
-    // 백엔드에서 처리한 데이터 객체로 state를 변경할 payload 객체를 생성
     const reservationItem: ReservationItem = {
       id: result.data.id,
-      oneDayClassID: result.data.oneDayClassID,
+      oneDayClassId: result.data.oneDayClassId,
       name: result.data.name,
       tel: result.data.tel,
       reservationDay: result.data.reservationDay,
@@ -97,9 +104,6 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
       person:result.data.person
     };
 
-    // dispatcher(액션)과 동일함
-    // useDispatch로 dispatcher 만든 것은 컴포넌트에서만 가능
-    // put이펙트를 사용함
     yield put(addReservation(reservationItem));
 
     // completed 속성 삭제
@@ -110,7 +114,6 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
       addAlert({ id: nanoid(), variant: "success", message: "저장되었습니다." })
     );
   } catch (e: any) {
-    // 에러발생
     // spinner 사라지게 하기
     yield put(endProgress());
     // alert박스를 추가해줌
@@ -120,6 +123,93 @@ function* addDataNext(action: PayloadAction<ReservationItem>) {
   }
 }
 
+function* fetchData() {
+  yield console.log("--fetchData--");
+
+    
+  const result: AxiosResponse<ReservationItem[]> = yield call(api.fetch);
+
+  yield put(endProgress);
+
+  // const ReservationItem: ReservationResponse = {
+    // data: result.data.map(
+  const reservations = result.data.map(
+      (item) =>
+      ({
+        id: item.id,
+        oneDayClassId: item.oneDayClassId,
+        name: item.name,
+        tel: item.tel,
+        reservationDay: item.reservationDay,
+        reservationTime: item.reservationTime,
+        price: item.price,
+        person: item.person,
+        capacity: item.capacity,
+        title: item.title,
+        status: item.status,
+        createdTime: item.createdTime
+      } as ReservationItem)
+    )
+  
+    
+    yield put(initialReservation(reservations));
+}
+
+function* fetchNextData(action: PayloadAction<PageRequest>) {
+  yield console.log("--fetchNext Data--");
+
+
+  const page = action.payload.page;
+  const size = action.payload.size;
+    
+  yield put(startProgress());
+
+  localStorage.setItem("reservation_page_size", size.toString());
+  try {
+    const result: AxiosResponse<ReservationPagingReponse> = yield call(
+      api.fetchPaging,
+      page,
+      size
+    );
+
+    yield put(endProgress());
+
+    const reservationPage: ReservationPage = {
+      data: result.data.content.map(
+        (item) =>
+          ({
+            id: item.id,
+            oneDayClassId: item.oneDayClassId,
+            name: item.name,
+            tel: item.tel,
+            reservationDay: item.reservationDay,
+            reservationTime: item.reservationTime,
+            price: item.price,
+            person: item.person,
+            capacity: item.capacity,
+            title: item.title,
+            status: item.status,
+            createdTime: item.createdTime
+          } as ReservationItem)
+      ),
+      totalElements: result.data.totalEements,
+      totalPages: result.data.totalEements,
+      page: result.data.number,
+      pageSize: result.data.size,
+      isLast: result.data.last,
+    };
+
+    yield put(initialNextReservation(reservationPage));
+  } catch (e: any) {
+     yield put(endProgress());
+    yield put(
+      addAlert({ id: nanoid(), variant: "danger", message: e.message })
+    );
+  }
+}
+
 export default function* reservationSaga() {
   yield takeEvery(requestAddReservation, addDataNext);
+  // yield takeLatest(requestFetchReservations, fetchData);
+  yield takeLatest(requestFetchNextReservations, fetchNextData)
 }

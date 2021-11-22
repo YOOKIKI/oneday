@@ -18,6 +18,7 @@ public class ReservationRequest {
     private String name;
     private String tel;
     private String reservationTime;
+    private String reservationDay;
     private long price;
     private int person;
     private long capacity;

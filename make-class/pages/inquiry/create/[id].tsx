@@ -20,16 +20,18 @@ const inquiryCreate = () => {
   const telInput = useRef<HTMLInputElement>(null);
   const emailInput = useRef<HTMLInputElement>(null);
   const descriptionTxta = useRef<HTMLTextAreaElement>(null);
-  const answerInput = useRef<HTMLInputElement>(null);
+  // const answerInput = useRef<HTMLInputElement>(null);
 
   const router = useRouter();
   const id = router.query.id as string;
   console.log(id);
 
   const inquiryData = useSelector((state: RootState) => state.inquiry.data);
+
   const inquiryItem = useSelector((state: RootState) =>
     state.inquiry.data.find((item) => item.oneDayClassId === +id)
   );
+
   const dispatch = useDispatch<AppDispatch>();
 
   const isAddCompleted = useSelector(
@@ -161,6 +163,7 @@ const inquiryCreate = () => {
             id="button-addon2"
             onClick={() => {
               handleAddClick();
+              router.push("/inquiry");
             }}
           >
             문의하기

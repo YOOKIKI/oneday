@@ -3,10 +3,10 @@ import reservation from "../../api/reservation";
 
 export interface ReservationItem {
   id?: number;
-  oneDayClassID: number;
+  oneDayClassId: number;
   name: string;
   tel: string;
-  reservationDay?: string;
+  reservationDay: string;
   reservationTime: string;
   price: number;
   person: number;
@@ -16,18 +16,22 @@ export interface ReservationItem {
   createdTime: number;
 }
 
-export interface ReservationItemResponse {
+export interface ReservationResponse {
   data: ReservationItem[];
 }
 
-// export interface ReservationPage {
+// export interface ReservationItemResponse {
 //   data: ReservationItem[];
-//   totalElements: number;
-//   // totalPages: number;
-//   // page: number;
-//   // pageSize: number;
-//   isLast: boolean;
 // }
+
+export interface ReservationPage {
+  data: ReservationItem[];
+  totalElements: number;
+  totalPages: number;
+  page: number;
+  pageSize: number;
+  isLast: boolean;
+}
 
 interface ReservationState {
   data: ReservationItem[];
@@ -36,19 +40,18 @@ interface ReservationState {
   isRemoveCompleted?: boolean; 
   isModifyCompleted?: boolean; 
   totalElements?: number;
-  // totalPages: number;
-  // page: number;
-  // pageSize: number;
+  totalPages: number;
+  page: number;
+  pageSize: number;
   isLast?: boolean;
 }
 
 const initialState: ReservationState = {
   data: [],
   isFetched: false,
-  // page: 0,
-  // // pageSize: onedayPageSize ? +onedayPageSize : 8,
-  // pageSize: 8,
-  // totalPages: 0,
+  page: 0,
+  pageSize: 8,
+  totalPages: 0,
 };
 
 
@@ -62,6 +65,10 @@ const reservationSlice = createSlice({
       console.log(reservation);
       state.data.unshift(reservation);
       state.isAddCompleted = true;
+    },
+    loadReservation: (state, action: PayloadAction<ReservationResponse>) => {
+      state.data = action.payload.data;
+      console.log("—in reducer function—");
     },
     initialCompleted: (state) => {
       delete state.isAddCompleted;
@@ -102,13 +109,15 @@ const reservationSlice = createSlice({
   
       state.isFetched = true;
     },
-    //   initialNextReservation: (state, action: PayloadAction<ReservationPage>) => {
-    //     // 백엔드에서 받아온 데이터를 기존데이터 뒤로 합침
-    //     // 컨텐트
-    //     state.data = state.data.concat(action.payload.data);
-    //     // 데이터를 받아옴으로 값을 남김
-    //     state.isFetched = true;
-    // },
+    initialNextReservation: (state, action: PayloadAction<ReservationPage>) => {
+      state.data = action.payload.data;
+      state.totalElements = action.payload.totalElements;
+      state.totalPages = action.payload.totalPages;
+      state.page = action.payload.page;
+      state.pageSize = action.payload.pageSize;
+      state.isLast = action.payload.isLast;
+      state.isFetched = true;
+    },
   }
 });
 
@@ -118,7 +127,9 @@ export const {
   modifyReservation,
   initialReservationItem,
   initialReservation,
-  initialCompleted
+  initialCompleted,
+  initialNextReservation,
+  loadReservation
 } = reservationSlice.actions;
 
 

@@ -29,3 +29,7 @@
   border: 1px solid #b3b3b3;
   transition: all 0.125s ease;
 }
+
+.NavDropdown {
+  font-weight: bold;
+}

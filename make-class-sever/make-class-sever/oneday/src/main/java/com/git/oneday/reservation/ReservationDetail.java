@@ -18,10 +18,10 @@ import lombok.NoArgsConstructor;
 public class ReservationDetail {
 
 	@Id
-	private long reservationId; // 주문 기본정보의 id
+	private long reservationId; //기본정보의 id
 
 	
-	//	 주문당시에 정보로 기록
+	//	 예약정보
 	private long oneDayClassId;
     private int price;
 	private int capacity;

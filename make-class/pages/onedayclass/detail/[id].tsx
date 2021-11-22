@@ -20,6 +20,7 @@ const OnedayDetail = ({ item }: OnedayProp) => {
   const telInput = useRef() as MutableRefObject<HTMLInputElement>;
   const countSelect = useRef() as MutableRefObject<HTMLSelectElement>;
   const timeSelect = useRef() as MutableRefObject<HTMLSelectElement>;
+  const dayInput = useRef() as MutableRefObject<HTMLInputElement>;
 
   const router = useRouter();
 
@@ -32,12 +33,14 @@ const OnedayDetail = ({ item }: OnedayProp) => {
     const tel = telInput.current.value;
     const count = countSelect.current.value;
     const time = timeSelect.current.value;
+    const day = dayInput.current.value;
 
     const reservationItem: ReservationItem = {
-      oneDayClassID: onedayItemId,
+      oneDayClassId: onedayItemId,
       name: name,
       tel: tel,
       reservationTime: time,
+      reservationDay: day,
       person: +count,
       price:
         item && item.price > 0 ? item.price * +countSelect.current.value : 0,
@@ -148,7 +151,7 @@ const OnedayDetail = ({ item }: OnedayProp) => {
               </select>
             </div>
             <div>
-              <input type="date" />
+              <input type="date" ref={dayInput} />
               <p className="textBold">예약시간</p>
               <select className="form-select" ref={timeSelect}>
                 <option>시간</option>
@@ -172,6 +175,7 @@ const OnedayDetail = ({ item }: OnedayProp) => {
                 id="button-addon2"
                 onClick={() => {
                   createReservation(item.oneDayClassId);
+                  router.push("/onedayclass");
                 }}
               >
                 예약하기

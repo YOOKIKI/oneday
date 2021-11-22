@@ -13,9 +13,9 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <div>
-      <Link href="/onedayclass">
+      {/* <Link href="/onedayclass">
         <h1>Make Class</h1>
-      </Link>
+      </Link> */}
       <header>
         <HeadBar />
         <Sidebar />

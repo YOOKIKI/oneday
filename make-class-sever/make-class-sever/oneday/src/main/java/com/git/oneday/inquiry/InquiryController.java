@@ -34,9 +34,14 @@ public class InquiryController {
 		this.inquiryService = inquiryService;
 	}
 	
-	@GetMapping(value = "/inquirys/{cutomerId}")
-	public List<Inquiry> getInquirys(@PathVariable long cutomerId) {
-		return repo.findAllByCustomerId(Sort.by("inquiryId").descending(), cutomerId);
+//	@GetMapping(value = "/inquirys/{cutomerId}")
+//	public List<Inquiry> getInquirys(@PathVariable long cutomerId) {
+//		return repo.findAllByCustomerId(Sort.by("inquiryId").descending(), cutomerId);
+//	}
+	
+	@GetMapping(value = "/inquirys/{inquiryId}")
+	public List<Inquiry> getInquirys(@PathVariable long inquiryId) {
+		return repo.findAll(Sort.by("inquiryId").descending());
 	}
 	
     @GetMapping(value = "/inquiry/paging")

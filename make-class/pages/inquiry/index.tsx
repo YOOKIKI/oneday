@@ -14,7 +14,7 @@ const Inquiry = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
 
-  const ondayClessList = useSelector((state: RootState) => state.oneday);
+  const onedayClessList = useSelector((state: RootState) => state.oneday);
 
   useEffect(() => {
     dispatch(requestFetchNextOneday());
@@ -35,10 +35,11 @@ const Inquiry = () => {
           </tr>
         </thead>
         <tbody>
-          {(!ondayClessList.isFetched || ondayClessList.data.length === 0) && (
+          {(!onedayClessList.isFetched ||
+            onedayClessList.data.length === 0) && (
             <div className="text-center my-5">클래스가 없습니다.</div>
           )}
-          {ondayClessList.data.map((item, index) => (
+          {onedayClessList.data.map((item, index) => (
             <tr key={`inquiry-item-${index}`}>
               <td>{item.oneDayClassId}</td>
               {/* <td>{item.inquiryId}</td> */}

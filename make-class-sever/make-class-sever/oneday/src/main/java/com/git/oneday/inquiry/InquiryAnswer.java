@@ -26,4 +26,5 @@ public class InquiryAnswer {
 	private String oneDayClassName;
 	private String description;
 	private long createdTime;
+	private String answer;
 }

@@ -5,10 +5,14 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.git.oneday.reservation.request.ReservationRequest;
@@ -26,7 +30,7 @@ public class ReservationController {
 		this.repo = repo;
 	}
 
-	@PostMapping("/reservations")
+	@PostMapping(value = "/reservations")
 	public Reservation requestReservation(@RequestBody ReservationRequest reqReservation, HttpServletResponse res) {
 		Reservation reservationItem = Reservation
 				.builder()
@@ -35,6 +39,7 @@ public class ReservationController {
 				.name(reqReservation.getName())
 				.capacity(reqReservation.getCapacity())
 				.reservationTime(reqReservation.getReservationTime())
+				.reservationDay(reqReservation.getReservationDay())
 				.createdTime(reqReservation.getCreatedTime())
 				.oneDayClassId(reqReservation.getOneDayClassId())
 				.status(reqReservation.isStatus())
@@ -51,18 +56,28 @@ public class ReservationController {
 		
 	}
 
-	// 주문 목록 조회
-	@GetMapping("/reservations")
+	// 목록 조회
+	@GetMapping(value = "/reservations")
 	public List<Reservation> getReservations(){
 //		// 하위 테이블까지 조회함
-		return repo.findAll();
+		return repo.findAll(Sort.by("oneDayClassId").descending());
 
 	}
-	// 주문 1건만 조회
-		// 하위 테이블 정보를 포함하여 반환
-		@GetMapping("/reservations/{id}")
-		public Reservation getReservation(@PathVariable long id){
-			System.out.println(id);
-			return repo.findById(id).orElse(null);
-		}
+	
+	@GetMapping(value = "/reservations/paging")
+	public Page<Reservation> getReservationPaging(@RequestParam int page, @RequestParam int size) {
+//		System.out.println("신호 왔음");
+		return repo.findAll(PageRequest.of(page, size, Sort.by("oneDayClassId").descending()));
+	}
+	
+//	// 1건만 조회
+//		// 하위 테이블 정보를 포함하여 반환
+//		@GetMapping(value= "/reservations/{oneDayClassId}")
+//		public Reservation getReservation(@PathVariable long oneDayClassId){
+//			System.out.println(oneDayClassId);
+//			List<Reservation> reservationList;
+//			
+//		 reservationList = repo.findByOneDayClassId(Sort.by("oneDayClassId"),oneDayClassId);
+//			return null;
+//		}
 }
