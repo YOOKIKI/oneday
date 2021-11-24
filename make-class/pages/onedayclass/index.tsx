@@ -50,25 +50,6 @@ const Index = ({ item }: OnedayProp) => {
               </div>
             ))}
           </div>
-          {/* {!oneday.isLast && (
-          <div className="d-flex justify-content-center mt-4">
-            <a
-              href="#!"
-              onClick={(e) => {
-                e.preventDefault(); // 기본 동작 방지
-                dispatch(
-                  requestFetchNextOnedays({
-                    page: oneday.page + 1,
-                    size: oneday.pageSize,
-                  })
-                );
-              }}
-              className="link-secondary fs-6 text-nowrap"
-            >
-              더보기
-            </a>
-          </div>
-        )} */}
         </section>
       </Layout>
     </>

@@ -31,7 +31,7 @@ const Inquiry = () => {
           <tr>
             <th>#</th>
             <th>클래스명</th>
-            <th>신청일</th>
+            <th>문의하기</th>
           </tr>
         </thead>
         <tbody>
@@ -55,7 +55,7 @@ const Inquiry = () => {
                   }}
                 >
                   {" "}
-                  문의하기
+                  문의하러가기
                 </Button>
               </td>
             </tr>
