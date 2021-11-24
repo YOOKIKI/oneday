@@ -12,11 +12,11 @@ spring:
   jpa:
     show-sql: true
     generate-ddl: true
-  cache: 
-    type: redis
-  redis:
-    host: 127.0.0.1
-    port: 6379
+#  cache: 
+#    type: redis
+#  redis:
+#    host: 127.0.0.1
+#    port: 6379
   rabbitmq:
     addresses: amqps://b-37fd59b7-a684-4102-bf89-bf791b61932c.mq.ap-northeast-2.amazonaws.com:5671
     username: rabbitmq

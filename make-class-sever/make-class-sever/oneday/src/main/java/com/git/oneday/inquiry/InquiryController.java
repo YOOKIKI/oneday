@@ -44,11 +44,12 @@ public class InquiryController {
 		return repo.findAll(Sort.by("inquiryId").descending());
 	}
 	
-    @GetMapping(value = "/inquiry/paging")
-	public Page<Inquiry> getInquiryspaging(@RequestParam int page, @RequestParam int size) {
+    @GetMapping(value = "/inquirys/paging")
+	public Page<Inquiry> getInquiryspaging(@RequestParam int page, @RequestParam int size, HttpServletRequest req, HttpServletResponse res) {
 		return repo.findAll(PageRequest.of(page, size, Sort.by("inquiryId").descending()));
 	}
 	
+    
 	@PostMapping(value = "/inquirys")
 	public Inquiry addInquiry(@RequestBody Inquiry inquiry, HttpServletResponse res) {
 		System.out.println(inquiry);
@@ -67,7 +68,7 @@ public class InquiryController {
 		
 	}
 		
-	@DeleteMapping(value = "/inquiry/{inquiryId}")
+	@DeleteMapping(value = "/inquirys/{inquiryId}")
 	public boolean removeInquiry(@PathVariable long id, HttpServletRequest req, HttpServletResponse res) {
 		
 		Optional<Inquiry> inquiry = repo.findById(id);
@@ -81,7 +82,7 @@ public class InquiryController {
 		return true;
 	}
 	
-	@PutMapping(value = "/inquiry/{inquiryId}")
+	@PutMapping(value = "/inquirys/{inquiryId}")
 	public Inquiry modifyInquiry(@PathVariable long id, @RequestBody Inquiry inquiry,HttpServletResponse res) {
 		
 		Optional<Inquiry> inquiryItem = repo.findById(id);

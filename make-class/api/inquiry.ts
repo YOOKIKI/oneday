@@ -44,10 +44,19 @@ const inquiryApi = {
     createAxiosInstance().get<InquiryItemResponse[]>(
       `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${customerId}`),
   
+  fetchPaging:(page: number, size: number) =>
+    createAxiosInstance().get<InquiryPagingReponse>(
+    `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/paging?page=${page}&size=${size}`
+  ),
+  
   add:(inquiryItem: InquiryItemRequest) =>
     createAxiosInstance().post<InquiryItemResponse>(
       `${process.env.NEXT_PUBLIC_API_BASE}/inquirys`,
       inquiryItem
+    ),
+  remove: (id: number) =>
+    createAxiosInstance().delete<boolean>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${id}`
     ),
 
 };

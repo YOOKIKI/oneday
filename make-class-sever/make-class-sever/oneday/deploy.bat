@@ -1,0 +1,3 @@
+scp -i "c:\keyfile\onedaybackend.pem" -r ./build/libs/oneday*.jar ubuntu@ec2-52-78-161-60.ap-northeast-2.compute.amazonaws.com:/home/ubuntu/app/onedayclass
+ssh -i "c:\keyfile\onedaybackend.pem" ubuntu@ec2-52-78-161-60.ap-northeast-2.compute.amazonaws.com "pkill -9 -f java"
+ssh -i "c:\keyfile\onedaybackend.pem" ubuntu@ec2-52-78-161-60.ap-northeast-2.compute.amazonaws.com "cd /home/ubuntu/app/onedayclass; nohup java -Dspring.profiles.active=dev -jar oneday*.jar 1>oneday.log 2>&1 &"

@@ -5,7 +5,6 @@ import React from "react";
 import { AppDispatch, RootState } from "../../../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { requestModifyInquiry } from "../../../middleware/modules/inquiry";
 import {
   addInquiry,
   InquiryItem,
@@ -30,8 +29,8 @@ const InquiryEdit = () => {
     isModifyCompleted && router.push("/inquiry");
   }, [isModifyCompleted, router]);
 
-  const oneDayClassIdInput = useRef() as MutableRefObject<HTMLInputElement>;
-  const onedayclassNameInput = useRef() as MutableRefObject<HTMLInputElement>;
+  // const oneDayClassIdInput = useRef() as MutableRefObject<HTMLInputElement>;
+  // const onedayclassNameInput = useRef() as MutableRefObject<HTMLInputElement>;
   const titleInput = useRef() as MutableRefObject<HTMLInputElement>;
   const nameInput = useRef() as MutableRefObject<HTMLInputElement>;
   const telInput = useRef() as MutableRefObject<HTMLInputElement>;
@@ -42,13 +41,13 @@ const InquiryEdit = () => {
     console.log("save");
     if (inquiryItem) {
       const item = { ...inquiryItem };
-      (item.oneDayClassId = oneDayClassIdInput.current
-        ? oneDayClassIdInput.current.value
-        : ""),
-        (item.onedayclassName = onedayclassNameInput.current
-          ? onedayclassNameInput.current.value
-          : ""),
-        (item.title = titleInput.current ? titleInput.current.value : ""),
+      // (item.oneDayClassId = oneDayClassIdInput.current
+      // ? oneDayClassIdInput.current.value
+      // : ""),
+      // (item.onedayclassName = onedayclassNameInput.current
+      // ? onedayclassNameInput.current.value
+      // : ""),
+      (item.title = titleInput.current ? titleInput.current.value : ""),
         (item.name = nameInput.current ? nameInput.current.value : ""),
         (item.tel = telInput.current ? telInput.current.value : ""),
         (item.email = emailInput.current ? emailInput.current.value : ""),
@@ -83,7 +82,7 @@ const InquiryEdit = () => {
               <InputGroup className="d-flex">
                 <FormControl
                   placeholder="클래스명"
-                  defaultValue={inquiryItem?.onedayclassName}
+                  defaultValue={inquiryItem?.oneDayClassName}
                 />
               </InputGroup>
             </td>

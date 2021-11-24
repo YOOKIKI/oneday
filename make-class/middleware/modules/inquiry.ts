@@ -2,6 +2,8 @@ import InquiryReducer, {
   addInquiry,
   initialCompleted,
   initialInquiry,
+  initialPagedInquiry,
+  InquiryPage,
 } from "../../provider/modules/inquiry";
 import { createAction, nanoid, PayloadAction } from "@reduxjs/toolkit";
 import { InquiryItem } from "../../provider/modules/inquiry";
@@ -14,20 +16,35 @@ import {
 import api, {
   InquiryItemRequest,
   InquiryItemResponse,
+  InquiryPagingReponse,
 } from "../../api/inquiry";
 import { AxiosResponse } from "axios";
 import { endProgress, startProgress } from "../../provider/modules/progress";
 import { addAlert } from "../../provider/modules/alert";
+import { createAxiosInstance } from "../../api/_request";
+
+export interface PageRequest {
+  page: number;
+  size: number;
+}
 
 
 export const requestAddInquiry = createAction<InquiryItem>(
   `${InquiryReducer.name}/requestAddInquiry`
 );
 
+export const requestAddInquiryPaging = createAction<InquiryItem>(
+  `${InquiryReducer.name}/requestAddInquiryPaging`
+)
 
-export const requestFetchInquirys = createAction<number>( 
-  `${InquiryReducer.name}/requestFetchPagingInquirys`
+
+export const requestFetchInquiryItem = createAction<number>( 
+  `${InquiryReducer.name}/requestFetchInquiryItem`
 );
+
+export const requestFetchPagingInquirys = createAction<PageRequest>(
+  `${InquiryReducer.name}/requestFetchPagingInquirys`
+)
 
 
 
@@ -97,7 +114,7 @@ function* addDataNext(action: PayloadAction<InquiryItem>) {
 }
 
 
- function* fetchInquiryData(action: PayloadAction<number>) {
+ function* fetchData(action: PayloadAction<number>) {
      yield console.log("--fetchInquiryData--");
      
      const customerId = action.payload;
@@ -131,9 +148,61 @@ function* addDataNext(action: PayloadAction<InquiryItem>) {
   yield put(initialInquiry(inquiry));
 }
 
+function* fetchPagingData(action: PayloadAction<PageRequest>) {
+  yield console.log("--fetchPagingData--");
+
+  const page = action.payload.page;
+  const size = action.payload.size;
+
+  localStorage.setItem("onquiry_page_size", size.toString());
+
+  yield put(startProgress());
+
+  try {
+    const result: AxiosResponse<InquiryPagingReponse> = yield call(
+      api.fetchPaging,
+      page,
+      size
+    );
+
+    yield put(endProgress());
+
+    const inquiryPage: InquiryPage = {
+      data: result.data.content.map(
+        (item) =>
+        ({
+          customerId: item.customerId,
+          inquiryId: item.inquiryId,
+          oneDayClassId: item.oneDayClassId,
+          oneDayClassName: item.oneDayClassName,
+          title: item.title,
+          name: item.name,
+          tel: item.tel,
+          email: item.email,
+          description: item.description,
+          answer: item.answer,
+          createdTime: item.createdTime
+        } as InquiryItem)
+      ),
+      totalElements: result.data.totalElements,
+      totalPages: result.data.totalElements,
+      page: result.data.number,
+      pageSize: result.data.size,
+      isLast: result.data.last,
+    };
+    yield put(initialPagedInquiry(inquiryPage));
+  } catch(e: any) {
+    yield put(endProgress());
+    yield put(
+      addAlert({ id: nanoid(), variant: "danger", message: e.message })
+    );
+  }
+}
+
 // 숫자 페이징 목록 조회
 
 export default function* inquirySaga() {
     yield takeEvery(requestAddInquiry, addDataNext);
-    yield takeLatest(requestFetchInquirys, fetchInquiryData);
+  yield takeLatest(requestFetchInquiryItem, fetchData);
+  yield takeLatest(requestFetchPagingInquirys, fetchPagingData)
 }

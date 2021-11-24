@@ -1,8 +1,7 @@
-import Image from "next/image";
 import React from "react";
 import NavBar from "../../components/nav";
 import Layout from "../../components/layout";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { OneDayItem } from "../../provider/modules/oneday ";
 import axios from "axios";
 

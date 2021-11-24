@@ -4,11 +4,19 @@ import { useRouter } from "next/router";
 import { AppDispatch, RootState } from "../../../provider";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "react-bootstrap";
-import { removeInquiry } from "../../../provider/modules/inquiry";
-import { getTimeString } from "../../../lib/string";
-import { requestFetchNextOneday } from "../../../middleware/modules/oneday";
+import { InquiryItem, removeInquiry } from "../../../provider/modules/inquiry";
+import {
+  requestFetchInquiryItem,
+  requestFetchPagingInquirys,
+} from "../../../middleware/modules/inquiry";
+import { GetServerSideProps } from "next";
+import axios from "axios";
 
-const detail = () => {
+export interface InquiryProp {
+  item: InquiryItem;
+}
+
+const Detail = ({ item }: InquiryProp) => {
   const inquiry = useSelector((state: RootState) => state.inquiry);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -16,9 +24,17 @@ const detail = () => {
   const inquiryId = router.query.inquiryId as String;
   console.log(inquiryId);
 
-  let inquiryItem = useSelector((state: RootState) =>
-    state.inquiry.data.find((item) => item.inquiryId === +inquiryId)
-  );
+  useEffect(() => {
+    if (!inquiry.isFetched) {
+      const inquiryPageSize = localStorage.getItem("reservation_page_size");
+      dispatch(
+        requestFetchPagingInquirys({
+          page: 0,
+          size: inquiryPageSize ? +inquiryPageSize : inquiry.pageSize,
+        })
+      );
+    }
+  }, [dispatch, inquiry.isFetched, inquiry.pageSize]);
 
   const isRemoveCompleted = useSelector(
     (state: RootState) => state.inquiry.isRemoveCompleted
@@ -29,65 +45,36 @@ const detail = () => {
     isRemoveCompleted && router.push("/inquiry");
   }, [isRemoveCompleted, router]);
 
+  const customer = useSelector((state: RootState) => state.customer);
+
   useEffect(() => {
-    if (!inquiry.isFetched) {
-      const onedayPageSize = localStorage.getItem("inquiry_page_size");
+    if (customer.customerId > 0) {
+      dispatch(requestFetchInquiryItem(customer.customerId));
     }
   }, [dispatch, inquiry.isFetched, inquiry.pageSize]);
 
-  const handleDeleteClick = () => {
-    dispatch(removeInquiry(+inquiryId));
-
-    router.push("/inquiry/list");
-  };
-
   return (
     <Layout>
-      <article>
+      <>
         <section style={{ width: "50vw" }} className="mx-3">
           <h2 className="text-center">문의내역 자세히 보기</h2>
-          {!inquiryItem && (
-            <div className="text-center my-5">문의한 내역이 없네요!</div>
-          )}
-          {inquiryItem && (
+          <div className="detail-wrap d-flex" style={{ width: "80%" }}>
             <table className="table">
-              <tbody>
-                <tr>
-                  <th></th>
-                  <td>{inquiryItem.inquiryId}</td>
-                </tr>
-                <tr>
-                  <th>클래스명</th>
-                  <td>{inquiryItem.oneDayClassName}</td>
-                </tr>
-                <tr>
-                  <th>문의명</th>
-                  <td>{inquiryItem.title}</td>
-                </tr>
-                <tr>
-                  <th>수강생명</th>
-                  <td>{inquiryItem.name}</td>
-                </tr>
-                <tr>
-                  <th>연락처</th>
-                  <td>{inquiryItem.tel}</td>
-                </tr>
-                <tr>
-                  <th>이메일</th>
-                  <td>{inquiryItem.email}</td>
-                </tr>
-                <tr>
-                  <th>내용</th>
-                  <td>{inquiryItem.description}</td>
-                </tr>
-                <tr>
-                  <th>작성일</th>
-                  <td>{getTimeString(inquiryItem.createdTime)}</td>
-                </tr>
-              </tbody>
+              {/* {(!inquiry.isFetched || inquiry.data.length === 0) && ( */}
+              <div className="text-center my-5">데이터가 없습니다.</div>
+              {/* )} */}
+              {/* {inquiry.data.map((item, index) => ( */}
+              {/* <tr key={`inquiry-item-${index}`}> */}
+              <tr>
+                <th>클래스명</th>
+                <td>{item.oneDayClassName}</td>
+                <td>{item.name}</td>
+                <td>{item.email}</td>
+                <td>{item.tel}</td>
+              </tr>
+              {/* ))} */}
             </table>
-          )}
-
+          </div>
           <div className="d-flex">
             <div style={{ width: "50%" }}>
               <Button
@@ -110,9 +97,8 @@ const detail = () => {
               <Button
                 className="btn btn-secondary me-1"
                 onClick={() => {
-                  // dispatch(removeInquiry(+inquiryId));
-                  // router.push("/inquiry/list");
-                  handleDeleteClick();
+                  dispatch(removeInquiry(+inquiryId));
+                  router.push("/inquiry/list");
                 }}
               >
                 삭제
@@ -137,9 +123,20 @@ const detail = () => {
             </div>
           </div>
         </section>
-      </article>
+      </>
     </Layout>
   );
 };
 
-export default detail;
+// export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const inquiryId = context.params?.inquiryId;
+  const res = await axios.get<InquiryItem[]>(
+    `http://localhost:8080/inquiry/${inquiryId}`
+  );
+  const item = res.data;
+
+  return { props: { item } };
+};
+
+export default Detail;

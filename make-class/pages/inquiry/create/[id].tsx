@@ -14,7 +14,7 @@ export interface InquiryProp {
   item: InquiryItem[];
 }
 
-const inquiryCreate = () => {
+const InquiryCreate = () => {
   const titleInput = useRef<HTMLInputElement>(null);
   const nameInput = useRef<HTMLInputElement>(null);
   const telInput = useRef<HTMLInputElement>(null);
@@ -174,4 +174,4 @@ const inquiryCreate = () => {
   );
 };
 
-export default inquiryCreate;
+export default InquiryCreate;

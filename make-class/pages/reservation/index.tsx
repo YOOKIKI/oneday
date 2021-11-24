@@ -10,18 +10,10 @@ import {
   requestFetchReservations,
 } from "../../middleware/modules/reservation";
 
-const reservationList = () => {
+const ReservationList = () => {
   const reservation = useSelector((state: RootState) => state.reservation);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-
-  // useEffect(() => {
-  //   if (!reservation.isFetched) {
-  //     const reservationPageSize = localStorage.getItem("reservation_page_size");
-
-  //   }
-  // },
-  // dispatch, reservation.isFetched, reservation.pageSize]);
 
   useEffect(() => {
     if (!reservation.isFetched) {
@@ -100,4 +92,4 @@ const reservationList = () => {
   );
 };
 
-export default reservationList;
+export default ReservationList;

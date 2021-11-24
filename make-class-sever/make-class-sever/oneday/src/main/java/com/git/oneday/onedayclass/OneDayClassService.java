@@ -1,6 +1,7 @@
 package com.git.oneday.onedayclass;
 
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +12,11 @@ import com.git.oneday.onedayclass.event.ManagerOneDayClass;
 public class OneDayClassService {
 	OneDayClassRepository repo;
 	
+	@Autowired
 	public OneDayClassService(OneDayClassRepository repo) {
 		this.repo = repo;
 	}
 
-//	@CacheEvict(value="oneDayClass", allEntries = true)
 	@RabbitListener(queues = "manager.onedayclass.send")
 	public void receiveOneDayClass(ManagerOneDayClass managerOneDayClass) {
 		System.out.println(managerOneDayClass);
@@ -43,6 +44,8 @@ public class OneDayClassService {
 	repo.save(oneDayClass);
 	
 	return oneDayClass;
-	
 	}
+
+
+	
 }

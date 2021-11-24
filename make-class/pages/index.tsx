@@ -18,7 +18,7 @@ export interface OnedayProp {
   item: OneDayItem[];
 }
 
-const mainIndex = ({ item }: OnedayProp) => {
+const MainIndex = ({ item }: OnedayProp) => {
   return (
     <div style={{ marginLeft: "5rem", marginRight: "5rem" }}>
       <Link href="/onedayclass">
@@ -75,4 +75,4 @@ export async function getServerSideProps() {
   return { props: { item } };
 }
 
-export default mainIndex;
+export default MainIndex;

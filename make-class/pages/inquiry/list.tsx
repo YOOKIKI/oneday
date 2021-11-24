@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../provider";
 import { getTimeString } from "../../lib/string";
-import { requestFetchInquirys } from "../../middleware/modules/inquiry";
+import { requestFetchInquiryItem } from "../../middleware/modules/inquiry";
 
 const List = () => {
   const inquiry = useSelector((state: RootState) => state.inquiry);
@@ -15,7 +15,7 @@ const List = () => {
 
   useEffect(() => {
     if (customer.customerId > 0) {
-      dispatch(requestFetchInquirys(customer.customerId));
+      dispatch(requestFetchInquiryItem(customer.customerId));
     }
   }, []);
 

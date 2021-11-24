@@ -7,7 +7,7 @@ import Link from "next/link";
 import HeadBar from "../../components/headbar/headbar";
 import Style from "../../components/layout.module.css";
 
-export default function login() {
+export default function Login() {
   return (
     <Layout>
       <section className={Style.login}>
