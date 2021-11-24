@@ -132,7 +132,7 @@ const Detail = ({ item }: InquiryProp) => {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const inquiryId = context.params?.inquiryId;
   const res = await axios.get<InquiryItem[]>(
-    `http://localhost:8080/inquiry/${inquiryId}`
+    `${process.env.NEXT_PUBLIC_API_BASE}/inquiry/${inquiryId}`
   );
   const item = res.data;
 

@@ -204,7 +204,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id;
 
   const res = await axios.get<OneDayItem[]>(
-    `http://localhost:8080/onedayclass/${id}`
+    `${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/${id}`
   );
   const item = res.data;
 

@@ -77,7 +77,7 @@ const Index = ({ item }: OnedayProp) => {
 
 export async function getServerSideProps() {
   const res = await axios.get<OneDayItem[]>(
-    `http://localhost:8080/onedayclass`
+    `${process.env.NEXT_PUBLIC_API_BASE}/onedayclass`
   );
   const item = res.data;
   return { props: { item } };
