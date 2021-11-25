@@ -1,8 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import oneday from "../../api/oneday";
 import { ReservationItem } from "./reservation";
 
-export interface OneDayItem { // 이게 원데이 클래스 1개의 타입이죠 ?네 그럼 이안에 예약이 들어있아야ㅐ 합니다 ㅋㅋ 
+export interface OneDayItem { // 예약이 들어있아야합니다
   oneDayClassId: number;
   title: string;
   capacity: number;
@@ -18,7 +17,7 @@ export interface OneDayItem { // 이게 원데이 클래스 1개의 타입이죠
   endTime: string;
   price: number;
   createdTime: number;
-  reservation?: ReservationItem[]; // 이런느낌 으로 아..
+  reservation?: ReservationItem[];
 }
 
 export interface OneDayClassItemResponse {
@@ -37,7 +36,7 @@ export interface OnedayPage {
 interface OnedayState {
   data: OneDayItem[];
   isFetched: boolean;
-  isAddCompleted?: boolean; // 리덕스 할 때 끄세영
+  isAddCompleted?: boolean; // 리덕스 할 때 끄기
   isRemoveCompleted?: boolean; 
   isModifyCompleted?: boolean; 
   totalElements?: number;
@@ -51,7 +50,6 @@ const initialState: OnedayState = {
   data: [],
   isFetched: false,
   page: 0,
-  // pageSize: onedayPageSize ? +onedayPageSize : 8,
   pageSize: 8,
   totalPages: 0,
 };

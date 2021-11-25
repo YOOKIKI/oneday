@@ -2,9 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Inquiry from "../../pages/inquiry";
 
 export interface InquiryItem {
-  // id: number;
   inquiryId?: number;
-  customerId: number;
   title: string;
   name: string;
   tel: string;
@@ -36,6 +34,10 @@ export interface InquiryPage {
   isLast: boolean;
 };
 
+export interface InquiryResponse {
+  data: InquiryItem[];
+}
+
 
 interface InquiryState {
   data: InquiryItem[];
@@ -52,7 +54,7 @@ interface InquiryState {
 
 const initialState: InquiryState = {
   data: [],
-  isFetched: false,
+  isFetched: true,
   page: 0,
   // pageSize: onedayPageSize ? +onedayPageSize : 8,
   pageSize: 8,
@@ -64,6 +66,11 @@ const inquirySlice = createSlice({
   name: "inquiry",
   initialState,
   reducers: {
+    loadInquiry: (state, action: PayloadAction<InquiryResponse>) => {
+          state.data = action.payload.data;
+          console.log("—in reducer function—");
+        },
+
     addInquiry: (state, action: PayloadAction<InquiryItem>) => {
       const inquiry = action.payload;
 
@@ -157,6 +164,7 @@ export const {
   initialInquiry,
   initialCompleted,
   addTotalpages,
+  loadInquiry,
   initialPagedInquiry,
   // initialNextInquiry,
 } = inquirySlice.actions;

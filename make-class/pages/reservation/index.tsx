@@ -1,14 +1,10 @@
 import Layout from "../../components/layout";
 import React, { useEffect } from "react";
-import { Table, Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../provider";
-import { getTimeString } from "../../lib/string";
-import {
-  requestFetchNextReservations,
-  requestFetchReservations,
-} from "../../middleware/modules/reservation";
+import { requestFetchNextReservations } from "../../middleware/modules/reservation";
 
 const ReservationList = () => {
   const reservation = useSelector((state: RootState) => state.reservation);

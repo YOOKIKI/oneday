@@ -11,7 +11,6 @@ export interface InquiryPagingReponse {
 }
 
 export interface InquiryItemResponse {
-  customerId: number;
   inquiryId: number;
   oneDayClassId: number;
   oneDayClassName: string;
@@ -26,7 +25,6 @@ export interface InquiryItemResponse {
 
 export interface InquiryItemRequest {
   inquiryId?: number;
-  customerId: number;
   oneDayClassId: number;
   oneDayClassName: string;
   title: string;
@@ -40,9 +38,9 @@ export interface InquiryItemRequest {
 
 const inquiryApi = {
   
-  fetch: (customerId: number) =>
-    createAxiosInstance().get<InquiryItemResponse[]>(
-      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${customerId}`),
+  fetch: () =>
+    createAxiosInstance().get<InquiryItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys`),
   
   fetchPaging:(page: number, size: number) =>
     createAxiosInstance().get<InquiryPagingReponse>(
@@ -54,11 +52,16 @@ const inquiryApi = {
       `${process.env.NEXT_PUBLIC_API_BASE}/inquirys`,
       inquiryItem
     ),
-  remove: (id: number) =>
+  remove: (inquiryId: number) =>
     createAxiosInstance().delete<boolean>(
-      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${id}`
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${inquiryId}`
     ),
-
+  
+  modify: (inquiryId: number, inquiryItem: InquiryItemRequest) =>
+    createAxiosInstance().put<InquiryItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/inquirys/${inquiryId}`,
+      inquiryItem
+    ),
 };
 
 

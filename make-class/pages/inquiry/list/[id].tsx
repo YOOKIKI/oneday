@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
-import Layout from "../../components/layout";
+import Layout from "../../../components/layout";
 import { Table, Button } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../provider";
-import { getTimeString } from "../../lib/string";
-import { requestFetchInquiryItem } from "../../middleware/modules/inquiry";
+import { AppDispatch, RootState } from "../../../provider";
+import { getTimeString } from "../../../lib/string";
+import { requestFetchInquiryItem } from "../../../middleware/modules/inquiry";
+import inquiry, { initialInquiryItem } from "../../../provider/modules/inquiry";
 
 const List = () => {
   const inquiry = useSelector((state: RootState) => state.inquiry);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const id = router.query.id as string;
+  // const customer = useSelector((state: RootState) => state.customer);
+  const id = router.query.inquiryId as string;
   console.log(id);
 
   let inquiryItem = useSelector((state: RootState) =>

@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface InquiryRepository extends JpaRepository<Inquiry, Long>{
-//	List<Inquiry>findAllByCustomerId(Sort sort, long customerId);
 }

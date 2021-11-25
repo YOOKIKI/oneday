@@ -1,10 +1,7 @@
 import Layout from "../../components/layout";
 import React, { useEffect } from "react";
-import Link from "next/link";
 import { Table, Button } from "react-bootstrap";
-// import { InquiryItem } from "../../provider/modules/inquiry";
-import router, { useRouter } from "next/router";
-import { getTimeString } from "../../lib/string";
+import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../provider";
 import { requestFetchNextOneday } from "../../middleware/modules/oneday";

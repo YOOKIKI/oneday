@@ -23,7 +23,6 @@ public class Inquiry {
 	
 	private long oneDayClassId;
 	private String oneDayClassName;
-	private long customerId;
 	private String title;
 	private String name;
 	private String tel;

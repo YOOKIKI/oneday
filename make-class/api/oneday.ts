@@ -1,5 +1,3 @@
-import axios from "axios";
-import oneday, { OneDayItem } from "../provider/modules/oneday ";
 import { createAxiosInstance } from "./_request";
 
 

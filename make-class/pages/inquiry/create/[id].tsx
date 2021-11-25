@@ -52,7 +52,6 @@ const InquiryCreate = () => {
 
   const handleAddClick = () => {
     const item: InquiryItem = {
-      customerId: customerId,
       title: titleInput.current ? titleInput.current.value : "",
       name: nameInput.current ? nameInput.current.value : "",
       tel: telInput.current ? telInput.current.value : "",

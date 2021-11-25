@@ -1,18 +1,10 @@
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import HeadBar from "../components/headbar/headbar";
 import NavBar from "../components/nav";
-// import Image from "next/image";
 import router from "next/router";
-import { GetServerSideProps } from "next";
-// import { requestFetchNextOnedays } from "../middleware/modules/oneday";
-import { AppDispatch, RootState } from "../provider";
-import { useDispatch, useSelector } from "react-redux";
-import { requestFetchPagingOneday } from "../middleware/modules/oneday";
 import { OneDayItem } from "../provider/modules/oneday ";
 import axios from "axios";
-// import { requestFetchNextOnedays } from "../middleware/modules/oneday";
 
 export interface OnedayProp {
   item: OneDayItem[];

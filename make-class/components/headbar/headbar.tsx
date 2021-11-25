@@ -3,8 +3,19 @@ import Link from "next/link";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import style from "./headbar.module.css";
 import { NavDropdown } from "react-bootstrap";
+import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../provider";
 
 const HeadBar = () => {
+  const router = useRouter();
+  const id = router.query.inquiryId as string;
+  const dispatch = useDispatch<AppDispatch>();
+
+  let inquiryItem = useSelector((state: RootState) =>
+    state.inquiry.data.find((item) => item && item.inquiryId === +id)
+  );
+
   return (
     <Navbar className={style.headbar}>
       <Container className="w-100">
@@ -25,27 +36,21 @@ const HeadBar = () => {
             className={style.NavDropdown}
           >
             <NavDropdown.Item href="/reservation">나의 클래스</NavDropdown.Item>
-            <NavDropdown.Item href="/inquiry/list">1:1 문의</NavDropdown.Item>
-          </NavDropdown>
-          <Nav.Item className="me-3">
-            {/* <Link href="/onedayclass/create">
-              <a className="text-light me-3">클래스등록</a>
-            </Link> */}
-          </Nav.Item>
-          <Nav.Item>
-            {/* <Link href="/reservations/list">
-              <a className="text-light me-3">나의클래스관리</a>
-            </Link> */}
-          </Nav.Item>
-          {/* <Nav.Item>
-            <NavDropdown title="나의 정보">
-              <NavDropdown.Item href="/reservation">
-                나의 클래스
+            {!inquiryItem && (
+              <NavDropdown.Item
+                onClick={() => {
+                  router.push(`/inquiry/list`);
+                }}
+              >
+                1:1 문의
               </NavDropdown.Item>
-              <NavDropdown.Item href="/inquiry">1:1문의</NavDropdown.Item>
-              <NavDropdown.Divider />
-            </NavDropdown>
-          </Nav.Item> */}
+            )}
+            <Nav.Item className="me-3">
+              <Link href="http://ec2-3-34-43-49.ap-northeast-2.compute.amazonaws.com/">
+                <a className="text-light me-3">클래스관리</a>
+              </Link>
+            </Nav.Item>
+          </NavDropdown>
         </div>
       </Container>
     </Navbar>
