@@ -1,0 +1,1 @@
+ssh -i "C:\keyfile/myworkspace.pem" ubuntu@ec2-3-35-26-9.ap-northeast-2.compute.amazonaws.com "cd /home/ubuntu/oneday/make-class; git pull; npm install; npm run build; nohup npm start 1>/dev/null 2>&1 &"
