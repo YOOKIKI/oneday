@@ -1,10 +1,14 @@
 .headbar {
-  height: 46px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  background-color: rgb(100, 100, 100);
+  font-size: 36px;
+  font-weight: revert;
+  color: #4f5d75;
+  /* background-color: #4f5d75; */
+
+  /* text-light */
 }
 
 .headbar > section {
@@ -31,5 +35,12 @@
 }
 
 .NavDropdown {
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 3rem;
+  color: rgb(46, 70, 70);
+}
+
+#nav-dropdown {
   font-weight: bold;
 }

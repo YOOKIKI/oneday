@@ -23,6 +23,8 @@ public class OneDayClass {
     private String fileName;
     private String managerName;
     private String description;
+    private String startDay;
+    private String endDay;
     private String startTime;
     private String endTime;
     private String category;

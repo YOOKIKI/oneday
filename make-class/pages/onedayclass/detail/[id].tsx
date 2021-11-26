@@ -1,7 +1,7 @@
 import Layout from "../../../components/layout";
 import React, { MutableRefObject, useRef } from "react";
 import { useRouter } from "next/router";
-import { Button } from "react-bootstrap";
+import { Button, Card } from "react-bootstrap";
 import { GetServerSideProps } from "next";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../../provider";
@@ -58,60 +58,64 @@ const OnedayDetail = ({ item }: OnedayProp) => {
 
   return (
     <Layout>
-      <h2 className="text-center">원데이 클래스</h2>
+      <h2
+        className="text-center"
+        style={{
+          marginRight: "250px",
+          fontWeight: "lighter",
+          color: "#4f5d75",
+          textDecorationLine: "underline",
+          textUnderlinePosition: "under",
+        }}
+      >
+        {item.title}
+      </h2>
       <div className="d-flex mt-5">
         {/* 디테일 */}
-        <div className="detail-wrap d-flex" style={{ width: "80%" }}>
-          <table className="table">
-            <tbody>
-              <tr>
-                <th>클래스 사진</th>
-                <td>
-                  <img src={item.photoUrl} width={"300px"} />
-                </td>
-              </tr>
-              <tr>
-                <th>클래스명</th>
-                <td>{item.title}</td>
-              </tr>
-              <tr>
-                <th>설명</th>
-                <td>{item.description}</td>
-              </tr>
-              <tr>
-                <th>price</th>
-                <td>{new Intl.NumberFormat().format(item.price)}원</td>
-              </tr>
-              <tr>
-                <th>인원수</th>
-                <td>{item.capacity}</td>
-              </tr>
-              <tr>
-                <th>일정</th>
-                <td>
-                  {item.startDay} - {item.endDay}
-                </td>
-              </tr>
-              <tr>
-                <th>클래스 수업시간</th>
-                <td>
-                  {item.startTime} ~ {item.endTime}
-                </td>
-              </tr>
-              <tr>
-                <th>등록일</th>
-                <td>{getTimeString(item.createdTime)}</td>
-              </tr>
-            </tbody>
-          </table>
+        <div
+          className="text-nowrap d-flex"
+          style={{ width: "80%", justifyContent: "center" }}
+        >
+          <div
+            style={{ width: "30rem", borderRadius: "10px 10px 10px 10px" }}
+            className="text-center"
+          >
+            <img
+              src={item.photoUrl}
+              className="img-thumbnail"
+              width={"500px"}
+            />
+            <body className="m-3">
+              <>
+                <div>클래스 사진</div>
+                <div className="mb-2 text-muted">
+                  모집인원수 : {item.capacity}
+                </div>
+                <div className="mb-2 text-muted">
+                  클래스 일정 : {item.startDay} - {item.endDay}
+                </div>
+                <div className="mb-2 text-muted">
+                  수업 시간 : {item.startTime} ~ {item.endTime}
+                </div>
+                <div className="mb-2 text-muted">
+                  수강료 : {new Intl.NumberFormat().format(item.price)}원
+                </div>
+                <div>{item.description}</div>
+              </>
+            </body>
+          </div>
         </div>
 
         {/* 예약 */}
         <div
-          className="reserve-wrap d-flex justify-content-end ms-5 me-5"
-          style={{ width: "20%" }}
+          className="reserve-wrap d-flex justify-content-center ms-5 me-5"
+          style={{
+            width: "270px",
+            backgroundColor: "#5c6d8b33",
+            borderRadius: "10px 10px 10px 10px",
+          }}
         >
-          <div className="text-nowrap">
+          <div className="text-nowrap mt-4">
             {/* <tr>
               <th scope="row">클래스명</th>
               <td>{item.title}</td>
@@ -121,7 +125,7 @@ const OnedayDetail = ({ item }: OnedayProp) => {
               <p className="textBold">이름</p>
               <div>
                 <input
-                  className="form-control"
+                  className="form-control me-1"
                   type="text"
                   placeholder="이름"
                   ref={nameInput}
@@ -169,10 +173,14 @@ const OnedayDetail = ({ item }: OnedayProp) => {
                 <option value="21:00 - 22:00">21:00 - 22:00</option>
               </select>
             </div>
-            <div>
+            <div className="justify-content-center">
               <Button
-                className="outline-secondary text-nowrap"
+                className="outline-secondary text-nowrap "
                 id="button-addon2"
+                style={{
+                  backgroundColor: "#6373919d",
+                  justifyContent: "center",
+                }}
                 onClick={() => {
                   createReservation(item.oneDayClassId);
                   router.push("/onedayclass");

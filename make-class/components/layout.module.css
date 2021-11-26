@@ -18,6 +18,11 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  background-color: #6373919d;
+}
+
+.Button1 {
+  background-color: #6373919d;
 }
 
 .navbar {
@@ -25,15 +30,6 @@
   display: flex;
   justify-content: center;
 }
-.navbar2 {
+/* .navbar2 {
   background-color: rgb(255, 255, 255);
-}
-
-.login {
-  border: 1px solid #b3b3b3;
-  margin: 5px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
+} */

@@ -57,6 +57,7 @@ const onedayApi = {
       (`${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/${oneDayClassId}`,
       oneDayItem),
 
+  // category : ()
 };
 
 export default onedayApi;
