@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../../components/nav";
 import Layout from "../../components/layout";
 import { useRouter } from "next/router";
@@ -9,19 +9,23 @@ import style from "../../pages/onedayclass/hover.module.css";
 export interface OnedayProp {
   item: OneDayItem[];
 }
-const Index = ({ item }: OnedayProp) => {
+const CategotyList = ({ item }: OnedayProp) => {
   const router = useRouter();
+
+  useEffect(() => {
+    const category = async () => {};
+  });
 
   return (
     <>
       <Layout>
-        {/* <NavBar /> */}
+        <NavBar />
         <section>
           <div style={{ display: "flex" }} className={style.hover}>
             {item.map((item, index) => (
               <div
                 key={index}
-                className="card"
+                className="card "
                 style={{
                   width: "250px",
                   marginLeft: index % 4 === 0 ? "0" : "1rem",
@@ -75,4 +79,4 @@ export async function getServerSideProps() {
   return { props: { item } };
 }
 
-export default Index;
+export default CategotyList;

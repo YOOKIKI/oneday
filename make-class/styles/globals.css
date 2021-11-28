@@ -20,3 +20,20 @@ a {
   font-weight: bold;
   margin-bottom: 10px;
 }
+
+.reserMain {
+  cursor: pointer;
+  max-width: 500px;
+  height: 150px;
+}
+
+.reservation > div:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: #4f5d75;
+  /* 6373919d */
+}
+
+tr:hover {
+  background-color: #bccbe5 !important;
+  color: rgb(255, 255, 255) !important;
+}

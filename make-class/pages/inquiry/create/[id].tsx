@@ -72,8 +72,18 @@ const InquiryCreate = () => {
     <Layout>
       <Progress />
       <div style={{ width: "600px" }} className="mx-auto">
-        <h3>1:1상담 문의</h3>
-        <a>문의하실 내용을 아래 입력해주세요.</a>
+        <h3
+          style={{
+            marginRight: "250px",
+            fontWeight: "lighter",
+            color: "#4f5d75",
+            textDecorationLine: "underline",
+            textUnderlinePosition: "under",
+          }}
+        >
+          1:1상담 문의
+        </h3>
+        <h6 className="text-muted">문의하실 내용을 아래 입력해주세요.</h6>
         <form>
           <table className="table">
             <thead>
@@ -83,7 +93,13 @@ const InquiryCreate = () => {
             </thead>
             <tbody>
               {inquiryItem && (
-                <tr>
+                <tr
+                  style={{
+                    marginRight: "250px",
+                    fontWeight: "lighter",
+                    color: "#4f5d75",
+                  }}
+                >
                   <th>클래스명</th>
                   <td>{inquiryItem.oneDayClassName}</td>
                   <td></td>
@@ -149,8 +165,13 @@ const InquiryCreate = () => {
 
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <Button
-            className="outline-secondary"
+            className="outline-secondary text-nowrap "
             id="button-addon2"
+            style={{
+              backgroundColor: "#6373919d",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
             onClick={() => {
               router.push("/inquiry");
             }}
@@ -158,8 +179,13 @@ const InquiryCreate = () => {
             목록
           </Button>
           <Button
-            className="outline-secondary"
+            className="outline-secondary text-nowrap "
             id="button-addon2"
+            style={{
+              backgroundColor: "#6373919d",
+              justifyContent: "center",
+              cursor: "pointer",
+            }}
             onClick={() => {
               handleAddClick();
               router.push("/inquiry");

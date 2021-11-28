@@ -21,7 +21,9 @@ const HeadBar = () => {
       <Container className="w-100">
         <Navbar.Brand className="ms-3">
           <Link href="/onedayclass">
-            <h3 className={style.headbar}>MAKE :CLASS</h3>
+            <h3 className={style.headbar} style={{ cursor: "pointer" }}>
+              MAKE :CLASS
+            </h3>
           </Link>
         </Navbar.Brand>
         <div>
@@ -46,10 +48,15 @@ const HeadBar = () => {
                 1:1 문의
               </NavDropdown.Item>
             )}
-            <NavDropdown.Item className="me-3">
-              <Link href="http://ec2-3-34-43-49.ap-northeast-2.compute.amazonaws.com/">
-                클래스관리
-              </Link>
+            <NavDropdown.Item
+              className="me-3"
+              onClick={() => {
+                router.push(
+                  `http://ec2-3-34-43-49.ap-northeast-2.compute.amazonaws.com`
+                );
+              }}
+            >
+              클래스관리
             </NavDropdown.Item>
           </NavDropdown>
         </div>

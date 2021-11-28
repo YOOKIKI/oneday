@@ -138,6 +138,7 @@ const InquiryEdit = () => {
         <Button
           className="btn btn-secondary me-1"
           id="button-addon2"
+          style={{ cursor: "pointer" }}
           onClick={() => {
             handleAddClick();
           }}
@@ -146,6 +147,7 @@ const InquiryEdit = () => {
         </Button>
         <Button
           className="btn btn-secondary me-1"
+          style={{ cursor: "pointer" }}
           onClick={() => {
             router.push("/inquiry/list");
           }}

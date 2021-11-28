@@ -5,6 +5,7 @@ import NavBar from "../components/nav";
 import router from "next/router";
 import { OneDayItem } from "../provider/modules/oneday ";
 import axios from "axios";
+import style from "../pages/onedayclass/hover.module.css";
 
 export interface OnedayProp {
   item: OneDayItem[];
@@ -17,9 +18,10 @@ const MainIndex = ({ item }: OnedayProp) => {
       {/* <Link href="/onedayclass">
         <h1>Make Class</h1>
       </Link> */}
-      <NavBar />
+      {/* <NavBar /> */}
+      <h6 className="text-center mr-2"></h6>
       <section>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: "flex" }} className={style.hover}>
           {item.map((item, index) => (
             <div
               key={`oneday-item-${index}`}

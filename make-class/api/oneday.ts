@@ -57,7 +57,10 @@ const onedayApi = {
       (`${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/${oneDayClassId}`,
       oneDayItem),
 
-  // category : ()
+  category: (category: string) =>
+    createAxiosInstance().get<OneDayItemResponse>(
+      `${process.env.NEXT_PUBLIC_API_BASE}/onedayclass/${category}`
+    )
 };
 
 export default onedayApi;

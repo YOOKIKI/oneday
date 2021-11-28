@@ -10,6 +10,7 @@ import { getTimeString } from "../../../lib/string";
 import axios from "axios";
 import { ReservationItem } from "../../../provider/modules/reservation";
 import { requestAddReservation } from "../../../middleware/modules/reservation";
+import style from "../../../pages/onedayclass/hover.module.css";
 
 export interface OnedayProp {
   item: OneDayItem;
@@ -155,9 +156,13 @@ const OnedayDetail = ({ item }: OnedayProp) => {
               </select>
             </div>
             <div>
-              <input type="date" ref={dayInput} />
+              <input type="date" ref={dayInput} style={{ cursor: "pointer" }} />
               <p className="textBold">예약시간</p>
-              <select className="form-select" ref={timeSelect}>
+              <select
+                className="form-select"
+                ref={timeSelect}
+                style={{ cursor: "pointer" }}
+              >
                 <option>시간</option>
                 <option value="10:00 - 11:00">10:00 - 11:00</option>
                 <option value="11:00 - 12:00">11:00 - 12:00</option>
@@ -173,13 +178,14 @@ const OnedayDetail = ({ item }: OnedayProp) => {
                 <option value="21:00 - 22:00">21:00 - 22:00</option>
               </select>
             </div>
-            <div className="justify-content-center">
+            <div className={style.hover}>
               <Button
                 className="outline-secondary text-nowrap "
                 id="button-addon2"
                 style={{
                   backgroundColor: "#6373919d",
                   justifyContent: "center",
+                  cursor: "pointer",
                 }}
                 onClick={() => {
                   createReservation(item.oneDayClassId);
@@ -194,7 +200,7 @@ const OnedayDetail = ({ item }: OnedayProp) => {
       </div>
 
       {/* 버튼 */}
-      <div>
+      <div className={style.hover}>
         <Button
           className="btn btn-secondary me-1"
           onClick={() => {
