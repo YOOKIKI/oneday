@@ -28,8 +28,8 @@ const MainIndex = ({ item }: OnedayProp) => {
               className="card"
               style={{
                 width: "250px",
-                marginLeft: index % 4 === 0 ? "0" : "1rem",
-                marginTop: index > 3 ? "1rem" : "0",
+                marginLeft: index % 5 === 0 ? "0" : "1rem",
+                marginTop: index > 6 ? "1rem" : "0",
               }}
             >
               <div
