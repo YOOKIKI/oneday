@@ -20,12 +20,12 @@ const Index = ({ item }: OnedayProp) => {
           <div style={{ display: "flex" }} className={style.hover}>
             {item.map((item, index) => (
               <div
-                key={index}
+                key={`oneday-item-${index}`}
                 className="card"
                 style={{
                   width: "250px",
                   marginLeft: index % 5 === 0 ? "0" : "1rem",
-                  marginTop: index > 6 ? "1rem" : "0",
+                  marginTop: index > 7 ? "1rem" : "0",
                 }}
               >
                 <div
