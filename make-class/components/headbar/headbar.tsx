@@ -45,7 +45,7 @@ const HeadBar = () => {
                   router.push(`/inquiry/list`);
                 }}
               >
-                1:1 문의
+                나의 1:1문의
               </NavDropdown.Item>
             )}
             <NavDropdown.Item

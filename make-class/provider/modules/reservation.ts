@@ -50,7 +50,7 @@ const initialState: ReservationState = {
   data: [],
   isFetched: false,
   page: 0,
-  pageSize: 8,
+  pageSize: 10,
   totalPages: 0,
 };
 
@@ -110,7 +110,7 @@ const reservationSlice = createSlice({
       state.isFetched = true;
     },
     initialNextReservation: (state, action: PayloadAction<ReservationPage>) => {
-      state.data = action.payload.data;
+      state.data = state.data.concat(action.payload.data);
       state.totalElements = action.payload.totalElements;
       state.totalPages = action.payload.totalPages;
       state.page = action.payload.page;

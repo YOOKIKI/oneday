@@ -14,7 +14,7 @@ export default function Sidebar() {
         <a>클래스 예약</a>
       </Link> */}
       <Link href="/inquiry">
-        <a>1:1문의</a>
+        <a>1:1문의하기</a>
       </Link>
       {/* <Link href="">
         <a>🛠</a>
