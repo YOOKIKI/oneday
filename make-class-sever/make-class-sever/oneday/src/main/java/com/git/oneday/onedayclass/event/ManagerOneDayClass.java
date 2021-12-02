@@ -17,12 +17,14 @@ public class ManagerOneDayClass {
     private String photoUrl;
     private String fileType;
     private String fileName;
-    private long price;
     private String managerName;
     private String description;
+    private String startDay;
+    private String endDay;
     private String startTime;
     private String endTime;
     private String category;
+    private long price;
     private long createdTime;
 
 }

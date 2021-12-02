@@ -27,11 +27,6 @@ const HeadBar = () => {
           </Link>
         </Navbar.Brand>
         <div>
-          {/* <Nav.Item className="me-3">
-            <Link href="/inquiry">
-              <a className="text-light me-3">1:1문의</a>
-            </Link>
-          </Nav.Item> */}
           <NavDropdown
             // style={{ color: "red", fontWeight: "bold" }}
             title="나의 리스트"
@@ -52,7 +47,7 @@ const HeadBar = () => {
               className="me-3"
               onClick={() => {
                 router.push(
-                  `http://ec2-3-34-43-49.ap-northeast-2.compute.amazonaws.com`
+                  `http://ec2-15-164-102-104.ap-northeast-2.compute.amazonaws.com`
                 );
               }}
             >

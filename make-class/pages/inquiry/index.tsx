@@ -48,7 +48,7 @@ const Inquiry = () => {
                   color: "#4f5d75",
                 }}
               >
-                <th>#</th>
+                <th>카테고리</th>
                 <th>클래스명</th>
                 {/* <th>문의하러 가기</th> */}
               </tr>

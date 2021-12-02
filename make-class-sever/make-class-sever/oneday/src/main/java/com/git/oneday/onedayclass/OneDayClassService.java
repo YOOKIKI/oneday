@@ -38,6 +38,8 @@ public class OneDayClassService {
 				.description(managerOneDayClass.getDescription())
 				.startTime(managerOneDayClass.getStartTime())
 				.endTime(managerOneDayClass.getEndTime())
+				.endDay(managerOneDayClass.getEndDay())
+				.startDay(managerOneDayClass.getStartDay())
 				.createdTime(managerOneDayClass.getCreatedTime())
 				.category(managerOneDayClass.getCategory())
 				.build();

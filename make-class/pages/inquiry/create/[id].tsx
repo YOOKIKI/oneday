@@ -102,7 +102,6 @@ const InquiryCreate = () => {
                 >
                   <th>클래스명</th>
                   <td>{inquiryItem.oneDayClassName}</td>
-                  <td></td>
                 </tr>
               )}
               <tr>
