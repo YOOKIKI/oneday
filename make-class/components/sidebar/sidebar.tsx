@@ -16,9 +16,9 @@ export default function Sidebar() {
       <Link href="/inquiry">
         <a>1:1문의하기</a>
       </Link>
-      {/* <Link href="">
-        <a>🛠</a>
-      </Link> */}
+      <Link href="/">
+        <a>처음으로</a>
+      </Link>
     </nav>
   );
 }

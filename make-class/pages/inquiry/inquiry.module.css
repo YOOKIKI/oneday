@@ -1,8 +1,8 @@
-.fonthover > a:hover {
+.inquiry > th {
   color: #4f5d75;
   font-weight: bold;
 }
-
+/* 
 .hover > tr:hover {
   background-color: #aebdd6 !important;
   color: rgb(255, 255, 255);
@@ -11,7 +11,7 @@
 .hover > div:hover {
   background-color: #aebdd6 !important;
   color: rgb(255, 255, 255);
-}
+} */
 
 /* .hover > button:hover {
   background-color: #aebdd6 !important;
