@@ -46,7 +46,7 @@ const Detail = () => {
       <>
         <section style={{ width: "60vw" }} className="text-center mx-3">
           <h2
-            className="text-center"
+            // className="text-center"
             style={{
               fontWeight: "lighter",
               color: "#4f5d75",
@@ -56,7 +56,7 @@ const Detail = () => {
           >
             문의내역 자세히 보기
           </h2>
-          <h6 className="text-muted  mt-3">고객님께서 문의한 내용입니다.</h6>
+          <h6 className="text-muted mt-3">고객님께서 문의한 내용입니다.</h6>
           <div className="detail-wrap d-flex" style={{ width: "80%" }}>
             <table className="table ">
               {inquiryItem && (
